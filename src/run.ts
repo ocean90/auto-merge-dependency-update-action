@@ -8,8 +8,6 @@ import semver from 'semver';
 import { Result } from './result';
 
 const semverRegex = /^([~^]?)[0-9]+\.[0-9]+\.[0-9]+(-.+)?$/;
-const retryDelays = [1, 1, 1, 2, 3, 4, 5, 10, 20, 40, 60].map((a) => a * 1000);
-const timeout = 6 * 60 * 60 * 1000;
 
 export async function run(): Promise<Result> {
 	const startTime = Date.now();
@@ -96,52 +94,13 @@ export async function run(): Promise<Result> {
 		return JSON.parse(Buffer.from(content.data.content, 'base64').toString('utf-8'));
 	};
 
-	const mergeWhenPossible = async (): Promise<
-		Result.PRNotOpen | Result.PRHeadChanged | Result.Success
-	> => {
-		for (let i = 0; ; i++) {
-			core.info(`Attempt: ${i}`);
-			const prData = await getPR();
-			if (prData.data.state !== 'open') {
-				core.error('PR is not open');
-				return Result.PRNotOpen;
-			}
-			const mergeable = prData.data.mergeable;
-			if (mergeable) {
-				try {
-					core.info('Attempting merge');
-					await octokit.pulls.merge({
-						owner: context.repo.owner,
-						repo: context.repo.repo,
-						pull_number: pr.number,
-						sha: prData.data.head.sha,
-					});
-					core.info('Merged');
-					return Result.Success;
-				} catch (e) {
-					if (e.status && e.status === 409) {
-						core.error('Failed to merge. PR head changed');
-						return Result.PRHeadChanged;
-					}
-					core.error(`Merge failed: ${e}`);
-				}
-			} else {
-				core.error('Not mergeable yet');
-			}
-
-			if (Date.now() - startTime >= timeout) {
-				break;
-			}
-
-			const delay = retryDelays[Math.min(retryDelays.length - 1, i)];
-			core.info(`Retry in ${delay} ms`);
-			await new Promise<void>((resolve) => setTimeout(() => resolve(), delay));
+	const enableAutoMerge = async (): Promise<Result.Success | Result.PRNotOpen> => {
+		const prData = await getPR();
+		if (prData.data.state !== 'open') {
+			core.error('PR is not open');
+			return Result.PRNotOpen;
 		}
-		core.error('Timed out');
-		throw new Error('Timed out');
-	};
 
-	const enableAutoMerge = async (): Promise<Result.Success> => {
 		const mutation = `mutation($pullRequestId:ID!) {
 			enablePullRequestAutoMerge(input: {pullRequestId: $pullRequestId, mergeMethod: SQUASH}) {
 				pullRequest {
@@ -154,10 +113,8 @@ export async function run(): Promise<Result> {
 		const variables = {
 			pullRequestId: pr.node_id,
 		}
-
 		const result: any = await octokit.graphql(mutation, variables)
 		if ( ! result?.enablePullRequestAutoMerge?.pullRequest?.autoMergeRequest?.enabledAt ) {
-			core.error('Failed to enable auto-merge');
 			throw new Error('Failed to enable auto-merge');
 		}
 

@@ -10502,7 +10502,7 @@ var Result;
 var semverRegex = /^([~^]?)[0-9]+\.[0-9]+\.[0-9]+(-.+)?$/;
 function run() {
     return __awaiter(this, void 0, void 0, function () {
-        var context, payload, token, allowedActors, allowedUpdateTypes, packageBlockList, pr, Octokit, octokit, readPackageJson, enableAutoMerge, getCommit, validVersionChange, commit, onlyPackageJsonChanged, packageJsonBase, packageJsonPr, diff, allowedPropsChanges, allowedChange, result;
+        var context, payload, token, allowedActors, allowedUpdateTypes, packageBlockList, pr, Octokit, octokit, readPackageJson, enableAutoMerge, getCommit, getPR, validVersionChange, commit, onlyPackageJsonChanged, packageJsonBase, packageJsonPr, diff, allowedPropsChanges, allowedChange, result;
         var _this = this;
         return __generator(this, function (_a) {
             switch (_a.label) {
@@ -10580,20 +10580,25 @@ function run() {
                         });
                     }); };
                     enableAutoMerge = function () { return __awaiter(_this, void 0, void 0, function () {
-                        var mutation, variables, result;
+                        var prData, mutation, variables, result;
                         var _a, _b, _c;
                         return __generator(this, function (_d) {
                             switch (_d.label) {
-                                case 0:
+                                case 0: return [4 /*yield*/, getPR()];
+                                case 1:
+                                    prData = _d.sent();
+                                    if (prData.data.state !== 'open') {
+                                        core.error('PR is not open');
+                                        return [2 /*return*/, Result.PRNotOpen];
+                                    }
                                     mutation = "mutation($pullRequestId:ID!) {\n\t\t\tenablePullRequestAutoMerge(input: {pullRequestId: $pullRequestId, mergeMethod: SQUASH}) {\n\t\t\t\tpullRequest {\n\t\t\t\t\tautoMergeRequest {\n\t\t\t\t\t\tenabledAt\n\t\t\t\t\t}\n\t\t\t\t}\n\t\t\t}\n\t\t}";
                                     variables = {
                                         pullRequestId: pr.node_id,
                                     };
                                     return [4 /*yield*/, octokit.graphql(mutation, variables)];
-                                case 1:
+                                case 2:
                                     result = _d.sent();
                                     if (!((_c = (_b = (_a = result === null || result === void 0 ? void 0 : result.enablePullRequestAutoMerge) === null || _a === void 0 ? void 0 : _a.pullRequest) === null || _b === void 0 ? void 0 : _b.autoMergeRequest) === null || _c === void 0 ? void 0 : _c.enabledAt)) {
-                                        core.error('Failed to enable auto-merge');
                                         throw new Error('Failed to enable auto-merge');
                                     }
                                     core.info('Auto-merge enabled');
@@ -10606,6 +10611,13 @@ function run() {
                             owner: context.repo.owner,
                             repo: context.repo.repo,
                             ref: pr.head.sha,
+                        });
+                    };
+                    getPR = function () {
+                        return octokit.pulls.get({
+                            owner: context.repo.owner,
+                            repo: context.repo.repo,
+                            pull_number: pr.number,
                         });
                     };
                     validVersionChange = function (oldVersion, newVersion, allowedBumpTypes) {
