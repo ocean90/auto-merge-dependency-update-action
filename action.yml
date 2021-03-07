@@ -5,15 +5,18 @@ inputs:
   repo-token:
     description: 'GitHub API token'
     default: ${{ github.token }}
+    required: false
   allowed-actors:
-    required: true
     description: 'Comma separated list of usernames auto merge is allowed for'
+    default: 'dependabot-preview[bot], dependabot[bot]'
+    required: false
   allowed-update-types:
     description: 'Comma separated list of types of updates that are allowed. Supported: [devDependencies|dependencies]:[major|minor|patch]'
     default: 'devDependencies:minor, devDependencies:patch'
-  package-block-list:
     required: false
+  package-block-list:
     description: 'Comma separated list of packages that auto merge should not be allowed for'
+    required: false
 runs:
   using: 'node12'
   main: 'dist/index.js'
