@@ -56,8 +56,6 @@ export async function run(): Promise<Result> {
 			allowedUpdateTypes[dependencyType].push(bumpType);
 		});
 
-	const approve = core.getInput('approve') === 'true';
-
 	const packageBlockList = (core.getInput('package-block-list') || '')
 		.split(',')
 		.map((a) => a.trim());
@@ -157,21 +155,6 @@ export async function run(): Promise<Result> {
 			pull_number: pr.number,
 		});
 
-	const approvePR = async () => {
-		const review = await octokit.pulls.createReview({
-			owner: context.repo.owner,
-			repo: context.repo.repo,
-			pull_number: pr.number,
-		});
-		await octokit.pulls.submitReview({
-			owner: context.repo.owner,
-			repo: context.repo.repo,
-			pull_number: pr.number,
-			review_id: review.data.id,
-			event: 'APPROVE',
-		});
-	};
-
 	const validVersionChange = (
 		oldVersion: string,
 		newVersion: string,
@@ -270,11 +253,6 @@ export async function run(): Promise<Result> {
 	if (!allowedChange) {
 		core.error('One or more version changes are not allowed');
 		return Result.VersionChangeNotAllowed;
-	}
-
-	if (approve) {
-		core.info('Approving PR');
-		await approvePR();
 	}
 
 	core.info('Merging when possible');
