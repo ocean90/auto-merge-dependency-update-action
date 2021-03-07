@@ -10500,25 +10500,22 @@ var Result;
 })(Result || (Result = {}));
 
 var semverRegex = /^([~^]?)[0-9]+\.[0-9]+\.[0-9]+(-.+)?$/;
-var retryDelays = [1, 1, 1, 2, 3, 4, 5, 10, 20, 40, 60].map(function (a) { return a * 1000; });
-var timeout = 6 * 60 * 60 * 1000;
 function run() {
     return __awaiter(this, void 0, void 0, function () {
-        var startTime, context, payload, token, allowedActors, allowedUpdateTypes, approve, packageBlockList, pr, Octokit, octokit, readPackageJson, mergeWhenPossible, getCommit, getPR, approvePR, validVersionChange, commit, onlyPackageJsonChanged, packageJsonBase, packageJsonPr, diff, allowedPropsChanges, allowedChange, result;
+        var context, payload, token, allowedActors, allowedUpdateTypes, packageBlockList, pr, Octokit, octokit, readPackageJson, enableAutoMerge, getCommit, validVersionChange, commit, onlyPackageJsonChanged, packageJsonBase, packageJsonPr, diff, allowedPropsChanges, allowedChange, result;
         var _this = this;
         return __generator(this, function (_a) {
             switch (_a.label) {
                 case 0:
-                    startTime = Date.now();
                     core.info('Starting');
                     context = github.context;
                     core.debug(JSON.stringify(context, null, 2));
-                    if (!['pull_request', 'pull_request_target', 'pull_request_review'].includes(github.context.eventName)) {
+                    if (!['pull_request', 'pull_request_target'].includes(github.context.eventName)) {
                         core.error("Unsupported event name: " + github.context.eventName);
                         return [2 /*return*/, Result.UnknownEvent];
                     }
                     payload = github.context.payload;
-                    token = core.getInput('repo-token', { required: true });
+                    token = core.getInput('github-token', { required: true });
                     allowedActors = core.getInput('allowed-actors', { required: true })
                         .split(',')
                         .map(function (a) { return a.trim(); })
@@ -10542,7 +10539,6 @@ function run() {
                         }
                         allowedUpdateTypes[dependencyType].push(bumpType);
                     });
-                    approve = core.getInput('approve') === 'true';
                     packageBlockList = (core.getInput('package-block-list') || '')
                         .split(',')
                         .map(function (a) { return a.trim(); });
@@ -10583,81 +10579,25 @@ function run() {
                             }
                         });
                     }); };
-                    mergeWhenPossible = function () { return __awaiter(_this, void 0, void 0, function () {
-                        var _loop_1, i, state_1;
-                        return __generator(this, function (_a) {
-                            switch (_a.label) {
+                    enableAutoMerge = function () { return __awaiter(_this, void 0, void 0, function () {
+                        var mutation, variables, result;
+                        var _a, _b, _c;
+                        return __generator(this, function (_d) {
+                            switch (_d.label) {
                                 case 0:
-                                    _loop_1 = function (i) {
-                                        var prData, mergeable, e_1, delay;
-                                        return __generator(this, function (_b) {
-                                            switch (_b.label) {
-                                                case 0:
-                                                    core.info("Attempt: " + i);
-                                                    return [4 /*yield*/, getPR()];
-                                                case 1:
-                                                    prData = _b.sent();
-                                                    if (prData.data.state !== 'open') {
-                                                        core.error('PR is not open');
-                                                        return [2 /*return*/, { value: Result.PRNotOpen }];
-                                                    }
-                                                    mergeable = prData.data.mergeable;
-                                                    if (!mergeable) return [3 /*break*/, 6];
-                                                    _b.label = 2;
-                                                case 2:
-                                                    _b.trys.push([2, 4, , 5]);
-                                                    core.info('Attempting merge');
-                                                    return [4 /*yield*/, octokit.pulls.merge({
-                                                            owner: context.repo.owner,
-                                                            repo: context.repo.repo,
-                                                            pull_number: pr.number,
-                                                            sha: prData.data.head.sha,
-                                                        })];
-                                                case 3:
-                                                    _b.sent();
-                                                    core.info('Merged');
-                                                    return [2 /*return*/, { value: Result.Success }];
-                                                case 4:
-                                                    e_1 = _b.sent();
-                                                    if (e_1.status && e_1.status === 409) {
-                                                        core.error('Failed to merge. PR head changed');
-                                                        return [2 /*return*/, { value: Result.PRHeadChanged }];
-                                                    }
-                                                    core.error("Merge failed: " + e_1);
-                                                    return [3 /*break*/, 5];
-                                                case 5: return [3 /*break*/, 7];
-                                                case 6:
-                                                    core.error('Not mergeable yet');
-                                                    _b.label = 7;
-                                                case 7:
-                                                    if (Date.now() - startTime >= timeout) {
-                                                        return [2 /*return*/, "break"];
-                                                    }
-                                                    delay = retryDelays[Math.min(retryDelays.length - 1, i)];
-                                                    core.info("Retry in " + delay + " ms");
-                                                    return [4 /*yield*/, new Promise(function (resolve) { return setTimeout(function () { return resolve(); }, delay); })];
-                                                case 8:
-                                                    _b.sent();
-                                                    return [2 /*return*/];
-                                            }
-                                        });
+                                    mutation = "mutation($pullRequestId:ID!) {\n\t\t\tenablePullRequestAutoMerge(input: {pullRequestId: $pullRequestId, mergeMethod: SQUASH}) {\n\t\t\t\tpullRequest {\n\t\t\t\t\tautoMergeRequest {\n\t\t\t\t\t\tenabledAt\n\t\t\t\t\t}\n\t\t\t\t}\n\t\t\t}\n\t\t}";
+                                    variables = {
+                                        pullRequestId: pr.node_id,
                                     };
-                                    i = 0;
-                                    _a.label = 1;
-                                case 1: return [5 /*yield**/, _loop_1(i)];
-                                case 2:
-                                    state_1 = _a.sent();
-                                    if (typeof state_1 === "object")
-                                        return [2 /*return*/, state_1.value];
-                                    if (state_1 === "break")
-                                        return [3 /*break*/, 4];
-                                    _a.label = 3;
-                                case 3:
-                                    i++;
-                                    return [3 /*break*/, 1];
-                                case 4:
-                                    core.error('Timed out');
-                                    throw new Error('Timed out');
+                                    return [4 /*yield*/, octokit.graphql(mutation, variables)];
+                                case 1:
+                                    result = _d.sent();
+                                    if (!((_c = (_b = (_a = result === null || result === void 0 ? void 0 : result.enablePullRequestAutoMerge) === null || _a === void 0 ? void 0 : _a.pullRequest) === null || _b === void 0 ? void 0 : _b.autoMergeRequest) === null || _c === void 0 ? void 0 : _c.enabledAt)) {
+                                        core.error('Failed to enable auto-merge');
+                                        throw new Error('Failed to enable auto-merge');
+                                    }
+                                    core.info('Auto-merge enabled');
+                                    return [2 /*return*/, Result.Success];
                             }
                         });
                     }); };
@@ -10668,37 +10608,6 @@ function run() {
                             ref: pr.head.sha,
                         });
                     };
-                    getPR = function () {
-                        return octokit.pulls.get({
-                            owner: context.repo.owner,
-                            repo: context.repo.repo,
-                            pull_number: pr.number,
-                        });
-                    };
-                    approvePR = function () { return __awaiter(_this, void 0, void 0, function () {
-                        var review;
-                        return __generator(this, function (_a) {
-                            switch (_a.label) {
-                                case 0: return [4 /*yield*/, octokit.pulls.createReview({
-                                        owner: context.repo.owner,
-                                        repo: context.repo.repo,
-                                        pull_number: pr.number,
-                                    })];
-                                case 1:
-                                    review = _a.sent();
-                                    return [4 /*yield*/, octokit.pulls.submitReview({
-                                            owner: context.repo.owner,
-                                            repo: context.repo.repo,
-                                            pull_number: pr.number,
-                                            review_id: review.data.id,
-                                            event: 'APPROVE',
-                                        })];
-                                case 2:
-                                    _a.sent();
-                                    return [2 /*return*/];
-                            }
-                        });
-                    }); };
                     validVersionChange = function (oldVersion, newVersion, allowedBumpTypes) {
                         var oldVersionMatches = semverRegex.exec(oldVersion);
                         if (!oldVersionMatches) {
@@ -10788,16 +10697,9 @@ function run() {
                         core.error('One or more version changes are not allowed');
                         return [2 /*return*/, Result.VersionChangeNotAllowed];
                     }
-                    if (!approve) return [3 /*break*/, 5];
-                    core.info('Approving PR');
-                    return [4 /*yield*/, approvePR()];
+                    core.info('Enabling auto-merge');
+                    return [4 /*yield*/, enableAutoMerge()];
                 case 4:
-                    _a.sent();
-                    _a.label = 5;
-                case 5:
-                    core.info('Merging when possible');
-                    return [4 /*yield*/, mergeWhenPossible()];
-                case 6:
                     result = _a.sent();
                     core.info('Finished!');
                     return [2 /*return*/, result];
