@@ -166,7 +166,9 @@ describe('run', () => {
 				const getInputMock = when(core.getInput as any).mockImplementation(() => {
 					throw new Error('Unexpected call');
 				});
-				getInputMock.calledWith('github-token', { required: true }).mockReturnValue('token');
+				getInputMock
+					.calledWith('github-token', { required: true })
+					.mockReturnValue('token');
 				getInputMock
 					.calledWith('allowed-actors', { required: true })
 					.mockImplementation(() => mockAllowedActors);
@@ -189,6 +191,7 @@ describe('run', () => {
 				let mockCommit: any;
 				let mockPr: any;
 				let reposGetContentMock: jest.Mock;
+				let graphqlMock: jest.Mock;
 				const mockSha = 'mockSha';
 
 				beforeEach(() => {
@@ -210,6 +213,7 @@ describe('run', () => {
 							head: {
 								sha: 'headSha',
 							},
+							node_id: 'nodeId==',
 						},
 					};
 					mockCommit = {
@@ -281,6 +285,34 @@ describe('run', () => {
 						})
 						.mockImplementation(() => mockPr);
 
+					graphqlMock = jest.fn();
+					when(graphqlMock)
+						.expectCalledWith(
+							`mutation($pullRequestId:ID!) {
+	enablePullRequestAutoMerge(input: {pullRequestId: $pullRequestId, mergeMethod: SQUASH}) {
+		pullRequest {
+			autoMergeRequest {
+				enabledAt
+			}
+		}
+	}
+}`,
+							{
+								pullRequestId: github.context.payload.pull_request!.node_id,
+							}
+						)
+						.mockImplementation(() =>
+							Promise.resolve({
+								enablePullRequestAutoMerge: {
+									pullRequest: {
+										autoMergeRequest: {
+											enabledAt: '2021-03-07T16:17:20Z',
+										},
+									},
+								},
+							})
+						);
+
 					const octokitMock = {
 						repos: {
 							getContent: reposGetContentMock,
@@ -289,6 +321,7 @@ describe('run', () => {
 						pulls: {
 							get: pullsGetMock,
 						},
+						graphql: graphqlMock,
 					};
 
 					const getOctokitOptionsReturn = Symbol('getOctokitOptionsReturn');
@@ -449,6 +482,21 @@ describe('run', () => {
 
 									it('enables auto-merge for the PR', async () => {
 										expect(await run()).toBe(Result.Success);
+									});
+
+									it('aborts if the PR is not open', async () => {
+										mockPr.data.state = 'unknown';
+										expect(await run()).toBe(Result.PRNotOpen);
+									});
+
+									it('errors if auto-merge failed', async () => {
+										graphqlMock.mockReturnValue(
+											Promise.resolve(null)
+										);
+										await expect(run()).rejects.toHaveProperty(
+											'message',
+											'Failed to enable auto-merge'
+										);
 									});
 								}
 							});

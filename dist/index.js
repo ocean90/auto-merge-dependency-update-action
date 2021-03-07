@@ -10591,7 +10591,7 @@ function run() {
                                         core.error('PR is not open');
                                         return [2 /*return*/, Result.PRNotOpen];
                                     }
-                                    mutation = "mutation($pullRequestId:ID!) {\n\t\t\tenablePullRequestAutoMerge(input: {pullRequestId: $pullRequestId, mergeMethod: SQUASH}) {\n\t\t\t\tpullRequest {\n\t\t\t\t\tautoMergeRequest {\n\t\t\t\t\t\tenabledAt\n\t\t\t\t\t}\n\t\t\t\t}\n\t\t\t}\n\t\t}";
+                                    mutation = "mutation($pullRequestId:ID!) {\n\tenablePullRequestAutoMerge(input: {pullRequestId: $pullRequestId, mergeMethod: SQUASH}) {\n\t\tpullRequest {\n\t\t\tautoMergeRequest {\n\t\t\t\tenabledAt\n\t\t\t}\n\t\t}\n\t}\n}";
                                     variables = {
                                         pullRequestId: pr.node_id,
                                     };

@@ -1,6 +1,6 @@
 import * as core from '@actions/core';
 import * as github from '@actions/github';
-import { PullRequestEvent } from "@octokit/webhooks-definitions/schema";
+import { PullRequestEvent } from '@octokit/webhooks-definitions/schema';
 import { GitHub, getOctokitOptions } from '@actions/github/lib/utils';
 import { throttling } from '@octokit/plugin-throttling';
 import { detailedDiff } from 'deep-object-diff';
@@ -16,11 +16,7 @@ export async function run(): Promise<Result> {
 	const context = github.context;
 	core.debug(JSON.stringify(context, null, 2));
 
-	if (
-		!['pull_request', 'pull_request_target'].includes(
-			github.context.eventName
-		)
-	) {
+	if (!['pull_request', 'pull_request_target'].includes(github.context.eventName)) {
 		core.error(`Unsupported event name: ${github.context.eventName}`);
 		return Result.UnknownEvent;
 	}
@@ -102,25 +98,25 @@ export async function run(): Promise<Result> {
 		}
 
 		const mutation = `mutation($pullRequestId:ID!) {
-			enablePullRequestAutoMerge(input: {pullRequestId: $pullRequestId, mergeMethod: SQUASH}) {
-				pullRequest {
-					autoMergeRequest {
-						enabledAt
-					}
-				}
+	enablePullRequestAutoMerge(input: {pullRequestId: $pullRequestId, mergeMethod: SQUASH}) {
+		pullRequest {
+			autoMergeRequest {
+				enabledAt
 			}
-		}`;
+		}
+	}
+}`;
 		const variables = {
 			pullRequestId: pr.node_id,
-		}
-		const result: any = await octokit.graphql(mutation, variables)
-		if ( ! result?.enablePullRequestAutoMerge?.pullRequest?.autoMergeRequest?.enabledAt ) {
+		};
+		const result: any = await octokit.graphql(mutation, variables);
+		if (!result?.enablePullRequestAutoMerge?.pullRequest?.autoMergeRequest?.enabledAt) {
 			throw new Error('Failed to enable auto-merge');
 		}
 
 		core.info('Auto-merge enabled');
 		return Result.Success;
-	}
+	};
 
 	const getCommit = () =>
 		octokit.repos.getCommit({
