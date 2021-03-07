@@ -141,6 +141,30 @@ export async function run(): Promise<Result> {
 		throw new Error('Timed out');
 	};
 
+	const enableAutoMerge = async (): Promise<Result.Success> => {
+		const mutation = `mutation($pullRequestId:ID!) {
+			enablePullRequestAutoMerge(input: {pullRequestId: $pullRequestId, mergeMethod: SQUASH}) {
+				pullRequest {
+					autoMergeRequest {
+						enabledAt
+					}
+				}
+			}
+		}`;
+		const variables = {
+			pullRequestId: pr.node_id,
+		}
+
+		const result: any = await octokit.graphql(mutation, variables)
+		if ( ! result?.enablePullRequestAutoMerge?.pullRequest?.autoMergeRequest?.enabledAt ) {
+			core.error('Failed to enable auto-merge');
+			throw new Error('Failed to enable auto-merge');
+		}
+
+		core.info('Auto-merge enabled');
+		return Result.Success;
+	}
+
 	const getCommit = () =>
 		octokit.repos.getCommit({
 			owner: context.repo.owner,
@@ -255,8 +279,8 @@ export async function run(): Promise<Result> {
 		return Result.VersionChangeNotAllowed;
 	}
 
-	core.info('Merging when possible');
-	const result = await mergeWhenPossible();
+	core.info('Enabling auto-merge');
+	const result = await enableAutoMerge();
 	core.info('Finished!');
 	return result;
 }
