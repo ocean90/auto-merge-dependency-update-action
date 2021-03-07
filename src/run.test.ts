@@ -166,7 +166,7 @@ describe('run', () => {
 				const getInputMock = when(core.getInput as any).mockImplementation(() => {
 					throw new Error('Unexpected call');
 				});
-				getInputMock.calledWith('repo-token', { required: true }).mockReturnValue('token');
+				getInputMock.calledWith('github-token', { required: true }).mockReturnValue('token');
 				getInputMock
 					.calledWith('allowed-actors', { required: true })
 					.mockImplementation(() => mockAllowedActors);

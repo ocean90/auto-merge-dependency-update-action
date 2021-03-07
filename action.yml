@@ -2,7 +2,7 @@ name: 'Auto Merge Dependency Updates'
 description: 'Automatically merge a PR that only contains dependency updates, based on some rules.'
 author: 'Tom Jenkinson'
 inputs:
-  repo-token:
+  github-token:
     description: 'GitHub API token'
     default: ${{ github.token }}
     required: false

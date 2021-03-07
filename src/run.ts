@@ -28,7 +28,7 @@ export async function run(): Promise<Result> {
 	}
 	const payload: PullRequestEvent = github.context.payload as any;
 
-	const token = core.getInput('repo-token', { required: true });
+	const token = core.getInput('github-token', { required: true });
 
 	const allowedActors = core
 		.getInput('allowed-actors', { required: true })
