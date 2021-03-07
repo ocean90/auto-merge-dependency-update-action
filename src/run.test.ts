@@ -151,7 +151,7 @@ describe('run', () => {
 		expect(await run()).toBe(Result.UnknownEvent);
 	});
 
-	['pull_request', 'pull_request_target', 'pull_request_review'].forEach((name) => {
+	['pull_request', 'pull_request_target'].forEach((name) => {
 		describe(`when the event name is ${name}`, () => {
 			let mockAllowedActors: string;
 			let mockAllowedUpdateTypes: string;
