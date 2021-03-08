@@ -1,5 +1,8 @@
 # Auto-merge dependency update action
 
+[![Node CI](https://github.com/wearerequired/auto-merge-dependency-update-action/actions/workflows/nodejs.yml/badge.svg)](https://github.com/wearerequired/auto-merge-dependency-update-action/actions/workflows/nodejs.yml)
+[![codecov](https://codecov.io/gh/wearerequired/auto-merge-dependency-update-action/branch/main/graph/badge.svg)](https://codecov.io/gh/wearerequired/auto-merge-dependency-update-action)
+
 A GitHub action that will enable [auto-merge for a PR](https://docs.github.com/en/github/collaborating-with-issues-and-pull-requests/automatically-merging-a-pull-request) that only contains dependency updates, based on some rules.
 
 Before you can use this action, [auto-merge must be enabled for the repository](https://docs.github.com/en/github/administering-a-repository/managing-auto-merge-for-pull-requests-in-your-repository) and you have to configure [branch protection rules](https://docs.github.com/en/github/administering-a-repository/managing-a-branch-protection-rule), such as passing status checks.
