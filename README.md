@@ -1,22 +1,22 @@
-# gh-action-auto-merge-dependency-updates
+# Auto-merge dependency update action
 
-A GitHub action that will automatically approve and merge a PR that only contains dependency updates, based on some rules.
+A GitHub action that will enable [auto-merge for a PR](https://docs.github.com/en/github/collaborating-with-issues-and-pull-requests/automatically-merging-a-pull-request) that only contains dependency updates, based on some rules.
 
-If you run tests on PR's make sure you [configure those as required status checks](https://docs.github.com/en/github/administering-a-repository/enabling-required-status-checks) so that they need to go green before the merge can occur.
+Before you can use this action, [auto-merge must be enabled for the repository](https://docs.github.com/en/github/administering-a-repository/managing-auto-merge-for-pull-requests-in-your-repository) and you have to configure [branch protection rules](https://docs.github.com/en/github/administering-a-repository/managing-a-branch-protection-rule), such as passing status checks.
 
 Note that the action does not check the lockfile is valid, so you should only set `allowed-actors` you trust, or validate that the lockfile is correct in another required action.
 
-It currently supports npm and yarn.
+The action currently supports npm and yarn.
 
 ## Config
 
-- `allowed-actors`: A comma separated list of usernames auto merge is allowed for.
-- `repo-token` (optional): a GitHub API token. _Default: The token provided to the workflow (`${{ github.token }}`)_
-- `allowed-update-types` (optional): A comma separated list of types of updates that are allowed. Supported: [devDependencies|dependencies]:[major|minor|patch]. _Default: `devDependencies:minor, devDependencies:patch`_
-- `approve` (optional): Automatically approve the PR if it qualifies for auto merge. _Default: `true`_
-- `package-block-list` (optional): A comma separated list of packages that auto merge should not be allowed for.
+- `github-token`: A GitHub personal access token with `repo` access. The default `GITHUB_TOKEN` secret can't be used.
+- `allowed-actors` (optional): A comma-separated list of usernames auto-merge is allowed for. _Default: `dependabot-preview[bot], dependabot[bot]`
+- `allowed-update-types` (optional): A comma-separated list of types of updates that are allowed. Supported: [devDependencies|dependencies]:[major|minor|patch]. _Default: `devDependencies:minor, devDependencies:patch`_
+- `approve` (optional): Automatically approve the PR if it qualifies for auto-merge. _Default: `true`_
+- `package-block-list` (optional): A comma-separated list of packages that auto-merge should not be allowed for.
 
-You should configure this action to run on the `pull_request_target` event. If you use `pull_request` you must provide a custom `repo-token` which has permission to merge. [The default token for dependabot PRs only has read-only access](https://github.blog/changelog/2021-02-19-github-actions-workflows-triggered-by-dependabot-prs-will-run-with-read-only-permissions/).
+You should configure this action to run on the `pull_request` or `pull_request_target` event.
 
 ## Example Action
 
@@ -30,7 +30,7 @@ jobs:
   run:
     runs-on: ubuntu-latest
     steps:
-      - uses: tjenkinson/gh-action-auto-merge-dependency-updates@v1
+      - uses: tjenkinson/auto-merge-dependency-update-action@v1
         with:
-          allowed-actors: dependabot-preview[bot], dependabot[bot]
+          github-token: ${{secrets.REPO_PAT}}
 ```
