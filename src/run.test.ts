@@ -490,9 +490,7 @@ describe('run', () => {
 									});
 
 									it('errors if auto-merge failed', async () => {
-										graphqlMock.mockReturnValue(
-											Promise.resolve(null)
-										);
+										graphqlMock.mockReturnValue(Promise.resolve(null));
 										await expect(run()).rejects.toHaveProperty(
 											'message',
 											'Failed to enable auto-merge'
