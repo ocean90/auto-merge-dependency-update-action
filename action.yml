@@ -1,25 +1,24 @@
 name: 'Auto Merge Dependency Updates'
-description: 'Automatically merge a PR that only contains dependency updates, based on some rules.'
+description: 'Enable auto-merge for a PR that only contains dependency updates, based on some rules.'
 author: 'Tom Jenkinson'
 inputs:
   github-token:
-    description: 'GitHub API token'
-    default: ${{ github.token }}
-    required: false
+    description: 'The GitHub token used to authenticated with GitHub.'
+    required: true
   allowed-actors:
-    description: 'Comma separated list of usernames auto merge is allowed for'
+    description: 'Comma-separated list of usernames auto merge is allowed for'
     default: 'dependabot-preview[bot], dependabot[bot]'
     required: false
   allowed-update-types:
-    description: 'Comma separated list of types of updates that are allowed. Supported: [devDependencies|dependencies]:[major|minor|patch]'
+    description: 'Comma-separated list of types of updates that are allowed. Supported: [devDependencies|dependencies]:[major|minor|patch]'
     default: 'devDependencies:minor, devDependencies:patch'
     required: false
   package-block-list:
-    description: 'Comma separated list of packages that auto merge should not be allowed for'
+    description: 'Comma-separated list of packages that auto merge should not be allowed for'
     required: false
 runs:
   using: 'node12'
   main: 'dist/index.js'
 branding:
   icon: 'git-merge'
-  color: 'blue'
+  color: 'purple'
