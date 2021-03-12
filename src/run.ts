@@ -111,6 +111,7 @@ export async function run(): Promise<Result> {
 		};
 		const result: any = await octokit.graphql(mutation, variables);
 		if (!result?.enablePullRequestAutoMerge?.pullRequest?.autoMergeRequest?.enabledAt) {
+			core.debug(JSON.stringify(result, null, 2));
 			throw new Error('Failed to enable auto-merge');
 		}
 

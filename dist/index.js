@@ -10599,6 +10599,7 @@ function run() {
                                 case 2:
                                     result = _d.sent();
                                     if (!((_c = (_b = (_a = result === null || result === void 0 ? void 0 : result.enablePullRequestAutoMerge) === null || _a === void 0 ? void 0 : _a.pullRequest) === null || _b === void 0 ? void 0 : _b.autoMergeRequest) === null || _c === void 0 ? void 0 : _c.enabledAt)) {
+                                        core.debug(JSON.stringify(result, null, 2));
                                         throw new Error('Failed to enable auto-merge');
                                     }
                                     core.info('Auto-merge enabled');
