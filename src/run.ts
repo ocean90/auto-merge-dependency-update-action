@@ -20,9 +20,16 @@ export async function run(): Promise<Result> {
 		core.error(`Unsupported event name: ${github.context.eventName}`);
 		return Result.UnknownEvent;
 	}
-	const payload: PullRequestEvent = github.context.payload as any;
 
 	const token = core.getInput('github-token', { required: true });
+
+	const mergeMethod = core.getInput('merge-method').toUpperCase();
+	if (!['SQUASH', 'MERGE', 'REBASE'].includes(mergeMethod)) {
+		core.error(`Merge method not allowed: ${mergeMethod}`);
+		return Result.UnknownMergeMethod;
+	}
+
+	const mergeAuthorEmail = core.getInput('merge-author-email') || null;
 
 	const allowedActors = core
 		.getInput('allowed-actors', { required: true })
@@ -59,6 +66,7 @@ export async function run(): Promise<Result> {
 		return Result.ActorNotAllowed;
 	}
 
+	const payload: PullRequestEvent = github.context.payload as any;
 	const pr = payload.pull_request;
 
 	const Octokit = GitHub.plugin(throttling);
@@ -97,8 +105,8 @@ export async function run(): Promise<Result> {
 			return Result.PRNotOpen;
 		}
 
-		const mutation = `mutation($pullRequestId:ID!) {
-	enablePullRequestAutoMerge(input: {pullRequestId: $pullRequestId, mergeMethod: SQUASH}) {
+		const mutation = `mutation($pullRequestId: ID!, $mergeMethod: PullRequestMergeMethod, $authorEmail: String) {
+	enablePullRequestAutoMerge(input: {pullRequestId: $pullRequestId, mergeMethod: $mergeMethod, authorEmail: $authorEmail}) {
 		pullRequest {
 			autoMergeRequest {
 				enabledAt
@@ -108,6 +116,8 @@ export async function run(): Promise<Result> {
 }`;
 		const variables = {
 			pullRequestId: pr.node_id,
+			mergeMethod: mergeMethod,
+			authorEmail: mergeAuthorEmail,
 		};
 		const result: any = await octokit.graphql(mutation, variables);
 		if (!result?.enablePullRequestAutoMerge?.pullRequest?.autoMergeRequest?.enabledAt) {
