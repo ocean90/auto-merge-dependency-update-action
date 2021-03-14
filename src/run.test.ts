@@ -182,9 +182,7 @@ describe('run', () => {
 				getInputMock
 					.calledWith('package-block-list')
 					.mockImplementation(() => mockPackageBlockList);
-				getInputMock
-					.calledWith('merge-method')
-					.mockImplementation(() => mockMergeMethod);
+				getInputMock.calledWith('merge-method').mockImplementation(() => mockMergeMethod);
 				getInputMock
 					.calledWith('merge-author-email')
 					.mockImplementation(() => mockMergeAuthorEmail);
@@ -213,7 +211,7 @@ describe('run', () => {
 					mockAllowedActors = 'actor1, actor2';
 					mockPackageJsonPr = {};
 					mockPackageJsonBase = {};
-					mockMergeMethod = 'SQUASH',
+					mockMergeMethod = 'SQUASH';
 					mockMergeAuthorEmail = null;
 
 					github.context.actor = 'actor2';
