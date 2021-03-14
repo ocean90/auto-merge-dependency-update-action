@@ -21,7 +21,7 @@ inputs:
     default: 'SQUASH'
     required: false
   merge-author-email:
-    description: 'The email address to associate with this merge'
+    description: 'The email address to associate with the auto-merge'
     required: false
 runs:
   using: 'node12'

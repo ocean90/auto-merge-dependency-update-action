@@ -18,6 +18,8 @@ The action currently supports npm and yarn.
 - `allowed-update-types` (optional): A comma-separated list of types of updates that are allowed. Supported: [devDependencies|dependencies]:[major|minor|patch]. _Default: `devDependencies:minor, devDependencies:patch`_
 - `approve` (optional): Automatically approve the PR if it qualifies for auto-merge. _Default: `true`_
 - `package-block-list` (optional): A comma-separated list of packages that auto-merge should not be allowed for.
+- `merge-method` (optional): The merge method to use. Supported: `MERGE`, `SQUASH`, or `REBASE`. _Default: `SQUASH`_
+- `merge-author-email:` (optional): The email address to associate with the auto-merge.
 
 You should configure this action to run on the `pull_request` or `pull_request_target` event.
 
@@ -31,6 +33,7 @@ on:
 
 jobs:
   run:
+    if: ${{ github.actor == 'dependabot[bot]' || github.actor == 'dependabot-preview[bot]' }}
     runs-on: ubuntu-latest
     steps:
       - uses: wearerequired/auto-merge-dependency-update-action@v1
