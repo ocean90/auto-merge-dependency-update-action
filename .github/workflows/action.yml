@@ -5,10 +5,11 @@ on:
 
 jobs:
   run:
+    if: ${{ github.actor == 'dependabot[bot]' || github.actor == 'dependabot-preview[bot]' }}
     runs-on: ubuntu-latest
 
     steps:
-      - uses: actions/checkout@v1
+      - uses: actions/checkout@v2
       - uses: ./
         with:
           github-token: ${{ secrets.TEST_ACTION_GITHUB_TOKEN }}
