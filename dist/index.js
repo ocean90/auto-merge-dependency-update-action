@@ -10489,20 +10489,20 @@ var semver = {
 var Result;
 (function (Result) {
     Result[Result["UnknownEvent"] = 0] = "UnknownEvent";
-    Result[Result["ActorNotAllowed"] = 1] = "ActorNotAllowed";
-    Result[Result["FileNotAllowed"] = 2] = "FileNotAllowed";
-    Result[Result["UnexpectedChanges"] = 3] = "UnexpectedChanges";
-    Result[Result["UnexpectedPropertyChange"] = 4] = "UnexpectedPropertyChange";
-    Result[Result["VersionChangeNotAllowed"] = 5] = "VersionChangeNotAllowed";
-    Result[Result["PRNotOpen"] = 6] = "PRNotOpen";
-    Result[Result["PRHeadChanged"] = 7] = "PRHeadChanged";
+    Result[Result["UnknownMergeMethod"] = 1] = "UnknownMergeMethod";
+    Result[Result["ActorNotAllowed"] = 2] = "ActorNotAllowed";
+    Result[Result["FileNotAllowed"] = 3] = "FileNotAllowed";
+    Result[Result["UnexpectedChanges"] = 4] = "UnexpectedChanges";
+    Result[Result["UnexpectedPropertyChange"] = 5] = "UnexpectedPropertyChange";
+    Result[Result["VersionChangeNotAllowed"] = 6] = "VersionChangeNotAllowed";
+    Result[Result["PRNotOpen"] = 7] = "PRNotOpen";
     Result[Result["Success"] = 8] = "Success";
 })(Result || (Result = {}));
 
 var semverRegex = /^([~^]?)[0-9]+\.[0-9]+\.[0-9]+(-.+)?$/;
 function run() {
     return __awaiter(this, void 0, void 0, function () {
-        var context, payload, token, allowedActors, allowedUpdateTypes, packageBlockList, pr, Octokit, octokit, readPackageJson, enableAutoMerge, getCommit, getPR, validVersionChange, commit, onlyPackageJsonChanged, packageJsonBase, packageJsonPr, diff, allowedPropsChanges, allowedChange, result;
+        var context, token, mergeMethod, mergeAuthorEmail, allowedActors, allowedUpdateTypes, packageBlockList, payload, pr, Octokit, octokit, readPackageJson, enableAutoMerge, getCommit, getPR, validVersionChange, commit, onlyPackageJsonChanged, packageJsonBase, packageJsonPr, diff, allowedPropsChanges, allowedChange, result;
         var _this = this;
         return __generator(this, function (_a) {
             switch (_a.label) {
@@ -10514,8 +10514,13 @@ function run() {
                         core.error("Unsupported event name: " + github.context.eventName);
                         return [2 /*return*/, Result.UnknownEvent];
                     }
-                    payload = github.context.payload;
                     token = core.getInput('github-token', { required: true });
+                    mergeMethod = core.getInput('merge-method').toUpperCase();
+                    if (!['SQUASH', 'MERGE', 'REBASE'].includes(mergeMethod)) {
+                        core.error("Merge method not allowed: " + mergeMethod);
+                        return [2 /*return*/, Result.UnknownMergeMethod];
+                    }
+                    mergeAuthorEmail = core.getInput('merge-author-email') || null;
                     allowedActors = core.getInput('allowed-actors', { required: true })
                         .split(',')
                         .map(function (a) { return a.trim(); })
@@ -10546,6 +10551,7 @@ function run() {
                         core.error("Actor not allowed: " + context.actor);
                         return [2 /*return*/, Result.ActorNotAllowed];
                     }
+                    payload = github.context.payload;
                     pr = payload.pull_request;
                     Octokit = utils$1.GitHub.plugin(throttling);
                     octokit = new Octokit(utils$1.getOctokitOptions(token, {
@@ -10591,9 +10597,11 @@ function run() {
                                         core.error('PR is not open');
                                         return [2 /*return*/, Result.PRNotOpen];
                                     }
-                                    mutation = "mutation($pullRequestId:ID!) {\n\tenablePullRequestAutoMerge(input: {pullRequestId: $pullRequestId, mergeMethod: SQUASH}) {\n\t\tpullRequest {\n\t\t\tautoMergeRequest {\n\t\t\t\tenabledAt\n\t\t\t}\n\t\t}\n\t}\n}";
+                                    mutation = "mutation($pullRequestId: ID!, $mergeMethod: PullRequestMergeMethod, $authorEmail: String) {\n\tenablePullRequestAutoMerge(input: {pullRequestId: $pullRequestId, mergeMethod: $mergeMethod, authorEmail: $authorEmail}) {\n\t\tpullRequest {\n\t\t\tautoMergeRequest {\n\t\t\t\tenabledAt\n\t\t\t}\n\t\t}\n\t}\n}";
                                     variables = {
                                         pullRequestId: pr.node_id,
+                                        mergeMethod: mergeMethod,
+                                        authorEmail: mergeAuthorEmail,
                                     };
                                     return [4 /*yield*/, octokit.graphql(mutation, variables)];
                                 case 2:

@@ -1,9 +1,9 @@
 name: 'Auto Merge Dependency Updates'
 description: 'Enable auto-merge for a PR that only contains dependency updates, based on some rules.'
-author: 'Tom Jenkinson'
+author: 'required gmbh'
 inputs:
   github-token:
-    description: 'The GitHub token used to authenticated with GitHub.'
+    description: 'A personal access token used to authenticated with GitHub'
     required: true
   allowed-actors:
     description: 'Comma-separated list of usernames auto merge is allowed for'
@@ -15,6 +15,13 @@ inputs:
     required: false
   package-block-list:
     description: 'Comma-separated list of packages that auto merge should not be allowed for'
+    required: false
+  merge-method:
+    description: 'The merge method to use. Supported: MERGE, SQUASH, REBASE'
+    default: 'SQUASH'
+    required: false
+  merge-author-email:
+    description: 'The email address to associate with this merge'
     required: false
 runs:
   using: 'node12'

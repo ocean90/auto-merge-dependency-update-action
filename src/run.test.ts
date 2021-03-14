@@ -156,12 +156,16 @@ describe('run', () => {
 			let mockAllowedActors: string;
 			let mockAllowedUpdateTypes: string;
 			let mockPackageBlockList: string;
+			let mockMergeMethod: string;
+			let mockMergeAuthorEmail: string | null;
 
 			beforeEach(() => {
 				github.context.eventName = name;
 				mockAllowedActors = '';
 				mockAllowedUpdateTypes = '';
 				mockPackageBlockList = '';
+				mockMergeMethod = 'SQUASH';
+				mockMergeAuthorEmail = '';
 
 				const getInputMock = when(core.getInput as any).mockImplementation(() => {
 					throw new Error('Unexpected call');
@@ -178,11 +182,20 @@ describe('run', () => {
 				getInputMock
 					.calledWith('package-block-list')
 					.mockImplementation(() => mockPackageBlockList);
+				getInputMock.calledWith('merge-method').mockImplementation(() => mockMergeMethod);
+				getInputMock
+					.calledWith('merge-author-email')
+					.mockImplementation(() => mockMergeAuthorEmail);
 			});
 
 			it('stops if the actor is not in the allow list', async () => {
 				github.context.actor = 'unknown';
 				expect(await run()).toBe(Result.ActorNotAllowed);
+			});
+
+			it('stops if the merge method is unknown', async () => {
+				mockMergeMethod = 'unknown';
+				expect(await run()).toBe(Result.UnknownMergeMethod);
 			});
 
 			describe('with an allowed actor', () => {
@@ -198,6 +211,8 @@ describe('run', () => {
 					mockAllowedActors = 'actor1, actor2';
 					mockPackageJsonPr = {};
 					mockPackageJsonBase = {};
+					mockMergeMethod = 'SQUASH';
+					mockMergeAuthorEmail = null;
 
 					github.context.actor = 'actor2';
 					(github.context as any).repo = {
@@ -288,8 +303,8 @@ describe('run', () => {
 					graphqlMock = jest.fn();
 					when(graphqlMock)
 						.expectCalledWith(
-							`mutation($pullRequestId:ID!) {
-	enablePullRequestAutoMerge(input: {pullRequestId: $pullRequestId, mergeMethod: SQUASH}) {
+							`mutation($pullRequestId: ID!, $mergeMethod: PullRequestMergeMethod, $authorEmail: String) {
+	enablePullRequestAutoMerge(input: {pullRequestId: $pullRequestId, mergeMethod: $mergeMethod, authorEmail: $authorEmail}) {
 		pullRequest {
 			autoMergeRequest {
 				enabledAt
@@ -299,6 +314,8 @@ describe('run', () => {
 }`,
 							{
 								pullRequestId: github.context.payload.pull_request!.node_id,
+								mergeMethod: mockMergeMethod,
+								authorEmail: mockMergeAuthorEmail,
 							}
 						)
 						.mockImplementation(() =>
