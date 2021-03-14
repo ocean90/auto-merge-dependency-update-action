@@ -13,7 +13,7 @@ The action currently supports npm and yarn.
 
 ## Config
 
-- `github-token`: A GitHub personal access token with `repo` access. The default `GITHUB_TOKEN` secret can't be used.
+- `github-token`: A GitHub personal access token with `repo` access. The default `GITHUB_TOKEN` secret can't be used as auto-merge is only allowed for users with a verified email address.
 - `allowed-actors` (optional): A comma-separated list of usernames auto-merge is allowed for. _Default: `dependabot-preview[bot], dependabot[bot]`_
 - `allowed-update-types` (optional): A comma-separated list of types of updates that are allowed. Supported: [devDependencies|dependencies]:[major|minor|patch]. _Default: `devDependencies:minor, devDependencies:patch`_
 - `approve` (optional): Automatically approve the PR if it qualifies for auto-merge. _Default: `true`_
@@ -40,3 +40,7 @@ jobs:
         with:
           github-token: ${{secrets.REPO_PAT}}
 ```
+
+## Credits
+
+This action is based on [tjenkinson/gh-action-auto-merge-dependency-updates](https://github.com/tjenkinson/gh-action-auto-merge-dependency-updates) from [Tom Jenkinson](https://github.com/tjenkinson).
