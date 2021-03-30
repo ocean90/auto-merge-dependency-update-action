@@ -25,7 +25,7 @@
     "@actions/github": "4.0.0",
     "@octokit/plugin-throttling": "^3.4.1",
     "@octokit/webhooks-definitions": "^3.62.5",
-    "@rollup/plugin-commonjs": "^17.1.0",
+    "@rollup/plugin-commonjs": "^18.0.0",
     "@rollup/plugin-node-resolve": "^11.2.0",
     "@types/jest": "^26.0.20",
     "@types/jest-when": "^2.7.2",
