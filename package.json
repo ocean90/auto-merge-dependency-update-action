@@ -21,7 +21,7 @@
   },
   "homepage": "https://github.com/wearerequired/auto-merge-dependency-update-action#readme",
   "devDependencies": {
-    "@actions/core": "1.2.6",
+    "@actions/core": "1.2.7",
     "@actions/github": "4.0.0",
     "@octokit/plugin-throttling": "^3.4.1",
     "@octokit/webhooks-definitions": "^3.62.5",
