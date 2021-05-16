@@ -1,6 +1,7 @@
 import * as core from '@actions/core';
 import * as github from '@actions/github';
 import { PullRequestEvent } from '@octokit/webhooks-definitions/schema';
+import { components } from '@octokit/openapi-types';
 import { GitHub, getOctokitOptions } from '@actions/github/lib/utils';
 import { throttling } from '@octokit/plugin-throttling';
 import { detailedDiff } from 'deep-object-diff';
@@ -86,16 +87,24 @@ export async function run(): Promise<Result> {
 	);
 
 	const readPackageJson = async (ref: string): Promise<Record<string, any>> => {
-		const content = await octokit.repos.getContent({
+		const { data } = await octokit.rest.repos.getContent({
 			owner: context.repo.owner,
 			repo: context.repo.repo,
 			path: 'package.json',
 			ref,
 		});
-		if (content.data.type !== 'file' || content.data.encoding !== 'base64') {
+		if (
+			Array.isArray(data) ||
+			data.type !== 'file' ||
+			(data as components['schemas']['content-file']).encoding !== 'base64'
+		) {
 			throw new Error('Unexpected repo content response');
 		}
-		return JSON.parse(Buffer.from(content.data.content, 'base64').toString('utf-8'));
+		return JSON.parse(
+			Buffer.from((data as components['schemas']['content-file']).content, 'base64').toString(
+				'utf-8'
+			)
+		);
 	};
 
 	const enableAutoMerge = async (): Promise<Result.Success | Result.PRNotOpen> => {
@@ -130,14 +139,14 @@ export async function run(): Promise<Result> {
 	};
 
 	const getCommit = () =>
-		octokit.repos.getCommit({
+		octokit.rest.repos.getCommit({
 			owner: context.repo.owner,
 			repo: context.repo.repo,
 			ref: pr.head.sha,
 		});
 
 	const getPR = () =>
-		octokit.pulls.get({
+		octokit.rest.pulls.get({
 			owner: context.repo.owner,
 			repo: context.repo.repo,
 			pull_number: pr.number,
@@ -184,8 +193,13 @@ export async function run(): Promise<Result> {
 
 	core.info('Getting commit info');
 	const commit = await getCommit();
+	if (!commit.data.files) {
+		core.error('Could not find any changed files');
+		return Result.NoChanges;
+	}
 	const onlyPackageJsonChanged = commit.data.files.every(
 		({ filename, status }) =>
+			filename &&
 			['package.json', 'package-lock.json', 'yarn.lock'].includes(filename) &&
 			status === 'modified'
 	);

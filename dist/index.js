@@ -1,31 +1,31 @@
 'use strict';
 
-var require$$0 = require('os');
-var fs_1 = require('fs');
-var require$$1 = require('path');
-var url = require('url');
-var http = require('http');
-var https = require('https');
+var require$$1 = require('os');
+var require$$0 = require('fs');
+var require$$4$1 = require('path');
+var http$1 = require('http');
+var require$$3$1 = require('https');
 require('net');
-var tls = require('tls');
-var events = require('events');
+var require$$1$1 = require('tls');
+var require$$4$2 = require('events');
 require('assert');
-var util = require('util');
+var require$$6 = require('util');
 var Stream = require('stream');
+var Url = require('url');
 var zlib = require('zlib');
 
 function _interopDefaultLegacy (e) { return e && typeof e === 'object' && 'default' in e ? e : { 'default': e }; }
 
-var require$$0__default = /*#__PURE__*/_interopDefaultLegacy(require$$0);
-var fs_1__default = /*#__PURE__*/_interopDefaultLegacy(fs_1);
 var require$$1__default = /*#__PURE__*/_interopDefaultLegacy(require$$1);
-var url__default = /*#__PURE__*/_interopDefaultLegacy(url);
-var http__default = /*#__PURE__*/_interopDefaultLegacy(http);
-var https__default = /*#__PURE__*/_interopDefaultLegacy(https);
-var tls__default = /*#__PURE__*/_interopDefaultLegacy(tls);
-var events__default = /*#__PURE__*/_interopDefaultLegacy(events);
-var util__default = /*#__PURE__*/_interopDefaultLegacy(util);
+var require$$0__default = /*#__PURE__*/_interopDefaultLegacy(require$$0);
+var require$$4__default = /*#__PURE__*/_interopDefaultLegacy(require$$4$1);
+var http__default = /*#__PURE__*/_interopDefaultLegacy(http$1);
+var require$$3__default = /*#__PURE__*/_interopDefaultLegacy(require$$3$1);
+var require$$1__default$1 = /*#__PURE__*/_interopDefaultLegacy(require$$1$1);
+var require$$4__default$1 = /*#__PURE__*/_interopDefaultLegacy(require$$4$2);
+var require$$6__default = /*#__PURE__*/_interopDefaultLegacy(require$$6);
 var Stream__default = /*#__PURE__*/_interopDefaultLegacy(Stream);
+var Url__default = /*#__PURE__*/_interopDefaultLegacy(Url);
 var zlib__default = /*#__PURE__*/_interopDefaultLegacy(zlib);
 
 var commonjsGlobal = typeof globalThis !== 'undefined' ? globalThis : typeof window !== 'undefined' ? window : typeof global !== 'undefined' ? global : typeof self !== 'undefined' ? self : {};
@@ -45,14 +45,15 @@ function getAugmentedNamespace(n) {
 	return a;
 }
 
-function createCommonjsModule(fn) {
-  var module = { exports: {} };
-	return fn(module, module.exports), module.exports;
-}
+var core = {};
+
+var command = {};
+
+var utils$3 = {};
 
 // We use any as a valid input type
 /* eslint-disable @typescript-eslint/no-explicit-any */
-
+Object.defineProperty(utils$3, "__esModule", { value: true });
 /**
  * Sanitizes an input into a string so it can be passed into issueCommand safely
  * @param input input to sanitize into a string
@@ -66,23 +67,18 @@ function toCommandValue(input) {
     }
     return JSON.stringify(input);
 }
-var toCommandValue_1 = toCommandValue;
+utils$3.toCommandValue = toCommandValue;
 
-
-var utils$3 = /*#__PURE__*/Object.defineProperty({
-	toCommandValue: toCommandValue_1
-}, '__esModule', {value: true});
-
-var __importStar$1 = (commonjsGlobal && commonjsGlobal.__importStar) || function (mod) {
+var __importStar$4 = (commonjsGlobal && commonjsGlobal.__importStar) || function (mod) {
     if (mod && mod.__esModule) return mod;
     var result = {};
     if (mod != null) for (var k in mod) if (Object.hasOwnProperty.call(mod, k)) result[k] = mod[k];
     result["default"] = mod;
     return result;
 };
-
-const os$1 = __importStar$1(require$$0__default['default']);
-
+Object.defineProperty(command, "__esModule", { value: true });
+const os$1 = __importStar$4(require$$1__default['default']);
+const utils_1$2 = utils$3;
 /**
  * Commands
  *
@@ -97,11 +93,11 @@ function issueCommand$1(command, properties, message) {
     const cmd = new Command(command, properties, message);
     process.stdout.write(cmd.toString() + os$1.EOL);
 }
-var issueCommand_1$1 = issueCommand$1;
+command.issueCommand = issueCommand$1;
 function issue(name, message = '') {
     issueCommand$1(name, {}, message);
 }
-var issue_1 = issue;
+command.issue = issue;
 const CMD_STRING = '::';
 class Command {
     constructor(command, properties, message) {
@@ -137,13 +133,13 @@ class Command {
     }
 }
 function escapeData(s) {
-    return utils$3.toCommandValue(s)
+    return utils_1$2.toCommandValue(s)
         .replace(/%/g, '%25')
         .replace(/\r/g, '%0D')
         .replace(/\n/g, '%0A');
 }
 function escapeProperty(s) {
-    return utils$3.toCommandValue(s)
+    return utils_1$2.toCommandValue(s)
         .replace(/%/g, '%25')
         .replace(/\r/g, '%0D')
         .replace(/\n/g, '%0A')
@@ -151,26 +147,22 @@ function escapeProperty(s) {
         .replace(/,/g, '%2C');
 }
 
-
-var command = /*#__PURE__*/Object.defineProperty({
-	issueCommand: issueCommand_1$1,
-	issue: issue_1
-}, '__esModule', {value: true});
+var fileCommand = {};
 
 // For internal use, subject to change.
-var __importStar = (commonjsGlobal && commonjsGlobal.__importStar) || function (mod) {
+var __importStar$3 = (commonjsGlobal && commonjsGlobal.__importStar) || function (mod) {
     if (mod && mod.__esModule) return mod;
     var result = {};
     if (mod != null) for (var k in mod) if (Object.hasOwnProperty.call(mod, k)) result[k] = mod[k];
     result["default"] = mod;
     return result;
 };
-
+Object.defineProperty(fileCommand, "__esModule", { value: true });
 // We use any as a valid input type
 /* eslint-disable @typescript-eslint/no-explicit-any */
-const fs = __importStar(fs_1__default['default']);
-const os = __importStar(require$$0__default['default']);
-
+const fs = __importStar$3(require$$0__default['default']);
+const os = __importStar$3(require$$1__default['default']);
+const utils_1$1 = utils$3;
 function issueCommand(command, message) {
     const filePath = process.env[`GITHUB_${command}`];
     if (!filePath) {
@@ -179,18 +171,13 @@ function issueCommand(command, message) {
     if (!fs.existsSync(filePath)) {
         throw new Error(`Missing file at path: ${filePath}`);
     }
-    fs.appendFileSync(filePath, `${utils$3.toCommandValue(message)}${os.EOL}`, {
+    fs.appendFileSync(filePath, `${utils_1$1.toCommandValue(message)}${os.EOL}`, {
         encoding: 'utf8'
     });
 }
-var issueCommand_1 = issueCommand;
+fileCommand.issueCommand = issueCommand;
 
-
-var fileCommand = /*#__PURE__*/Object.defineProperty({
-	issueCommand: issueCommand_1
-}, '__esModule', {value: true});
-
-var core = createCommonjsModule(function (module, exports) {
+(function (exports) {
 var __awaiter = (commonjsGlobal && commonjsGlobal.__awaiter) || function (thisArg, _arguments, P, generator) {
     function adopt(value) { return value instanceof P ? value : new P(function (resolve) { resolve(value); }); }
     return new (P || (P = Promise))(function (resolve, reject) {
@@ -208,11 +195,11 @@ var __importStar = (commonjsGlobal && commonjsGlobal.__importStar) || function (
     return result;
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-
-
-
-const os = __importStar(require$$0__default['default']);
-const path = __importStar(require$$1__default['default']);
+const command_1 = command;
+const file_command_1 = fileCommand;
+const utils_1 = utils$3;
+const os = __importStar(require$$1__default['default']);
+const path = __importStar(require$$4__default['default']);
 /**
  * The code to exit an action
  */
@@ -237,16 +224,16 @@ var ExitCode;
  */
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
 function exportVariable(name, val) {
-    const convertedVal = utils$3.toCommandValue(val);
+    const convertedVal = utils_1.toCommandValue(val);
     process.env[name] = convertedVal;
     const filePath = process.env['GITHUB_ENV'] || '';
     if (filePath) {
         const delimiter = '_GitHubActionsFileCommandDelimeter_';
         const commandValue = `${name}<<${delimiter}${os.EOL}${convertedVal}${os.EOL}${delimiter}`;
-        fileCommand.issueCommand('ENV', commandValue);
+        file_command_1.issueCommand('ENV', commandValue);
     }
     else {
-        command.issueCommand('set-env', { name }, convertedVal);
+        command_1.issueCommand('set-env', { name }, convertedVal);
     }
 }
 exports.exportVariable = exportVariable;
@@ -255,7 +242,7 @@ exports.exportVariable = exportVariable;
  * @param secret value of the secret
  */
 function setSecret(secret) {
-    command.issueCommand('add-mask', {}, secret);
+    command_1.issueCommand('add-mask', {}, secret);
 }
 exports.setSecret = setSecret;
 /**
@@ -265,10 +252,10 @@ exports.setSecret = setSecret;
 function addPath(inputPath) {
     const filePath = process.env['GITHUB_PATH'] || '';
     if (filePath) {
-        fileCommand.issueCommand('PATH', inputPath);
+        file_command_1.issueCommand('PATH', inputPath);
     }
     else {
-        command.issueCommand('add-path', {}, inputPath);
+        command_1.issueCommand('add-path', {}, inputPath);
     }
     process.env['PATH'] = `${inputPath}${path.delimiter}${process.env['PATH']}`;
 }
@@ -296,7 +283,8 @@ exports.getInput = getInput;
  */
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
 function setOutput(name, value) {
-    command.issueCommand('set-output', { name }, value);
+    process.stdout.write(os.EOL);
+    command_1.issueCommand('set-output', { name }, value);
 }
 exports.setOutput = setOutput;
 /**
@@ -305,7 +293,7 @@ exports.setOutput = setOutput;
  *
  */
 function setCommandEcho(enabled) {
-    command.issue('echo', enabled ? 'on' : 'off');
+    command_1.issue('echo', enabled ? 'on' : 'off');
 }
 exports.setCommandEcho = setCommandEcho;
 //-----------------------------------------------------------------------
@@ -336,7 +324,7 @@ exports.isDebug = isDebug;
  * @param message debug message
  */
 function debug(message) {
-    command.issueCommand('debug', {}, message);
+    command_1.issueCommand('debug', {}, message);
 }
 exports.debug = debug;
 /**
@@ -344,7 +332,7 @@ exports.debug = debug;
  * @param message error issue message. Errors will be converted to string via toString()
  */
 function error(message) {
-    command.issue('error', message instanceof Error ? message.toString() : message);
+    command_1.issue('error', message instanceof Error ? message.toString() : message);
 }
 exports.error = error;
 /**
@@ -352,7 +340,7 @@ exports.error = error;
  * @param message warning issue message. Errors will be converted to string via toString()
  */
 function warning(message) {
-    command.issue('warning', message instanceof Error ? message.toString() : message);
+    command_1.issue('warning', message instanceof Error ? message.toString() : message);
 }
 exports.warning = warning;
 /**
@@ -371,14 +359,14 @@ exports.info = info;
  * @param name The name of the output group
  */
 function startGroup(name) {
-    command.issue('group', name);
+    command_1.issue('group', name);
 }
 exports.startGroup = startGroup;
 /**
  * End an output group.
  */
 function endGroup() {
-    command.issue('endgroup');
+    command_1.issue('endgroup');
 }
 exports.endGroup = endGroup;
 /**
@@ -414,7 +402,7 @@ exports.group = group;
  */
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
 function saveState(name, value) {
-    command.issueCommand('save-state', { name }, value);
+    command_1.issueCommand('save-state', { name }, value);
 }
 exports.saveState = saveState;
 /**
@@ -427,80 +415,31 @@ function getState(name) {
     return process.env[`STATE_${name}`] || '';
 }
 exports.getState = getState;
+//# sourceMappingURL=core.js.map
+}(core));
 
-});
+var github = {};
 
-/*! *****************************************************************************
-Copyright (c) Microsoft Corporation.
+var context$1 = {};
 
-Permission to use, copy, modify, and/or distribute this software for any
-purpose with or without fee is hereby granted.
-
-THE SOFTWARE IS PROVIDED "AS IS" AND THE AUTHOR DISCLAIMS ALL WARRANTIES WITH
-REGARD TO THIS SOFTWARE INCLUDING ALL IMPLIED WARRANTIES OF MERCHANTABILITY
-AND FITNESS. IN NO EVENT SHALL THE AUTHOR BE LIABLE FOR ANY SPECIAL, DIRECT,
-INDIRECT, OR CONSEQUENTIAL DAMAGES OR ANY DAMAGES WHATSOEVER RESULTING FROM
-LOSS OF USE, DATA OR PROFITS, WHETHER IN AN ACTION OF CONTRACT, NEGLIGENCE OR
-OTHER TORTIOUS ACTION, ARISING OUT OF OR IN CONNECTION WITH THE USE OR
-PERFORMANCE OF THIS SOFTWARE.
-***************************************************************************** */
-
-function __awaiter(thisArg, _arguments, P, generator) {
-    function adopt(value) { return value instanceof P ? value : new P(function (resolve) { resolve(value); }); }
-    return new (P || (P = Promise))(function (resolve, reject) {
-        function fulfilled(value) { try { step(generator.next(value)); } catch (e) { reject(e); } }
-        function rejected(value) { try { step(generator["throw"](value)); } catch (e) { reject(e); } }
-        function step(result) { result.done ? resolve(result.value) : adopt(result.value).then(fulfilled, rejected); }
-        step((generator = generator.apply(thisArg, _arguments || [])).next());
-    });
-}
-
-function __generator(thisArg, body) {
-    var _ = { label: 0, sent: function() { if (t[0] & 1) throw t[1]; return t[1]; }, trys: [], ops: [] }, f, y, t, g;
-    return g = { next: verb(0), "throw": verb(1), "return": verb(2) }, typeof Symbol === "function" && (g[Symbol.iterator] = function() { return this; }), g;
-    function verb(n) { return function (v) { return step([n, v]); }; }
-    function step(op) {
-        if (f) throw new TypeError("Generator is already executing.");
-        while (_) try {
-            if (f = 1, y && (t = op[0] & 2 ? y["return"] : op[0] ? y["throw"] || ((t = y["return"]) && t.call(y), 0) : y.next) && !(t = t.call(y, op[1])).done) return t;
-            if (y = 0, t) op = [op[0] & 2, t.value];
-            switch (op[0]) {
-                case 0: case 1: t = op; break;
-                case 4: _.label++; return { value: op[1], done: false };
-                case 5: _.label++; y = op[1]; op = [0]; continue;
-                case 7: op = _.ops.pop(); _.trys.pop(); continue;
-                default:
-                    if (!(t = _.trys, t = t.length > 0 && t[t.length - 1]) && (op[0] === 6 || op[0] === 2)) { _ = 0; continue; }
-                    if (op[0] === 3 && (!t || (op[1] > t[0] && op[1] < t[3]))) { _.label = op[1]; break; }
-                    if (op[0] === 6 && _.label < t[1]) { _.label = t[1]; t = op; break; }
-                    if (t && _.label < t[2]) { _.label = t[2]; _.ops.push(op); break; }
-                    if (t[2]) _.ops.pop();
-                    _.trys.pop(); continue;
-            }
-            op = body.call(thisArg, _);
-        } catch (e) { op = [6, e]; y = 0; } finally { f = t = 0; }
-        if (op[0] & 5) throw op[1]; return { value: op[0] ? op[1] : void 0, done: true };
-    }
-}
-
-var context = createCommonjsModule(function (module, exports) {
-Object.defineProperty(exports, "__esModule", { value: true });
-exports.Context = void 0;
-
-
-class Context {
+Object.defineProperty(context$1, "__esModule", { value: true });
+context$1.Context = void 0;
+const fs_1 = require$$0__default['default'];
+const os_1 = require$$1__default['default'];
+class Context$2 {
     /**
      * Hydrate the context from the environment
      */
     constructor() {
+        var _a, _b, _c;
         this.payload = {};
         if (process.env.GITHUB_EVENT_PATH) {
-            if (fs_1__default['default'].existsSync(process.env.GITHUB_EVENT_PATH)) {
-                this.payload = JSON.parse(fs_1__default['default'].readFileSync(process.env.GITHUB_EVENT_PATH, { encoding: 'utf8' }));
+            if (fs_1.existsSync(process.env.GITHUB_EVENT_PATH)) {
+                this.payload = JSON.parse(fs_1.readFileSync(process.env.GITHUB_EVENT_PATH, { encoding: 'utf8' }));
             }
             else {
                 const path = process.env.GITHUB_EVENT_PATH;
-                process.stdout.write(`GITHUB_EVENT_PATH ${path} does not exist${require$$0__default['default'].EOL}`);
+                process.stdout.write(`GITHUB_EVENT_PATH ${path} does not exist${os_1.EOL}`);
             }
         }
         this.eventName = process.env.GITHUB_EVENT_NAME;
@@ -512,6 +451,9 @@ class Context {
         this.job = process.env.GITHUB_JOB;
         this.runNumber = parseInt(process.env.GITHUB_RUN_NUMBER, 10);
         this.runId = parseInt(process.env.GITHUB_RUN_ID, 10);
+        this.apiUrl = (_a = process.env.GITHUB_API_URL) !== null && _a !== void 0 ? _a : `https://api.github.com`;
+        this.serverUrl = (_b = process.env.GITHUB_SERVER_URL) !== null && _b !== void 0 ? _b : `https://github.com`;
+        this.graphqlUrl = (_c = process.env.GITHUB_GRAPHQL_URL) !== null && _c !== void 0 ? _c : `https://api.github.com/graphql`;
     }
     get issue() {
         const payload = this.payload;
@@ -531,10 +473,17 @@ class Context {
         throw new Error("context.repo requires a GITHUB_REPOSITORY environment variable like 'owner/repo'");
     }
 }
-exports.Context = Context;
+context$1.Context = Context$2;
 
-});
+var utils$2 = {};
 
+var utils$1 = {};
+
+var httpClient$1 = {};
+
+var proxy = {};
+
+Object.defineProperty(proxy, "__esModule", { value: true });
 function getProxyUrl(reqUrl) {
     let usingSsl = reqUrl.protocol === 'https:';
     let proxyUrl;
@@ -549,11 +498,11 @@ function getProxyUrl(reqUrl) {
         proxyVar = process.env['http_proxy'] || process.env['HTTP_PROXY'];
     }
     if (proxyVar) {
-        proxyUrl = url__default['default'].parse(proxyVar);
+        proxyUrl = new URL(proxyVar);
     }
     return proxyUrl;
 }
-var getProxyUrl_1 = getProxyUrl;
+proxy.getProxyUrl = getProxyUrl;
 function checkBypass(reqUrl) {
     if (!reqUrl.hostname) {
         return false;
@@ -589,28 +538,32 @@ function checkBypass(reqUrl) {
     }
     return false;
 }
-var checkBypass_1 = checkBypass;
+proxy.checkBypass = checkBypass;
 
-var proxy = /*#__PURE__*/Object.defineProperty({
-	getProxyUrl: getProxyUrl_1,
-	checkBypass: checkBypass_1
-}, '__esModule', {value: true});
+var tunnel$1 = {};
 
-var httpOverHttp_1 = httpOverHttp;
-var httpsOverHttp_1 = httpsOverHttp;
-var httpOverHttps_1 = httpOverHttps;
-var httpsOverHttps_1 = httpsOverHttps;
+var tls = require$$1__default$1['default'];
+var http = http__default['default'];
+var https = require$$3__default['default'];
+var events = require$$4__default$1['default'];
+var util = require$$6__default['default'];
+
+
+tunnel$1.httpOverHttp = httpOverHttp;
+tunnel$1.httpsOverHttp = httpsOverHttp;
+tunnel$1.httpOverHttps = httpOverHttps;
+tunnel$1.httpsOverHttps = httpsOverHttps;
 
 
 function httpOverHttp(options) {
   var agent = new TunnelingAgent(options);
-  agent.request = http__default['default'].request;
+  agent.request = http.request;
   return agent;
 }
 
 function httpsOverHttp(options) {
   var agent = new TunnelingAgent(options);
-  agent.request = http__default['default'].request;
+  agent.request = http.request;
   agent.createSocket = createSecureSocket;
   agent.defaultPort = 443;
   return agent;
@@ -618,13 +571,13 @@ function httpsOverHttp(options) {
 
 function httpOverHttps(options) {
   var agent = new TunnelingAgent(options);
-  agent.request = https__default['default'].request;
+  agent.request = https.request;
   return agent;
 }
 
 function httpsOverHttps(options) {
   var agent = new TunnelingAgent(options);
-  agent.request = https__default['default'].request;
+  agent.request = https.request;
   agent.createSocket = createSecureSocket;
   agent.defaultPort = 443;
   return agent;
@@ -635,7 +588,7 @@ function TunnelingAgent(options) {
   var self = this;
   self.options = options || {};
   self.proxyOptions = self.options.proxy || {};
-  self.maxSockets = self.options.maxSockets || http__default['default'].Agent.defaultMaxSockets;
+  self.maxSockets = self.options.maxSockets || http.Agent.defaultMaxSockets;
   self.requests = [];
   self.sockets = [];
 
@@ -655,7 +608,7 @@ function TunnelingAgent(options) {
     self.removeSocket(socket);
   });
 }
-util__default['default'].inherits(TunnelingAgent, events__default['default'].EventEmitter);
+util.inherits(TunnelingAgent, events.EventEmitter);
 
 TunnelingAgent.prototype.addRequest = function addRequest(req, host, port, localAddress) {
   var self = this;
@@ -709,7 +662,7 @@ TunnelingAgent.prototype.createSocket = function createSocket(options, cb) {
         new Buffer(connectOptions.proxyAuth).toString('base64');
   }
 
-  debug$1('making CONNECT request');
+  debug$4('making CONNECT request');
   var connectReq = self.request(connectOptions);
   connectReq.useChunkedEncodingByDefault = false; // for v0.6
   connectReq.once('response', onResponse); // for v0.6
@@ -735,7 +688,7 @@ TunnelingAgent.prototype.createSocket = function createSocket(options, cb) {
     socket.removeAllListeners();
 
     if (res.statusCode !== 200) {
-      debug$1('tunneling socket could not be established, statusCode=%d',
+      debug$4('tunneling socket could not be established, statusCode=%d',
         res.statusCode);
       socket.destroy();
       var error = new Error('tunneling socket could not be established, ' +
@@ -746,7 +699,7 @@ TunnelingAgent.prototype.createSocket = function createSocket(options, cb) {
       return;
     }
     if (head.length > 0) {
-      debug$1('got illegal response body from proxy');
+      debug$4('got illegal response body from proxy');
       socket.destroy();
       var error = new Error('got illegal response body from proxy');
       error.code = 'ECONNRESET';
@@ -754,7 +707,7 @@ TunnelingAgent.prototype.createSocket = function createSocket(options, cb) {
       self.removeSocket(placeholder);
       return;
     }
-    debug$1('tunneling connection has established');
+    debug$4('tunneling connection has established');
     self.sockets[self.sockets.indexOf(placeholder)] = socket;
     return cb(socket);
   }
@@ -762,7 +715,7 @@ TunnelingAgent.prototype.createSocket = function createSocket(options, cb) {
   function onError(cause) {
     connectReq.removeAllListeners();
 
-    debug$1('tunneling socket could not be established, cause=%s\n',
+    debug$4('tunneling socket could not be established, cause=%s\n',
           cause.message, cause.stack);
     var error = new Error('tunneling socket could not be established, ' +
                           'cause=' + cause.message);
@@ -799,7 +752,7 @@ function createSecureSocket(options, cb) {
     });
 
     // 0 is dummy port for v0.6
-    var secureSocket = tls__default['default'].connect(0, tlsOptions);
+    var secureSocket = tls.connect(0, tlsOptions);
     self.sockets[self.sockets.indexOf(socket)] = secureSocket;
     cb(secureSocket);
   });
@@ -834,9 +787,9 @@ function mergeOptions(target) {
 }
 
 
-var debug$1;
+var debug$4;
 if (process.env.NODE_DEBUG && /\btunnel\b/.test(process.env.NODE_DEBUG)) {
-  debug$1 = function() {
+  debug$4 = function() {
     var args = Array.prototype.slice.call(arguments);
     if (typeof args[0] === 'string') {
       args[0] = 'TUNNEL: ' + args[0];
@@ -846,26 +799,17 @@ if (process.env.NODE_DEBUG && /\btunnel\b/.test(process.env.NODE_DEBUG)) {
     console.error.apply(console, args);
   };
 } else {
-  debug$1 = function() {};
+  debug$4 = function() {};
 }
-var debug_1$1 = debug$1; // for test
-
-var tunnel$1 = {
-	httpOverHttp: httpOverHttp_1,
-	httpsOverHttp: httpsOverHttp_1,
-	httpOverHttps: httpOverHttps_1,
-	httpsOverHttps: httpsOverHttps_1,
-	debug: debug_1$1
-};
+tunnel$1.debug = debug$4; // for test
 
 var tunnel = tunnel$1;
 
-var httpClient = createCommonjsModule(function (module, exports) {
+(function (exports) {
 Object.defineProperty(exports, "__esModule", { value: true });
-
-
-
-
+const http = http__default['default'];
+const https = require$$3__default['default'];
+const pm = proxy;
 let tunnel$1;
 var HttpCodes;
 (function (HttpCodes) {
@@ -911,7 +855,7 @@ var MediaTypes;
  * @param serverUrl  The server URL where the request will be sent. For example, https://api.github.com
  */
 function getProxyUrl(serverUrl) {
-    let proxyUrl = proxy.getProxyUrl(url__default['default'].parse(serverUrl));
+    let proxyUrl = pm.getProxyUrl(new URL(serverUrl));
     return proxyUrl ? proxyUrl.href : '';
 }
 exports.getProxyUrl = getProxyUrl;
@@ -930,6 +874,15 @@ const HttpResponseRetryCodes = [
 const RetryableHttpVerbs = ['OPTIONS', 'GET', 'DELETE', 'HEAD'];
 const ExponentialBackoffCeiling = 10;
 const ExponentialBackoffTimeSlice = 5;
+class HttpClientError extends Error {
+    constructor(message, statusCode) {
+        super(message);
+        this.name = 'HttpClientError';
+        this.statusCode = statusCode;
+        Object.setPrototypeOf(this, HttpClientError.prototype);
+    }
+}
+exports.HttpClientError = HttpClientError;
 class HttpClientResponse {
     constructor(message) {
         this.message = message;
@@ -948,7 +901,7 @@ class HttpClientResponse {
 }
 exports.HttpClientResponse = HttpClientResponse;
 function isHttps(requestUrl) {
-    let parsedUrl = url__default['default'].parse(requestUrl);
+    let parsedUrl = new URL(requestUrl);
     return parsedUrl.protocol === 'https:';
 }
 exports.isHttps = isHttps;
@@ -1053,7 +1006,7 @@ class HttpClient {
         if (this._disposed) {
             throw new Error('Client has already been disposed.');
         }
-        let parsedUrl = url__default['default'].parse(requestUrl);
+        let parsedUrl = new URL(requestUrl);
         let info = this._prepareRequest(verb, parsedUrl, headers);
         // Only perform retries on reads since writes may not be idempotent.
         let maxTries = this._allowRetries && RetryableHttpVerbs.indexOf(verb) != -1
@@ -1092,7 +1045,7 @@ class HttpClient {
                     // if there's no location to redirect to, we won't
                     break;
                 }
-                let parsedRedirectUrl = url__default['default'].parse(redirectUrl);
+                let parsedRedirectUrl = new URL(redirectUrl);
                 if (parsedUrl.protocol == 'https:' &&
                     parsedUrl.protocol != parsedRedirectUrl.protocol &&
                     !this._allowRedirectDowngrade) {
@@ -1208,14 +1161,14 @@ class HttpClient {
      * @param serverUrl  The server URL where the request will be sent. For example, https://api.github.com
      */
     getAgent(serverUrl) {
-        let parsedUrl = url__default['default'].parse(serverUrl);
+        let parsedUrl = new URL(serverUrl);
         return this._getAgent(parsedUrl);
     }
     _prepareRequest(method, requestUrl, headers) {
         const info = {};
         info.parsedUrl = requestUrl;
         const usingSsl = info.parsedUrl.protocol === 'https:';
-        info.httpModule = usingSsl ? https__default['default'] : http__default['default'];
+        info.httpModule = usingSsl ? https : http;
         const defaultPort = usingSsl ? 443 : 80;
         info.options = {};
         info.options.host = info.parsedUrl.hostname;
@@ -1255,7 +1208,7 @@ class HttpClient {
     }
     _getAgent(parsedUrl) {
         let agent;
-        let proxyUrl = proxy.getProxyUrl(parsedUrl);
+        let proxyUrl = pm.getProxyUrl(parsedUrl);
         let useProxy = proxyUrl && proxyUrl.hostname;
         if (this._keepAlive && useProxy) {
             agent = this._proxyAgent;
@@ -1270,7 +1223,7 @@ class HttpClient {
         const usingSsl = parsedUrl.protocol === 'https:';
         let maxSockets = 100;
         if (!!this.requestOptions) {
-            maxSockets = this.requestOptions.maxSockets || http__default['default'].globalAgent.maxSockets;
+            maxSockets = this.requestOptions.maxSockets || http.globalAgent.maxSockets;
         }
         if (useProxy) {
             // If using proxy, need tunnel
@@ -1281,7 +1234,9 @@ class HttpClient {
                 maxSockets: maxSockets,
                 keepAlive: this._keepAlive,
                 proxy: {
-                    proxyAuth: proxyUrl.auth,
+                    ...((proxyUrl.username || proxyUrl.password) && {
+                        proxyAuth: `${proxyUrl.username}:${proxyUrl.password}`
+                    }),
                     host: proxyUrl.hostname,
                     port: proxyUrl.port
                 }
@@ -1300,12 +1255,12 @@ class HttpClient {
         // if reusing agent across request and tunneling agent isn't assigned create a new agent
         if (this._keepAlive && !agent) {
             const options = { keepAlive: this._keepAlive, maxSockets: maxSockets };
-            agent = usingSsl ? new https__default['default'].Agent(options) : new http__default['default'].Agent(options);
+            agent = usingSsl ? new https.Agent(options) : new http.Agent(options);
             this._agent = agent;
         }
         // if not using private agent and tunnel agent isn't setup then use global agent
         if (!agent) {
-            agent = usingSsl ? https__default['default'].globalAgent : http__default['default'].globalAgent;
+            agent = usingSsl ? https.globalAgent : http.globalAgent;
         }
         if (usingSsl && this._ignoreSslError) {
             // we don't want to set NODE_TLS_REJECT_UNAUTHORIZED=0 since that will affect request for entire process
@@ -1376,12 +1331,8 @@ class HttpClient {
                 else {
                     msg = 'Failed request: (' + statusCode + ')';
                 }
-                let err = new Error(msg);
-                // attach statusCode and body obj (if available) to the error object
-                err['statusCode'] = statusCode;
-                if (response.result) {
-                    err['result'] = response.result;
-                }
+                let err = new HttpClientError(msg, statusCode);
+                err.result = response.result;
                 reject(err);
             }
             else {
@@ -1391,31 +1342,30 @@ class HttpClient {
     }
 }
 exports.HttpClient = HttpClient;
-});
+}(httpClient$1));
 
-var utils$2 = createCommonjsModule(function (module, exports) {
-var __createBinding = (commonjsGlobal && commonjsGlobal.__createBinding) || (Object.create ? (function(o, m, k, k2) {
+var __createBinding$2 = (commonjsGlobal && commonjsGlobal.__createBinding) || (Object.create ? (function(o, m, k, k2) {
     if (k2 === undefined) k2 = k;
     Object.defineProperty(o, k2, { enumerable: true, get: function() { return m[k]; } });
 }) : (function(o, m, k, k2) {
     if (k2 === undefined) k2 = k;
     o[k2] = m[k];
 }));
-var __setModuleDefault = (commonjsGlobal && commonjsGlobal.__setModuleDefault) || (Object.create ? (function(o, v) {
+var __setModuleDefault$2 = (commonjsGlobal && commonjsGlobal.__setModuleDefault) || (Object.create ? (function(o, v) {
     Object.defineProperty(o, "default", { enumerable: true, value: v });
 }) : function(o, v) {
     o["default"] = v;
 });
-var __importStar = (commonjsGlobal && commonjsGlobal.__importStar) || function (mod) {
+var __importStar$2 = (commonjsGlobal && commonjsGlobal.__importStar) || function (mod) {
     if (mod && mod.__esModule) return mod;
     var result = {};
-    if (mod != null) for (var k in mod) if (Object.hasOwnProperty.call(mod, k)) __createBinding(result, mod, k);
-    __setModuleDefault(result, mod);
+    if (mod != null) for (var k in mod) if (k !== "default" && Object.hasOwnProperty.call(mod, k)) __createBinding$2(result, mod, k);
+    __setModuleDefault$2(result, mod);
     return result;
 };
-Object.defineProperty(exports, "__esModule", { value: true });
-exports.getApiBaseUrl = exports.getProxyAgent = exports.getAuthString = void 0;
-const httpClient$1 = __importStar(httpClient);
+Object.defineProperty(utils$1, "__esModule", { value: true });
+utils$1.getApiBaseUrl = utils$1.getProxyAgent = utils$1.getAuthString = void 0;
+const httpClient = __importStar$2(httpClient$1);
 function getAuthString(token, options) {
     if (!token && !options.auth) {
         throw new Error('Parameter token or opts.auth is required');
@@ -1425,18 +1375,16 @@ function getAuthString(token, options) {
     }
     return typeof options.auth === 'string' ? options.auth : `token ${token}`;
 }
-exports.getAuthString = getAuthString;
+utils$1.getAuthString = getAuthString;
 function getProxyAgent(destinationUrl) {
-    const hc = new httpClient$1.HttpClient();
+    const hc = new httpClient.HttpClient();
     return hc.getAgent(destinationUrl);
 }
-exports.getProxyAgent = getProxyAgent;
+utils$1.getProxyAgent = getProxyAgent;
 function getApiBaseUrl() {
     return process.env['GITHUB_API_URL'] || 'https://api.github.com';
 }
-exports.getApiBaseUrl = getApiBaseUrl;
-
-});
+utils$1.getApiBaseUrl = getApiBaseUrl;
 
 function getUserAgent() {
     if (typeof navigator === "object" && "userAgent" in navigator) {
@@ -1448,11 +1396,13 @@ function getUserAgent() {
     return "<environment undetectable>";
 }
 
-var register_1 = register;
+var beforeAfterHook = {exports: {}};
 
-function register (state, name, method, options) {
-  if (typeof method !== 'function') {
-    throw new Error('method for before hook must be a function')
+var register_1 = register$1;
+
+function register$1(state, name, method, options) {
+  if (typeof method !== "function") {
+    throw new Error("method for before hook must be a function");
   }
 
   if (!options) {
@@ -1461,99 +1411,104 @@ function register (state, name, method, options) {
 
   if (Array.isArray(name)) {
     return name.reverse().reduce(function (callback, name) {
-      return register.bind(null, state, name, callback, options)
-    }, method)()
+      return register$1.bind(null, state, name, callback, options);
+    }, method)();
   }
 
-  return Promise.resolve()
-    .then(function () {
-      if (!state.registry[name]) {
-        return method(options)
-      }
+  return Promise.resolve().then(function () {
+    if (!state.registry[name]) {
+      return method(options);
+    }
 
-      return (state.registry[name]).reduce(function (method, registered) {
-        return registered.hook.bind(null, method, options)
-      }, method)()
-    })
+    return state.registry[name].reduce(function (method, registered) {
+      return registered.hook.bind(null, method, options);
+    }, method)();
+  });
 }
 
-var add = addHook;
+var add = addHook$1;
 
-function addHook (state, kind, name, hook) {
+function addHook$1(state, kind, name, hook) {
   var orig = hook;
   if (!state.registry[name]) {
     state.registry[name] = [];
   }
 
-  if (kind === 'before') {
+  if (kind === "before") {
     hook = function (method, options) {
       return Promise.resolve()
         .then(orig.bind(null, options))
-        .then(method.bind(null, options))
+        .then(method.bind(null, options));
     };
   }
 
-  if (kind === 'after') {
+  if (kind === "after") {
     hook = function (method, options) {
       var result;
       return Promise.resolve()
         .then(method.bind(null, options))
         .then(function (result_) {
           result = result_;
-          return orig(result, options)
+          return orig(result, options);
         })
         .then(function () {
-          return result
-        })
+          return result;
+        });
     };
   }
 
-  if (kind === 'error') {
+  if (kind === "error") {
     hook = function (method, options) {
       return Promise.resolve()
         .then(method.bind(null, options))
         .catch(function (error) {
-          return orig(error, options)
-        })
+          return orig(error, options);
+        });
     };
   }
 
   state.registry[name].push({
     hook: hook,
-    orig: orig
+    orig: orig,
   });
 }
 
-var remove = removeHook;
+var remove = removeHook$1;
 
-function removeHook (state, name, method) {
+function removeHook$1(state, name, method) {
   if (!state.registry[name]) {
-    return
+    return;
   }
 
   var index = state.registry[name]
-    .map(function (registered) { return registered.orig })
+    .map(function (registered) {
+      return registered.orig;
+    })
     .indexOf(method);
 
   if (index === -1) {
-    return
+    return;
   }
 
   state.registry[name].splice(index, 1);
 }
+
+var register = register_1;
+var addHook = add;
+var removeHook = remove;
 
 // bind with array of arguments: https://stackoverflow.com/a/21792913
 var bind = Function.bind;
 var bindable = bind.bind(bind);
 
 function bindApi (hook, state, name) {
-  var removeHookRef = bindable(remove, null).apply(null, name ? [state, name] : [state]);
+  var removeHookRef = bindable(removeHook, null).apply(null, name ? [state, name] : [state]);
   hook.api = { remove: removeHookRef };
   hook.remove = removeHookRef
 
   ;['before', 'error', 'after', 'wrap'].forEach(function (kind) {
     var args = name ? [state, kind, name] : [state, kind];
-    hook[kind] = hook.api[kind] = bindable(add, null).apply(null, args);
+    hook[kind] = hook.api[kind] = bindable(addHook, null).apply(null, args);
   });
 }
 
@@ -1562,7 +1517,7 @@ function HookSingular () {
   var singularHookState = {
     registry: {}
   };
-  var singularHook = register_1.bind(null, singularHookState, singularHookName);
+  var singularHook = register.bind(null, singularHookState, singularHookName);
   bindApi(singularHook, singularHookState, singularHookName);
   return singularHook
 }
@@ -1572,7 +1527,7 @@ function HookCollection () {
     registry: {}
   };
 
-  var hook = register_1.bind(null, state);
+  var hook = register.bind(null, state);
   bindApi(hook, state);
 
   return hook
@@ -1590,14 +1545,11 @@ function Hook () {
 Hook.Singular = HookSingular.bind();
 Hook.Collection = HookCollection.bind();
 
-var beforeAfterHook = Hook;
+beforeAfterHook.exports = Hook;
 // expose constructors as a named property for TypeScript
-var Hook_1 = Hook;
-var Singular = Hook.Singular;
-var Collection = Hook.Collection;
-beforeAfterHook.Hook = Hook_1;
-beforeAfterHook.Singular = Singular;
-beforeAfterHook.Collection = Collection;
+beforeAfterHook.exports.Hook = Hook;
+beforeAfterHook.exports.Singular = Hook.Singular;
+var Collection = beforeAfterHook.exports.Collection = Hook.Collection;
 
 /*!
  * is-plain-object <https://github.com/jonschlinkert/is-plain-object>
@@ -1606,14 +1558,14 @@ beforeAfterHook.Collection = Collection;
  * Released under the MIT License.
  */
 
-function isObject$1(o) {
+function isObject(o) {
   return Object.prototype.toString.call(o) === '[object Object]';
 }
 
-function isPlainObject$1(o) {
+function isPlainObject(o) {
   var ctor,prot;
 
-  if (isObject$1(o) === false) return false;
+  if (isObject(o) === false) return false;
 
   // If has modified constructor
   ctor = o.constructor;
@@ -1621,7 +1573,7 @@ function isPlainObject$1(o) {
 
   // If has modified prototype
   prot = ctor.prototype;
-  if (isObject$1(prot) === false) return false;
+  if (isObject(prot) === false) return false;
 
   // If constructor does not have an Object-specific method
   if (prot.hasOwnProperty('isPrototypeOf') === false) {
@@ -1645,7 +1597,7 @@ function lowercaseKeys(object) {
 function mergeDeep(defaults, options) {
     const result = Object.assign({}, defaults);
     Object.keys(options).forEach((key) => {
-        if (isPlainObject$1(options[key])) {
+        if (isPlainObject(options[key])) {
             if (!(key in defaults))
                 Object.assign(result, { [key]: options[key] });
             else
@@ -1658,6 +1610,15 @@ function mergeDeep(defaults, options) {
     return result;
 }
 
+function removeUndefinedProperties(obj) {
+    for (const key in obj) {
+        if (obj[key] === undefined) {
+            delete obj[key];
+        }
+    }
+    return obj;
+}
+
 function merge(defaults, route, options) {
     if (typeof route === "string") {
         let [method, url] = route.split(" ");
@@ -1668,6 +1629,9 @@ function merge(defaults, route, options) {
     }
     // lowercase header names before merging with defaults to avoid duplicates
     options.headers = lowercaseKeys(options.headers);
+    // remove properties with undefined values before merging
+    removeUndefinedProperties(options);
+    removeUndefinedProperties(options.headers);
     const mergedOptions = mergeDeep(defaults || {}, options);
     // mediaType.previews arrays are merged, instead of overwritten
     if (defaults && defaults.mediaType.previews.length) {
@@ -1883,11 +1847,11 @@ function expand(template, context) {
     });
 }
 
-function parse$1(options) {
+function parse$6(options) {
     // https://fetch.spec.whatwg.org/#methods
     let method = options.method.toUpperCase();
     // replace :varname with {varname} to make it RFC 6570 compatible
-    let url = (options.url || "/").replace(/:([a-z]\w+)/g, "{+$1}");
+    let url = (options.url || "/").replace(/:([a-z]\w+)/g, "{$1}");
     let headers = Object.assign({}, options.headers);
     let body;
     let parameters = omit(options, [
@@ -1908,8 +1872,8 @@ function parse$1(options) {
         .filter((option) => urlVariableNames.includes(option))
         .concat("baseUrl");
     const remainingParameters = omit(parameters, omittedParameters);
-    const isBinaryRequset = /application\/octet-stream/i.test(headers.accept);
-    if (!isBinaryRequset) {
+    const isBinaryRequest = /application\/octet-stream/i.test(headers.accept);
+    if (!isBinaryRequest) {
         if (options.mediaType.format) {
             // e.g. application/vnd.github.v3+json => application/vnd.github.v3.raw
             headers.accept = headers.accept
@@ -1962,7 +1926,7 @@ function parse$1(options) {
 }
 
 function endpointWithDefaults(defaults, route, options) {
-    return parse$1(merge(defaults, route, options));
+    return parse$6(merge(defaults, route, options));
 }
 
 function withDefaults$2(oldDefaults, newDefaults) {
@@ -1972,11 +1936,11 @@ function withDefaults$2(oldDefaults, newDefaults) {
         DEFAULTS,
         defaults: withDefaults$2.bind(null, DEFAULTS),
         merge: merge.bind(null, DEFAULTS),
-        parse: parse$1,
+        parse: parse$6,
     });
 }
 
-const VERSION$6 = "6.0.5";
+const VERSION$6 = "6.0.11";
 
 const userAgent = `octokit-endpoint.js/${VERSION$6} ${getUserAgent()}`;
 // DEFAULTS has all properties set that EndpointOptions has, except url.
@@ -1995,39 +1959,6 @@ const DEFAULTS = {
 };
 
 const endpoint = withDefaults$2(null, DEFAULTS);
-
-/*!
- * is-plain-object <https://github.com/jonschlinkert/is-plain-object>
- *
- * Copyright (c) 2014-2017, Jon Schlinkert.
- * Released under the MIT License.
- */
-
-function isObject(o) {
-  return Object.prototype.toString.call(o) === '[object Object]';
-}
-
-function isPlainObject(o) {
-  var ctor,prot;
-
-  if (isObject(o) === false) return false;
-
-  // If has modified constructor
-  ctor = o.constructor;
-  if (ctor === undefined) return true;
-
-  // If has modified prototype
-  prot = ctor.prototype;
-  if (isObject(prot) === false) return false;
-
-  // If constructor does not have an Object-specific method
-  if (prot.hasOwnProperty('isPrototypeOf') === false) {
-    return false;
-  }
-
-  // Most likely a plain Object
-  return true;
-}
 
 // Based on https://github.com/tmpvar/jsdom/blob/aa85b2abf07766ff7bf5c1f6daafb3726f2f2db5/lib/jsdom/living/blob.js
 
@@ -3162,8 +3093,8 @@ Object.defineProperty(Response.prototype, Symbol.toStringTag, {
 const INTERNALS$2 = Symbol('Request internals');
 
 // fix an issue where "format", "parse" aren't a named export for node <10
-const parse_url = url__default['default'].parse;
-const format_url = url__default['default'].format;
+const parse_url = Url__default['default'].parse;
+const format_url = Url__default['default'].format;
 
 const streamDestructionSupported = 'destroy' in Stream__default['default'].Readable.prototype;
 
@@ -3404,7 +3335,7 @@ AbortError.prototype.name = 'AbortError';
 
 // fix an issue where "PassThrough", "resolve" aren't a named export for node <10
 const PassThrough$1 = Stream__default['default'].PassThrough;
-const resolve_url = url__default['default'].resolve;
+const resolve_url = Url__default['default'].resolve;
 
 /**
  * Fetch function
@@ -3428,7 +3359,7 @@ function fetch(url, opts) {
 		const request = new Request(url, opts);
 		const options = getNodeRequestOptions(request);
 
-		const send = (options.protocol === 'https:' ? https__default['default'] : http__default['default']).request;
+		const send = (options.protocol === 'https:' ? require$$3__default['default'] : http__default['default']).request;
 		const signal = request.signal;
 
 		let response = null;
@@ -3674,14 +3605,16 @@ class Deprecation extends Error {
 
 }
 
+var once$2 = {exports: {}};
+
 // Returns a wrapper function that returns a wrapped callback
 // The wrapper function should do some stuff, and return a
 // presumably different callback function.
 // This makes sure that own properties are retained, so that
 // decorations and such are not lost along the way.
-var wrappy_1 = wrappy;
-function wrappy (fn, cb) {
-  if (fn && cb) return wrappy(fn)(cb)
+var wrappy_1 = wrappy$1;
+function wrappy$1 (fn, cb) {
+  if (fn && cb) return wrappy$1(fn)(cb)
 
   if (typeof fn !== 'function')
     throw new TypeError('need wrapper function')
@@ -3708,8 +3641,9 @@ function wrappy (fn, cb) {
   }
 }
 
-var once_1 = wrappy_1(once);
-var strict = wrappy_1(onceStrict);
+var wrappy = wrappy_1;
+once$2.exports = wrappy(once);
+once$2.exports.strict = wrappy(onceStrict);
 
 once.proto = once(function () {
   Object.defineProperty(Function.prototype, 'once', {
@@ -3749,9 +3683,10 @@ function onceStrict (fn) {
   f.called = false;
   return f
 }
-once_1.strict = strict;
 
-const logOnce = once_1((deprecation) => console.warn(deprecation));
+var once$1 = once$2.exports;
+
+const logOnce = once$1((deprecation) => console.warn(deprecation));
 /**
  * Error with extra properties to help with debugging
  */
@@ -3790,7 +3725,7 @@ class RequestError extends Error {
     }
 }
 
-const VERSION$5 = "5.4.7";
+const VERSION$5 = "5.4.15";
 
 function getBufferResponse(response) {
     return response.arrayBuffer();
@@ -3810,7 +3745,10 @@ function fetchWrapper(requestOptions) {
         body: requestOptions.body,
         headers: requestOptions.headers,
         redirect: requestOptions.redirect,
-    }, requestOptions.request))
+    }, 
+    // `requestOptions.request.agent` type is incompatible
+    // see https://github.com/octokit/types.ts/pull/264
+    requestOptions.request))
         .then((response) => {
         url = response.url;
         status = response.status;
@@ -3914,7 +3852,7 @@ const request = withDefaults$1(endpoint, {
     },
 });
 
-const VERSION$4 = "4.5.4";
+const VERSION$4 = "4.6.1";
 
 class GraphqlError extends Error {
     constructor(request, response) {
@@ -3941,22 +3879,37 @@ const NON_VARIABLE_OPTIONS = [
     "query",
     "mediaType",
 ];
+const FORBIDDEN_VARIABLE_OPTIONS = ["query", "method", "url"];
+const GHES_V3_SUFFIX_REGEX = /\/api\/v3\/?$/;
 function graphql(request, query, options) {
-    options =
-        typeof query === "string"
-            ? (options = Object.assign({ query }, options))
-            : (options = query);
-    const requestOptions = Object.keys(options).reduce((result, key) => {
+    if (options) {
+        if (typeof query === "string" && "query" in options) {
+            return Promise.reject(new Error(`[@octokit/graphql] "query" cannot be used as variable name`));
+        }
+        for (const key in options) {
+            if (!FORBIDDEN_VARIABLE_OPTIONS.includes(key))
+                continue;
+            return Promise.reject(new Error(`[@octokit/graphql] "${key}" cannot be used as variable name`));
+        }
+    }
+    const parsedOptions = typeof query === "string" ? Object.assign({ query }, options) : query;
+    const requestOptions = Object.keys(parsedOptions).reduce((result, key) => {
         if (NON_VARIABLE_OPTIONS.includes(key)) {
-            result[key] = options[key];
+            result[key] = parsedOptions[key];
             return result;
         }
         if (!result.variables) {
             result.variables = {};
         }
-        result.variables[key] = options[key];
+        result.variables[key] = parsedOptions[key];
         return result;
     }, {});
+    // workaround for GitHub Enterprise baseUrl set with /api/v3 suffix
+    // https://github.com/octokit/auth-app.js/issues/111#issuecomment-657610451
+    const baseUrl = parsedOptions.baseUrl || request.endpoint.DEFAULTS.baseUrl;
+    if (GHES_V3_SUFFIX_REGEX.test(baseUrl)) {
+        requestOptions.url = baseUrl.replace(GHES_V3_SUFFIX_REGEX, "/api/graphql");
+    }
     return request(requestOptions).then((response) => {
         if (response.data.errors) {
             const headers = {};
@@ -4041,7 +3994,7 @@ const createTokenAuth = function createTokenAuth(token) {
     });
 };
 
-const VERSION$3 = "3.1.2";
+const VERSION$3 = "3.4.0";
 
 class Octokit {
     constructor(options = {}) {
@@ -4050,6 +4003,7 @@ class Octokit {
             baseUrl: request.endpoint.DEFAULTS.baseUrl,
             headers: {},
             request: Object.assign({}, options.request, {
+                // @ts-ignore internal usage only, no need to type
                 hook: hook.bind(null, "request"),
             }),
             mediaType: {
@@ -4074,10 +4028,7 @@ class Octokit {
             requestDefaults.headers["time-zone"] = options.timeZone;
         }
         this.request = request.defaults(requestDefaults);
-        this.graphql = withCustomRequest(this.request).defaults({
-            ...requestDefaults,
-            baseUrl: requestDefaults.baseUrl.replace(/\/api\/v3$/, "/api"),
-        });
+        this.graphql = withCustomRequest(this.request).defaults(requestDefaults);
         this.log = Object.assign({
             debug: () => { },
             info: () => { },
@@ -4086,7 +4037,7 @@ class Octokit {
         }, options.log);
         this.hook = hook;
         // (1) If neither `options.authStrategy` nor `options.auth` are set, the `octokit` instance
-        //     is unauthenticated. The `this.auth()` method is a no-op and no request hook is registred.
+        //     is unauthenticated. The `this.auth()` method is a no-op and no request hook is registered.
         // (2) If only `options.auth` is set, use the default token authentication strategy.
         // (3) If `options.authStrategy` is set then use it and pass in `options.auth`. Always pass own request as many strategies accept a custom request instance.
         // TODO: type `options.auth` based on `options.authStrategy`.
@@ -4106,8 +4057,17 @@ class Octokit {
             }
         }
         else {
-            const auth = options.authStrategy(Object.assign({
+            const { authStrategy, ...otherOptions } = options;
+            const auth = authStrategy(Object.assign({
                 request: this.request,
+                log: this.log,
+                // we pass the current octokit instance as well as its constructor options
+                // to allow for authentication strategies that return a new octokit instance
+                // that shares the same internal state as the current one. The original
+                // requirement for this was the "event-octokit" authentication strategy
+                // of https://github.com/probot/octokit-auth-probot.
+                octokit: this,
+                octokitOptions: otherOptions,
             }, options.auth));
             // @ts-ignore  ¯\_(ツ)_/¯
             hook.wrap("request", auth.hook);
@@ -4161,6 +4121,8 @@ var distWeb$2 = /*#__PURE__*/Object.freeze({
 	Octokit: Octokit
 });
 
+var require$$2 = /*@__PURE__*/getAugmentedNamespace(distWeb$2);
+
 const Endpoints = {
     actions: {
         addSelectedRepoToOrgSecret: [
@@ -4168,6 +4130,9 @@ const Endpoints = {
         ],
         cancelWorkflowRun: [
             "POST /repos/{owner}/{repo}/actions/runs/{run_id}/cancel",
+        ],
+        createOrUpdateEnvironmentSecret: [
+            "PUT /repositories/{repository_id}/environments/{environment_name}/secrets/{secret_name}",
         ],
         createOrUpdateOrgSecret: ["PUT /orgs/{org}/actions/secrets/{secret_name}"],
         createOrUpdateRepoSecret: [
@@ -4189,6 +4154,9 @@ const Endpoints = {
         deleteArtifact: [
             "DELETE /repos/{owner}/{repo}/actions/artifacts/{artifact_id}",
         ],
+        deleteEnvironmentSecret: [
+            "DELETE /repositories/{repository_id}/environments/{environment_name}/secrets/{secret_name}",
+        ],
         deleteOrgSecret: ["DELETE /orgs/{org}/actions/secrets/{secret_name}"],
         deleteRepoSecret: [
             "DELETE /repos/{owner}/{repo}/actions/secrets/{secret_name}",
@@ -4203,6 +4171,12 @@ const Endpoints = {
         deleteWorkflowRunLogs: [
             "DELETE /repos/{owner}/{repo}/actions/runs/{run_id}/logs",
         ],
+        disableSelectedRepositoryGithubActionsOrganization: [
+            "DELETE /orgs/{org}/actions/permissions/repositories/{repository_id}",
+        ],
+        disableWorkflow: [
+            "PUT /repos/{owner}/{repo}/actions/workflows/{workflow_id}/disable",
+        ],
         downloadArtifact: [
             "GET /repos/{owner}/{repo}/actions/artifacts/{artifact_id}/{archive_format}",
         ],
@@ -4212,12 +4186,47 @@ const Endpoints = {
         downloadWorkflowRunLogs: [
             "GET /repos/{owner}/{repo}/actions/runs/{run_id}/logs",
         ],
+        enableSelectedRepositoryGithubActionsOrganization: [
+            "PUT /orgs/{org}/actions/permissions/repositories/{repository_id}",
+        ],
+        enableWorkflow: [
+            "PUT /repos/{owner}/{repo}/actions/workflows/{workflow_id}/enable",
+        ],
+        getAllowedActionsOrganization: [
+            "GET /orgs/{org}/actions/permissions/selected-actions",
+        ],
+        getAllowedActionsRepository: [
+            "GET /repos/{owner}/{repo}/actions/permissions/selected-actions",
+        ],
         getArtifact: ["GET /repos/{owner}/{repo}/actions/artifacts/{artifact_id}"],
+        getEnvironmentPublicKey: [
+            "GET /repositories/{repository_id}/environments/{environment_name}/secrets/public-key",
+        ],
+        getEnvironmentSecret: [
+            "GET /repositories/{repository_id}/environments/{environment_name}/secrets/{secret_name}",
+        ],
+        getGithubActionsPermissionsOrganization: [
+            "GET /orgs/{org}/actions/permissions",
+        ],
+        getGithubActionsPermissionsRepository: [
+            "GET /repos/{owner}/{repo}/actions/permissions",
+        ],
         getJobForWorkflowRun: ["GET /repos/{owner}/{repo}/actions/jobs/{job_id}"],
         getOrgPublicKey: ["GET /orgs/{org}/actions/secrets/public-key"],
         getOrgSecret: ["GET /orgs/{org}/actions/secrets/{secret_name}"],
+        getPendingDeploymentsForRun: [
+            "GET /repos/{owner}/{repo}/actions/runs/{run_id}/pending_deployments",
+        ],
+        getRepoPermissions: [
+            "GET /repos/{owner}/{repo}/actions/permissions",
+            {},
+            { renamed: ["actions", "getGithubActionsPermissionsRepository"] },
+        ],
         getRepoPublicKey: ["GET /repos/{owner}/{repo}/actions/secrets/public-key"],
         getRepoSecret: ["GET /repos/{owner}/{repo}/actions/secrets/{secret_name}"],
+        getReviewsForRun: [
+            "GET /repos/{owner}/{repo}/actions/runs/{run_id}/approvals",
+        ],
         getSelfHostedRunnerForOrg: ["GET /orgs/{org}/actions/runners/{runner_id}"],
         getSelfHostedRunnerForRepo: [
             "GET /repos/{owner}/{repo}/actions/runners/{runner_id}",
@@ -4231,6 +4240,9 @@ const Endpoints = {
             "GET /repos/{owner}/{repo}/actions/workflows/{workflow_id}/timing",
         ],
         listArtifactsForRepo: ["GET /repos/{owner}/{repo}/actions/artifacts"],
+        listEnvironmentSecrets: [
+            "GET /repositories/{repository_id}/environments/{environment_name}/secrets",
+        ],
         listJobsForWorkflowRun: [
             "GET /repos/{owner}/{repo}/actions/runs/{run_id}/jobs",
         ],
@@ -4243,6 +4255,9 @@ const Endpoints = {
         ],
         listSelectedReposForOrgSecret: [
             "GET /orgs/{org}/actions/secrets/{secret_name}/repositories",
+        ],
+        listSelectedRepositoriesEnabledGithubActionsOrganization: [
+            "GET /orgs/{org}/actions/permissions/repositories",
         ],
         listSelfHostedRunnersForOrg: ["GET /orgs/{org}/actions/runners"],
         listSelfHostedRunnersForRepo: ["GET /repos/{owner}/{repo}/actions/runners"],
@@ -4257,8 +4272,26 @@ const Endpoints = {
         removeSelectedRepoFromOrgSecret: [
             "DELETE /orgs/{org}/actions/secrets/{secret_name}/repositories/{repository_id}",
         ],
+        reviewPendingDeploymentsForRun: [
+            "POST /repos/{owner}/{repo}/actions/runs/{run_id}/pending_deployments",
+        ],
+        setAllowedActionsOrganization: [
+            "PUT /orgs/{org}/actions/permissions/selected-actions",
+        ],
+        setAllowedActionsRepository: [
+            "PUT /repos/{owner}/{repo}/actions/permissions/selected-actions",
+        ],
+        setGithubActionsPermissionsOrganization: [
+            "PUT /orgs/{org}/actions/permissions",
+        ],
+        setGithubActionsPermissionsRepository: [
+            "PUT /repos/{owner}/{repo}/actions/permissions",
+        ],
         setSelectedReposForOrgSecret: [
             "PUT /orgs/{org}/actions/secrets/{secret_name}/repositories",
+        ],
+        setSelectedRepositoriesEnabledGithubActionsOrganization: [
+            "PUT /orgs/{org}/actions/permissions/repositories",
         ],
     },
     activity: {
@@ -4309,7 +4342,6 @@ const Endpoints = {
     apps: {
         addRepoToInstallation: [
             "PUT /user/installations/{installation_id}/repositories/{repository_id}",
-            { mediaType: { previews: ["machine-man"] } },
         ],
         checkToken: ["POST /applications/{client_id}/token"],
         createContentAttachment: [
@@ -4319,80 +4351,50 @@ const Endpoints = {
         createFromManifest: ["POST /app-manifests/{code}/conversions"],
         createInstallationAccessToken: [
             "POST /app/installations/{installation_id}/access_tokens",
-            { mediaType: { previews: ["machine-man"] } },
         ],
         deleteAuthorization: ["DELETE /applications/{client_id}/grant"],
-        deleteInstallation: [
-            "DELETE /app/installations/{installation_id}",
-            { mediaType: { previews: ["machine-man"] } },
-        ],
+        deleteInstallation: ["DELETE /app/installations/{installation_id}"],
         deleteToken: ["DELETE /applications/{client_id}/token"],
-        getAuthenticated: [
-            "GET /app",
-            { mediaType: { previews: ["machine-man"] } },
-        ],
-        getBySlug: [
-            "GET /apps/{app_slug}",
-            { mediaType: { previews: ["machine-man"] } },
-        ],
-        getInstallation: [
-            "GET /app/installations/{installation_id}",
-            { mediaType: { previews: ["machine-man"] } },
-        ],
-        getOrgInstallation: [
-            "GET /orgs/{org}/installation",
-            { mediaType: { previews: ["machine-man"] } },
-        ],
-        getRepoInstallation: [
-            "GET /repos/{owner}/{repo}/installation",
-            { mediaType: { previews: ["machine-man"] } },
-        ],
+        getAuthenticated: ["GET /app"],
+        getBySlug: ["GET /apps/{app_slug}"],
+        getInstallation: ["GET /app/installations/{installation_id}"],
+        getOrgInstallation: ["GET /orgs/{org}/installation"],
+        getRepoInstallation: ["GET /repos/{owner}/{repo}/installation"],
         getSubscriptionPlanForAccount: [
             "GET /marketplace_listing/accounts/{account_id}",
         ],
         getSubscriptionPlanForAccountStubbed: [
             "GET /marketplace_listing/stubbed/accounts/{account_id}",
         ],
-        getUserInstallation: [
-            "GET /users/{username}/installation",
-            { mediaType: { previews: ["machine-man"] } },
-        ],
+        getUserInstallation: ["GET /users/{username}/installation"],
+        getWebhookConfigForApp: ["GET /app/hook/config"],
         listAccountsForPlan: ["GET /marketplace_listing/plans/{plan_id}/accounts"],
         listAccountsForPlanStubbed: [
             "GET /marketplace_listing/stubbed/plans/{plan_id}/accounts",
         ],
         listInstallationReposForAuthenticatedUser: [
             "GET /user/installations/{installation_id}/repositories",
-            { mediaType: { previews: ["machine-man"] } },
         ],
-        listInstallations: [
-            "GET /app/installations",
-            { mediaType: { previews: ["machine-man"] } },
-        ],
-        listInstallationsForAuthenticatedUser: [
-            "GET /user/installations",
-            { mediaType: { previews: ["machine-man"] } },
-        ],
+        listInstallations: ["GET /app/installations"],
+        listInstallationsForAuthenticatedUser: ["GET /user/installations"],
         listPlans: ["GET /marketplace_listing/plans"],
         listPlansStubbed: ["GET /marketplace_listing/stubbed/plans"],
-        listReposAccessibleToInstallation: [
-            "GET /installation/repositories",
-            { mediaType: { previews: ["machine-man"] } },
-        ],
+        listReposAccessibleToInstallation: ["GET /installation/repositories"],
         listSubscriptionsForAuthenticatedUser: ["GET /user/marketplace_purchases"],
         listSubscriptionsForAuthenticatedUserStubbed: [
             "GET /user/marketplace_purchases/stubbed",
         ],
         removeRepoFromInstallation: [
             "DELETE /user/installations/{installation_id}/repositories/{repository_id}",
-            { mediaType: { previews: ["machine-man"] } },
         ],
         resetToken: ["PATCH /applications/{client_id}/token"],
         revokeInstallationAccessToken: ["DELETE /installation/token"],
+        scopeToken: ["POST /applications/{client_id}/token/scoped"],
         suspendInstallation: ["PUT /app/installations/{installation_id}/suspended"],
         unsuspendInstallation: [
             "DELETE /app/installations/{installation_id}/suspended",
         ],
+        updateWebhookConfigForApp: ["PATCH /app/hook/config"],
     },
     billing: {
         getGithubActionsBillingOrg: ["GET /orgs/{org}/settings/billing/actions"],
@@ -4411,54 +4413,48 @@ const Endpoints = {
         ],
     },
     checks: {
-        create: [
-            "POST /repos/{owner}/{repo}/check-runs",
-            { mediaType: { previews: ["antiope"] } },
-        ],
-        createSuite: [
-            "POST /repos/{owner}/{repo}/check-suites",
-            { mediaType: { previews: ["antiope"] } },
-        ],
-        get: [
-            "GET /repos/{owner}/{repo}/check-runs/{check_run_id}",
-            { mediaType: { previews: ["antiope"] } },
-        ],
-        getSuite: [
-            "GET /repos/{owner}/{repo}/check-suites/{check_suite_id}",
-            { mediaType: { previews: ["antiope"] } },
-        ],
+        create: ["POST /repos/{owner}/{repo}/check-runs"],
+        createSuite: ["POST /repos/{owner}/{repo}/check-suites"],
+        get: ["GET /repos/{owner}/{repo}/check-runs/{check_run_id}"],
+        getSuite: ["GET /repos/{owner}/{repo}/check-suites/{check_suite_id}"],
         listAnnotations: [
             "GET /repos/{owner}/{repo}/check-runs/{check_run_id}/annotations",
-            { mediaType: { previews: ["antiope"] } },
         ],
-        listForRef: [
-            "GET /repos/{owner}/{repo}/commits/{ref}/check-runs",
-            { mediaType: { previews: ["antiope"] } },
-        ],
+        listForRef: ["GET /repos/{owner}/{repo}/commits/{ref}/check-runs"],
         listForSuite: [
             "GET /repos/{owner}/{repo}/check-suites/{check_suite_id}/check-runs",
-            { mediaType: { previews: ["antiope"] } },
         ],
-        listSuitesForRef: [
-            "GET /repos/{owner}/{repo}/commits/{ref}/check-suites",
-            { mediaType: { previews: ["antiope"] } },
-        ],
+        listSuitesForRef: ["GET /repos/{owner}/{repo}/commits/{ref}/check-suites"],
         rerequestSuite: [
             "POST /repos/{owner}/{repo}/check-suites/{check_suite_id}/rerequest",
-            { mediaType: { previews: ["antiope"] } },
         ],
         setSuitesPreferences: [
             "PATCH /repos/{owner}/{repo}/check-suites/preferences",
-            { mediaType: { previews: ["antiope"] } },
         ],
-        update: [
-            "PATCH /repos/{owner}/{repo}/check-runs/{check_run_id}",
-            { mediaType: { previews: ["antiope"] } },
-        ],
+        update: ["PATCH /repos/{owner}/{repo}/check-runs/{check_run_id}"],
     },
     codeScanning: {
-        getAlert: ["GET /repos/{owner}/{repo}/code-scanning/alerts/{alert_id}"],
+        deleteAnalysis: [
+            "DELETE /repos/{owner}/{repo}/code-scanning/analyses/{analysis_id}{?confirm_delete}",
+        ],
+        getAlert: [
+            "GET /repos/{owner}/{repo}/code-scanning/alerts/{alert_number}",
+            {},
+            { renamedParameters: { alert_id: "alert_number" } },
+        ],
+        getAnalysis: [
+            "GET /repos/{owner}/{repo}/code-scanning/analyses/{analysis_id}",
+        ],
+        getSarif: ["GET /repos/{owner}/{repo}/code-scanning/sarifs/{sarif_id}"],
         listAlertsForRepo: ["GET /repos/{owner}/{repo}/code-scanning/alerts"],
+        listAlertsInstances: [
+            "GET /repos/{owner}/{repo}/code-scanning/alerts/{alert_number}/instances",
+        ],
+        listRecentAnalyses: ["GET /repos/{owner}/{repo}/code-scanning/analyses"],
+        updateAlert: [
+            "PATCH /repos/{owner}/{repo}/code-scanning/alerts/{alert_number}",
+        ],
+        uploadSarif: ["POST /repos/{owner}/{repo}/code-scanning/sarifs"],
     },
     codesOfConduct: {
         getAllCodesOfConduct: [
@@ -4475,6 +4471,32 @@ const Endpoints = {
         ],
     },
     emojis: { get: ["GET /emojis"] },
+    enterpriseAdmin: {
+        disableSelectedOrganizationGithubActionsEnterprise: [
+            "DELETE /enterprises/{enterprise}/actions/permissions/organizations/{org_id}",
+        ],
+        enableSelectedOrganizationGithubActionsEnterprise: [
+            "PUT /enterprises/{enterprise}/actions/permissions/organizations/{org_id}",
+        ],
+        getAllowedActionsEnterprise: [
+            "GET /enterprises/{enterprise}/actions/permissions/selected-actions",
+        ],
+        getGithubActionsPermissionsEnterprise: [
+            "GET /enterprises/{enterprise}/actions/permissions",
+        ],
+        listSelectedOrganizationsEnabledGithubActionsEnterprise: [
+            "GET /enterprises/{enterprise}/actions/permissions/organizations",
+        ],
+        setAllowedActionsEnterprise: [
+            "PUT /enterprises/{enterprise}/actions/permissions/selected-actions",
+        ],
+        setGithubActionsPermissionsEnterprise: [
+            "PUT /enterprises/{enterprise}/actions/permissions",
+        ],
+        setSelectedOrganizationsEnabledGithubActionsEnterprise: [
+            "PUT /enterprises/{enterprise}/actions/permissions/organizations",
+        ],
+    },
     gists: {
         checkIsStarred: ["GET /gists/{gist_id}/star"],
         create: ["POST /gists"],
@@ -4517,29 +4539,31 @@ const Endpoints = {
         getTemplate: ["GET /gitignore/templates/{name}"],
     },
     interactions: {
-        getRestrictionsForOrg: [
-            "GET /orgs/{org}/interaction-limits",
-            { mediaType: { previews: ["sombra"] } },
+        getRestrictionsForAuthenticatedUser: ["GET /user/interaction-limits"],
+        getRestrictionsForOrg: ["GET /orgs/{org}/interaction-limits"],
+        getRestrictionsForRepo: ["GET /repos/{owner}/{repo}/interaction-limits"],
+        getRestrictionsForYourPublicRepos: [
+            "GET /user/interaction-limits",
+            {},
+            { renamed: ["interactions", "getRestrictionsForAuthenticatedUser"] },
         ],
-        getRestrictionsForRepo: [
-            "GET /repos/{owner}/{repo}/interaction-limits",
-            { mediaType: { previews: ["sombra"] } },
-        ],
-        removeRestrictionsForOrg: [
-            "DELETE /orgs/{org}/interaction-limits",
-            { mediaType: { previews: ["sombra"] } },
-        ],
+        removeRestrictionsForAuthenticatedUser: ["DELETE /user/interaction-limits"],
+        removeRestrictionsForOrg: ["DELETE /orgs/{org}/interaction-limits"],
         removeRestrictionsForRepo: [
             "DELETE /repos/{owner}/{repo}/interaction-limits",
-            { mediaType: { previews: ["sombra"] } },
         ],
-        setRestrictionsForOrg: [
-            "PUT /orgs/{org}/interaction-limits",
-            { mediaType: { previews: ["sombra"] } },
+        removeRestrictionsForYourPublicRepos: [
+            "DELETE /user/interaction-limits",
+            {},
+            { renamed: ["interactions", "removeRestrictionsForAuthenticatedUser"] },
         ],
-        setRestrictionsForRepo: [
-            "PUT /repos/{owner}/{repo}/interaction-limits",
-            { mediaType: { previews: ["sombra"] } },
+        setRestrictionsForAuthenticatedUser: ["PUT /user/interaction-limits"],
+        setRestrictionsForOrg: ["PUT /orgs/{org}/interaction-limits"],
+        setRestrictionsForRepo: ["PUT /repos/{owner}/{repo}/interaction-limits"],
+        setRestrictionsForYourPublicRepos: [
+            "PUT /user/interaction-limits",
+            {},
+            { renamed: ["interactions", "setRestrictionsForAuthenticatedUser"] },
         ],
     },
     issues: {
@@ -4618,7 +4642,12 @@ const Endpoints = {
             { headers: { "content-type": "text/plain; charset=utf-8" } },
         ],
     },
-    meta: { get: ["GET /meta"] },
+    meta: {
+        get: ["GET /meta"],
+        getOctocat: ["GET /octocat"],
+        getZen: ["GET /zen"],
+        root: ["GET /"],
+    },
     migrations: {
         cancelImport: ["DELETE /repos/{owner}/{repo}/import"],
         deleteArchiveForAuthenticatedUser: [
@@ -4681,6 +4710,7 @@ const Endpoints = {
     },
     orgs: {
         blockUser: ["PUT /orgs/{org}/blocks/{username}"],
+        cancelInvitation: ["DELETE /orgs/{org}/invitations/{invitation_id}"],
         checkBlockedUser: ["GET /orgs/{org}/blocks/{username}"],
         checkMembershipForUser: ["GET /orgs/{org}/members/{username}"],
         checkPublicMembershipForUser: ["GET /orgs/{org}/public_members/{username}"],
@@ -4694,12 +4724,11 @@ const Endpoints = {
         getMembershipForAuthenticatedUser: ["GET /user/memberships/orgs/{org}"],
         getMembershipForUser: ["GET /orgs/{org}/memberships/{username}"],
         getWebhook: ["GET /orgs/{org}/hooks/{hook_id}"],
+        getWebhookConfigForOrg: ["GET /orgs/{org}/hooks/{hook_id}/config"],
         list: ["GET /organizations"],
-        listAppInstallations: [
-            "GET /orgs/{org}/installations",
-            { mediaType: { previews: ["machine-man"] } },
-        ],
+        listAppInstallations: ["GET /orgs/{org}/installations"],
         listBlockedUsers: ["GET /orgs/{org}/blocks"],
+        listFailedInvitations: ["GET /orgs/{org}/failed_invitations"],
         listForAuthenticatedUser: ["GET /user/orgs"],
         listForUser: ["GET /users/{username}/orgs"],
         listInvitationTeams: ["GET /orgs/{org}/invitations/{invitation_id}/teams"],
@@ -4728,6 +4757,75 @@ const Endpoints = {
             "PATCH /user/memberships/orgs/{org}",
         ],
         updateWebhook: ["PATCH /orgs/{org}/hooks/{hook_id}"],
+        updateWebhookConfigForOrg: ["PATCH /orgs/{org}/hooks/{hook_id}/config"],
+    },
+    packages: {
+        deletePackageForAuthenticatedUser: [
+            "DELETE /user/packages/{package_type}/{package_name}",
+        ],
+        deletePackageForOrg: [
+            "DELETE /orgs/{org}/packages/{package_type}/{package_name}",
+        ],
+        deletePackageVersionForAuthenticatedUser: [
+            "DELETE /user/packages/{package_type}/{package_name}/versions/{package_version_id}",
+        ],
+        deletePackageVersionForOrg: [
+            "DELETE /orgs/{org}/packages/{package_type}/{package_name}/versions/{package_version_id}",
+        ],
+        getAllPackageVersionsForAPackageOwnedByAnOrg: [
+            "GET /orgs/{org}/packages/{package_type}/{package_name}/versions",
+            {},
+            { renamed: ["packages", "getAllPackageVersionsForPackageOwnedByOrg"] },
+        ],
+        getAllPackageVersionsForAPackageOwnedByTheAuthenticatedUser: [
+            "GET /user/packages/{package_type}/{package_name}/versions",
+            {},
+            {
+                renamed: [
+                    "packages",
+                    "getAllPackageVersionsForPackageOwnedByAuthenticatedUser",
+                ],
+            },
+        ],
+        getAllPackageVersionsForPackageOwnedByAuthenticatedUser: [
+            "GET /user/packages/{package_type}/{package_name}/versions",
+        ],
+        getAllPackageVersionsForPackageOwnedByOrg: [
+            "GET /orgs/{org}/packages/{package_type}/{package_name}/versions",
+        ],
+        getAllPackageVersionsForPackageOwnedByUser: [
+            "GET /users/{username}/packages/{package_type}/{package_name}/versions",
+        ],
+        getPackageForAuthenticatedUser: [
+            "GET /user/packages/{package_type}/{package_name}",
+        ],
+        getPackageForOrganization: [
+            "GET /orgs/{org}/packages/{package_type}/{package_name}",
+        ],
+        getPackageForUser: [
+            "GET /users/{username}/packages/{package_type}/{package_name}",
+        ],
+        getPackageVersionForAuthenticatedUser: [
+            "GET /user/packages/{package_type}/{package_name}/versions/{package_version_id}",
+        ],
+        getPackageVersionForOrganization: [
+            "GET /orgs/{org}/packages/{package_type}/{package_name}/versions/{package_version_id}",
+        ],
+        getPackageVersionForUser: [
+            "GET /users/{username}/packages/{package_type}/{package_name}/versions/{package_version_id}",
+        ],
+        restorePackageForAuthenticatedUser: [
+            "POST /user/packages/{package_type}/{package_name}/restore{?token}",
+        ],
+        restorePackageForOrg: [
+            "POST /orgs/{org}/packages/{package_type}/{package_name}/restore{?token}",
+        ],
+        restorePackageVersionForAuthenticatedUser: [
+            "POST /user/packages/{package_type}/{package_name}/versions/{package_version_id}/restore",
+        ],
+        restorePackageVersionForOrg: [
+            "POST /orgs/{org}/packages/{package_type}/{package_name}/versions/{package_version_id}/restore",
+        ],
     },
     projects: {
         addCollaborator: [
@@ -4945,7 +5043,7 @@ const Endpoints = {
             "DELETE /reactions/{reaction_id}",
             { mediaType: { previews: ["squirrel-girl"] } },
             {
-                deprecated: "octokit.reactions.deleteLegacy() is deprecated, see https://developer.github.com/v3/reactions/#delete-a-reaction-legacy",
+                deprecated: "octokit.rest.reactions.deleteLegacy() is deprecated, see https://docs.github.com/rest/reference/reactions/#delete-a-reaction-legacy",
             },
         ],
         listForCommitComment: [
@@ -5019,6 +5117,9 @@ const Endpoints = {
         createForAuthenticatedUser: ["POST /user/repos"],
         createFork: ["POST /repos/{owner}/{repo}/forks"],
         createInOrg: ["POST /orgs/{org}/repos"],
+        createOrUpdateEnvironment: [
+            "PUT /repos/{owner}/{repo}/environments/{environment_name}",
+        ],
         createOrUpdateFileContents: ["PUT /repos/{owner}/{repo}/contents/{path}"],
         createPagesSite: [
             "POST /repos/{owner}/{repo}/pages",
@@ -5037,6 +5138,9 @@ const Endpoints = {
         ],
         deleteAdminBranchProtection: [
             "DELETE /repos/{owner}/{repo}/branches/{branch}/protection/enforce_admins",
+        ],
+        deleteAnEnvironment: [
+            "DELETE /repos/{owner}/{repo}/environments/{environment_name}",
         ],
         deleteBranchProtection: [
             "DELETE /repos/{owner}/{repo}/branches/{branch}/protection",
@@ -5074,7 +5178,13 @@ const Endpoints = {
             "DELETE /repos/{owner}/{repo}/vulnerability-alerts",
             { mediaType: { previews: ["dorian"] } },
         ],
-        downloadArchive: ["GET /repos/{owner}/{repo}/{archive_format}/{ref}"],
+        downloadArchive: [
+            "GET /repos/{owner}/{repo}/zipball/{ref}",
+            {},
+            { renamed: ["repos", "downloadZipballArchive"] },
+        ],
+        downloadTarballArchive: ["GET /repos/{owner}/{repo}/tarball/{ref}"],
+        downloadZipballArchive: ["GET /repos/{owner}/{repo}/zipball/{ref}"],
         enableAutomatedSecurityFixes: [
             "PUT /repos/{owner}/{repo}/automated-security-fixes",
             { mediaType: { previews: ["london"] } },
@@ -5090,6 +5200,7 @@ const Endpoints = {
         getAdminBranchProtection: [
             "GET /repos/{owner}/{repo}/branches/{branch}/protection/enforce_admins",
         ],
+        getAllEnvironments: ["GET /repos/{owner}/{repo}/environments"],
         getAllStatusCheckContexts: [
             "GET /repos/{owner}/{repo}/branches/{branch}/protection/required_status_checks/contexts",
         ],
@@ -5117,10 +5228,7 @@ const Endpoints = {
             "GET /repos/{owner}/{repo}/branches/{branch}/protection/required_signatures",
             { mediaType: { previews: ["zzzax"] } },
         ],
-        getCommunityProfileMetrics: [
-            "GET /repos/{owner}/{repo}/community/profile",
-            { mediaType: { previews: ["black-panther"] } },
-        ],
+        getCommunityProfileMetrics: ["GET /repos/{owner}/{repo}/community/profile"],
         getContent: ["GET /repos/{owner}/{repo}/contents/{path}"],
         getContributorsStats: ["GET /repos/{owner}/{repo}/stats/contributors"],
         getDeployKey: ["GET /repos/{owner}/{repo}/keys/{key_id}"],
@@ -5128,16 +5236,21 @@ const Endpoints = {
         getDeploymentStatus: [
             "GET /repos/{owner}/{repo}/deployments/{deployment_id}/statuses/{status_id}",
         ],
+        getEnvironment: [
+            "GET /repos/{owner}/{repo}/environments/{environment_name}",
+        ],
         getLatestPagesBuild: ["GET /repos/{owner}/{repo}/pages/builds/latest"],
         getLatestRelease: ["GET /repos/{owner}/{repo}/releases/latest"],
         getPages: ["GET /repos/{owner}/{repo}/pages"],
         getPagesBuild: ["GET /repos/{owner}/{repo}/pages/builds/{build_id}"],
+        getPagesHealthCheck: ["GET /repos/{owner}/{repo}/pages/health"],
         getParticipationStats: ["GET /repos/{owner}/{repo}/stats/participation"],
         getPullRequestReviewProtection: [
             "GET /repos/{owner}/{repo}/branches/{branch}/protection/required_pull_request_reviews",
         ],
         getPunchCardStats: ["GET /repos/{owner}/{repo}/stats/punch_card"],
         getReadme: ["GET /repos/{owner}/{repo}/readme"],
+        getReadmeInDirectory: ["GET /repos/{owner}/{repo}/readme/{dir}"],
         getRelease: ["GET /repos/{owner}/{repo}/releases/{release_id}"],
         getReleaseAsset: ["GET /repos/{owner}/{repo}/releases/assets/{asset_id}"],
         getReleaseByTag: ["GET /repos/{owner}/{repo}/releases/tags/{tag}"],
@@ -5154,6 +5267,9 @@ const Endpoints = {
         ],
         getViews: ["GET /repos/{owner}/{repo}/traffic/views"],
         getWebhook: ["GET /repos/{owner}/{repo}/hooks/{hook_id}"],
+        getWebhookConfigForRepo: [
+            "GET /repos/{owner}/{repo}/hooks/{hook_id}/config",
+        ],
         listBranches: ["GET /repos/{owner}/{repo}/branches"],
         listBranchesForHeadCommit: [
             "GET /repos/{owner}/{repo}/commits/{commit_sha}/branches-where-head",
@@ -5222,6 +5338,7 @@ const Endpoints = {
             {},
             { mapToData: "users" },
         ],
+        renameBranch: ["POST /repos/{owner}/{repo}/branches/{branch}/rename"],
         replaceAllTopics: [
             "PUT /repos/{owner}/{repo}/topics",
             { mediaType: { previews: ["mercy"] } },
@@ -5270,8 +5387,16 @@ const Endpoints = {
         ],
         updateStatusCheckPotection: [
             "PATCH /repos/{owner}/{repo}/branches/{branch}/protection/required_status_checks",
+            {},
+            { renamed: ["repos", "updateStatusCheckProtection"] },
+        ],
+        updateStatusCheckProtection: [
+            "PATCH /repos/{owner}/{repo}/branches/{branch}/protection/required_status_checks",
         ],
         updateWebhook: ["PATCH /repos/{owner}/{repo}/hooks/{hook_id}"],
+        updateWebhookConfigForRepo: [
+            "PATCH /repos/{owner}/{repo}/hooks/{hook_id}/config",
+        ],
         uploadReleaseAsset: [
             "POST /repos/{owner}/{repo}/releases/{release_id}/assets{?name,label}",
             { baseUrl: "https://uploads.github.com" },
@@ -5285,6 +5410,15 @@ const Endpoints = {
         repos: ["GET /search/repositories"],
         topics: ["GET /search/topics", { mediaType: { previews: ["mercy"] } }],
         users: ["GET /search/users"],
+    },
+    secretScanning: {
+        getAlert: [
+            "GET /repos/{owner}/{repo}/secret-scanning/alerts/{alert_number}",
+        ],
+        listAlertsForRepo: ["GET /repos/{owner}/{repo}/secret-scanning/alerts"],
+        updateAlert: [
+            "PATCH /repos/{owner}/{repo}/secret-scanning/alerts/{alert_number}",
+        ],
     },
     teams: {
         addOrUpdateMembershipForUserInOrg: [
@@ -5395,7 +5529,7 @@ const Endpoints = {
     },
 };
 
-const VERSION$2 = "4.1.3";
+const VERSION$2 = "5.1.1";
 
 function endpointsToMethods(octokit, endpointsMap) {
     const newMethods = {};
@@ -5458,27 +5592,31 @@ function decorate(octokit, scope, methodName, defaults, decorations) {
     return Object.assign(withDecorations, requestWithDefaults);
 }
 
-/**
- * This plugin is a 1:1 copy of internal @octokit/rest plugins. The primary
- * goal is to rebuild @octokit/rest on top of @octokit/core. Once that is
- * done, we will remove the registerEndpoints methods and return the methods
- * directly as with the other plugins. At that point we will also remove the
- * legacy workarounds and deprecations.
- *
- * See the plan at
- * https://github.com/octokit/plugin-rest-endpoint-methods.js/pull/1
- */
 function restEndpointMethods(octokit) {
-    return endpointsToMethods(octokit, Endpoints);
+    const api = endpointsToMethods(octokit, Endpoints);
+    return {
+        rest: api,
+    };
 }
 restEndpointMethods.VERSION = VERSION$2;
+function legacyRestEndpointMethods(octokit) {
+    const api = endpointsToMethods(octokit, Endpoints);
+    return {
+        ...api,
+        rest: api,
+    };
+}
+legacyRestEndpointMethods.VERSION = VERSION$2;
 
 var distWeb$1 = /*#__PURE__*/Object.freeze({
 	__proto__: null,
+	legacyRestEndpointMethods: legacyRestEndpointMethods,
 	restEndpointMethods: restEndpointMethods
 });
 
-const VERSION$1 = "2.3.1";
+var require$$3 = /*@__PURE__*/getAugmentedNamespace(distWeb$1);
+
+const VERSION$1 = "2.13.3";
 
 /**
  * Some “list” response that can be paginated have a different response structure
@@ -5531,19 +5669,16 @@ function iterator$1(octokit, route, parameters) {
     let url = options.url;
     return {
         [Symbol.asyncIterator]: () => ({
-            next() {
-                if (!url) {
-                    return Promise.resolve({ done: true });
-                }
-                return requestMethod({ method, url, headers })
-                    .then(normalizePaginatedListResponse)
-                    .then((response) => {
-                    // `response.headers.link` format:
-                    // '<https://api.github.com/users/aseemk/followers?page=2>; rel="next", <https://api.github.com/users/aseemk/followers?page=2>; rel="last"'
-                    // sets `url` to undefined if "next" URL is not present or `link` header is not set
-                    url = ((response.headers.link || "").match(/<([^>]+)>;\s*rel="next"/) || [])[1];
-                    return { value: response };
-                });
+            async next() {
+                if (!url)
+                    return { done: true };
+                const response = await requestMethod({ method, url, headers });
+                const normalizedResponse = normalizePaginatedListResponse(response);
+                // `response.headers.link` format:
+                // '<https://api.github.com/users/aseemk/followers?page=2>; rel="next", <https://api.github.com/users/aseemk/followers?page=2>; rel="last"'
+                // sets `url` to undefined if "next" URL is not present or `link` header is not set
+                url = ((normalizedResponse.headers.link || "").match(/<([^>]+)>;\s*rel="next"/) || [])[1];
+                return { value: normalizedResponse };
             },
         }),
     };
@@ -5573,6 +5708,211 @@ function gather(octokit, results, iterator, mapFn) {
     });
 }
 
+const composePaginateRest = Object.assign(paginate, {
+    iterator: iterator$1,
+});
+
+const paginatingEndpoints = [
+    "GET /app/installations",
+    "GET /applications/grants",
+    "GET /authorizations",
+    "GET /enterprises/{enterprise}/actions/permissions/organizations",
+    "GET /enterprises/{enterprise}/actions/runner-groups",
+    "GET /enterprises/{enterprise}/actions/runner-groups/{runner_group_id}/organizations",
+    "GET /enterprises/{enterprise}/actions/runner-groups/{runner_group_id}/runners",
+    "GET /enterprises/{enterprise}/actions/runners",
+    "GET /enterprises/{enterprise}/actions/runners/downloads",
+    "GET /events",
+    "GET /gists",
+    "GET /gists/public",
+    "GET /gists/starred",
+    "GET /gists/{gist_id}/comments",
+    "GET /gists/{gist_id}/commits",
+    "GET /gists/{gist_id}/forks",
+    "GET /installation/repositories",
+    "GET /issues",
+    "GET /marketplace_listing/plans",
+    "GET /marketplace_listing/plans/{plan_id}/accounts",
+    "GET /marketplace_listing/stubbed/plans",
+    "GET /marketplace_listing/stubbed/plans/{plan_id}/accounts",
+    "GET /networks/{owner}/{repo}/events",
+    "GET /notifications",
+    "GET /organizations",
+    "GET /orgs/{org}/actions/permissions/repositories",
+    "GET /orgs/{org}/actions/runner-groups",
+    "GET /orgs/{org}/actions/runner-groups/{runner_group_id}/repositories",
+    "GET /orgs/{org}/actions/runner-groups/{runner_group_id}/runners",
+    "GET /orgs/{org}/actions/runners",
+    "GET /orgs/{org}/actions/runners/downloads",
+    "GET /orgs/{org}/actions/secrets",
+    "GET /orgs/{org}/actions/secrets/{secret_name}/repositories",
+    "GET /orgs/{org}/blocks",
+    "GET /orgs/{org}/credential-authorizations",
+    "GET /orgs/{org}/events",
+    "GET /orgs/{org}/failed_invitations",
+    "GET /orgs/{org}/hooks",
+    "GET /orgs/{org}/installations",
+    "GET /orgs/{org}/invitations",
+    "GET /orgs/{org}/invitations/{invitation_id}/teams",
+    "GET /orgs/{org}/issues",
+    "GET /orgs/{org}/members",
+    "GET /orgs/{org}/migrations",
+    "GET /orgs/{org}/migrations/{migration_id}/repositories",
+    "GET /orgs/{org}/outside_collaborators",
+    "GET /orgs/{org}/projects",
+    "GET /orgs/{org}/public_members",
+    "GET /orgs/{org}/repos",
+    "GET /orgs/{org}/team-sync/groups",
+    "GET /orgs/{org}/teams",
+    "GET /orgs/{org}/teams/{team_slug}/discussions",
+    "GET /orgs/{org}/teams/{team_slug}/discussions/{discussion_number}/comments",
+    "GET /orgs/{org}/teams/{team_slug}/discussions/{discussion_number}/comments/{comment_number}/reactions",
+    "GET /orgs/{org}/teams/{team_slug}/discussions/{discussion_number}/reactions",
+    "GET /orgs/{org}/teams/{team_slug}/invitations",
+    "GET /orgs/{org}/teams/{team_slug}/members",
+    "GET /orgs/{org}/teams/{team_slug}/projects",
+    "GET /orgs/{org}/teams/{team_slug}/repos",
+    "GET /orgs/{org}/teams/{team_slug}/team-sync/group-mappings",
+    "GET /orgs/{org}/teams/{team_slug}/teams",
+    "GET /projects/columns/{column_id}/cards",
+    "GET /projects/{project_id}/collaborators",
+    "GET /projects/{project_id}/columns",
+    "GET /repos/{owner}/{repo}/actions/artifacts",
+    "GET /repos/{owner}/{repo}/actions/runners",
+    "GET /repos/{owner}/{repo}/actions/runners/downloads",
+    "GET /repos/{owner}/{repo}/actions/runs",
+    "GET /repos/{owner}/{repo}/actions/runs/{run_id}/artifacts",
+    "GET /repos/{owner}/{repo}/actions/runs/{run_id}/jobs",
+    "GET /repos/{owner}/{repo}/actions/secrets",
+    "GET /repos/{owner}/{repo}/actions/workflows",
+    "GET /repos/{owner}/{repo}/actions/workflows/{workflow_id}/runs",
+    "GET /repos/{owner}/{repo}/assignees",
+    "GET /repos/{owner}/{repo}/branches",
+    "GET /repos/{owner}/{repo}/check-runs/{check_run_id}/annotations",
+    "GET /repos/{owner}/{repo}/check-suites/{check_suite_id}/check-runs",
+    "GET /repos/{owner}/{repo}/code-scanning/alerts",
+    "GET /repos/{owner}/{repo}/code-scanning/alerts/{alert_number}/instances",
+    "GET /repos/{owner}/{repo}/code-scanning/analyses",
+    "GET /repos/{owner}/{repo}/collaborators",
+    "GET /repos/{owner}/{repo}/comments",
+    "GET /repos/{owner}/{repo}/comments/{comment_id}/reactions",
+    "GET /repos/{owner}/{repo}/commits",
+    "GET /repos/{owner}/{repo}/commits/{commit_sha}/branches-where-head",
+    "GET /repos/{owner}/{repo}/commits/{commit_sha}/comments",
+    "GET /repos/{owner}/{repo}/commits/{commit_sha}/pulls",
+    "GET /repos/{owner}/{repo}/commits/{ref}/check-runs",
+    "GET /repos/{owner}/{repo}/commits/{ref}/check-suites",
+    "GET /repos/{owner}/{repo}/commits/{ref}/statuses",
+    "GET /repos/{owner}/{repo}/contributors",
+    "GET /repos/{owner}/{repo}/deployments",
+    "GET /repos/{owner}/{repo}/deployments/{deployment_id}/statuses",
+    "GET /repos/{owner}/{repo}/events",
+    "GET /repos/{owner}/{repo}/forks",
+    "GET /repos/{owner}/{repo}/git/matching-refs/{ref}",
+    "GET /repos/{owner}/{repo}/hooks",
+    "GET /repos/{owner}/{repo}/invitations",
+    "GET /repos/{owner}/{repo}/issues",
+    "GET /repos/{owner}/{repo}/issues/comments",
+    "GET /repos/{owner}/{repo}/issues/comments/{comment_id}/reactions",
+    "GET /repos/{owner}/{repo}/issues/events",
+    "GET /repos/{owner}/{repo}/issues/{issue_number}/comments",
+    "GET /repos/{owner}/{repo}/issues/{issue_number}/events",
+    "GET /repos/{owner}/{repo}/issues/{issue_number}/labels",
+    "GET /repos/{owner}/{repo}/issues/{issue_number}/reactions",
+    "GET /repos/{owner}/{repo}/issues/{issue_number}/timeline",
+    "GET /repos/{owner}/{repo}/keys",
+    "GET /repos/{owner}/{repo}/labels",
+    "GET /repos/{owner}/{repo}/milestones",
+    "GET /repos/{owner}/{repo}/milestones/{milestone_number}/labels",
+    "GET /repos/{owner}/{repo}/notifications",
+    "GET /repos/{owner}/{repo}/pages/builds",
+    "GET /repos/{owner}/{repo}/projects",
+    "GET /repos/{owner}/{repo}/pulls",
+    "GET /repos/{owner}/{repo}/pulls/comments",
+    "GET /repos/{owner}/{repo}/pulls/comments/{comment_id}/reactions",
+    "GET /repos/{owner}/{repo}/pulls/{pull_number}/comments",
+    "GET /repos/{owner}/{repo}/pulls/{pull_number}/commits",
+    "GET /repos/{owner}/{repo}/pulls/{pull_number}/files",
+    "GET /repos/{owner}/{repo}/pulls/{pull_number}/requested_reviewers",
+    "GET /repos/{owner}/{repo}/pulls/{pull_number}/reviews",
+    "GET /repos/{owner}/{repo}/pulls/{pull_number}/reviews/{review_id}/comments",
+    "GET /repos/{owner}/{repo}/releases",
+    "GET /repos/{owner}/{repo}/releases/{release_id}/assets",
+    "GET /repos/{owner}/{repo}/secret-scanning/alerts",
+    "GET /repos/{owner}/{repo}/stargazers",
+    "GET /repos/{owner}/{repo}/subscribers",
+    "GET /repos/{owner}/{repo}/tags",
+    "GET /repos/{owner}/{repo}/teams",
+    "GET /repositories",
+    "GET /repositories/{repository_id}/environments/{environment_name}/secrets",
+    "GET /scim/v2/enterprises/{enterprise}/Groups",
+    "GET /scim/v2/enterprises/{enterprise}/Users",
+    "GET /scim/v2/organizations/{org}/Users",
+    "GET /search/code",
+    "GET /search/commits",
+    "GET /search/issues",
+    "GET /search/labels",
+    "GET /search/repositories",
+    "GET /search/topics",
+    "GET /search/users",
+    "GET /teams/{team_id}/discussions",
+    "GET /teams/{team_id}/discussions/{discussion_number}/comments",
+    "GET /teams/{team_id}/discussions/{discussion_number}/comments/{comment_number}/reactions",
+    "GET /teams/{team_id}/discussions/{discussion_number}/reactions",
+    "GET /teams/{team_id}/invitations",
+    "GET /teams/{team_id}/members",
+    "GET /teams/{team_id}/projects",
+    "GET /teams/{team_id}/repos",
+    "GET /teams/{team_id}/team-sync/group-mappings",
+    "GET /teams/{team_id}/teams",
+    "GET /user/blocks",
+    "GET /user/emails",
+    "GET /user/followers",
+    "GET /user/following",
+    "GET /user/gpg_keys",
+    "GET /user/installations",
+    "GET /user/installations/{installation_id}/repositories",
+    "GET /user/issues",
+    "GET /user/keys",
+    "GET /user/marketplace_purchases",
+    "GET /user/marketplace_purchases/stubbed",
+    "GET /user/memberships/orgs",
+    "GET /user/migrations",
+    "GET /user/migrations/{migration_id}/repositories",
+    "GET /user/orgs",
+    "GET /user/public_emails",
+    "GET /user/repos",
+    "GET /user/repository_invitations",
+    "GET /user/starred",
+    "GET /user/subscriptions",
+    "GET /user/teams",
+    "GET /users",
+    "GET /users/{username}/events",
+    "GET /users/{username}/events/orgs/{org}",
+    "GET /users/{username}/events/public",
+    "GET /users/{username}/followers",
+    "GET /users/{username}/following",
+    "GET /users/{username}/gists",
+    "GET /users/{username}/gpg_keys",
+    "GET /users/{username}/keys",
+    "GET /users/{username}/orgs",
+    "GET /users/{username}/projects",
+    "GET /users/{username}/received_events",
+    "GET /users/{username}/received_events/public",
+    "GET /users/{username}/repos",
+    "GET /users/{username}/starred",
+    "GET /users/{username}/subscriptions",
+];
+
+function isPaginatingEndpoint(arg) {
+    if (typeof arg === "string") {
+        return paginatingEndpoints.includes(arg);
+    }
+    else {
+        return false;
+    }
+}
+
 /**
  * @param octokit Octokit instance
  * @param options Options passed to Octokit constructor
@@ -5588,44 +5928,42 @@ paginateRest.VERSION = VERSION$1;
 
 var distWeb = /*#__PURE__*/Object.freeze({
 	__proto__: null,
-	paginateRest: paginateRest
+	composePaginateRest: composePaginateRest,
+	isPaginatingEndpoint: isPaginatingEndpoint,
+	paginateRest: paginateRest,
+	paginatingEndpoints: paginatingEndpoints
 });
 
-var core_1 = /*@__PURE__*/getAugmentedNamespace(distWeb$2);
+var require$$4 = /*@__PURE__*/getAugmentedNamespace(distWeb);
 
-var plugin_rest_endpoint_methods_1 = /*@__PURE__*/getAugmentedNamespace(distWeb$1);
-
-var plugin_paginate_rest_1 = /*@__PURE__*/getAugmentedNamespace(distWeb);
-
-var utils$1 = createCommonjsModule(function (module, exports) {
-var __createBinding = (commonjsGlobal && commonjsGlobal.__createBinding) || (Object.create ? (function(o, m, k, k2) {
+var __createBinding$1 = (commonjsGlobal && commonjsGlobal.__createBinding) || (Object.create ? (function(o, m, k, k2) {
     if (k2 === undefined) k2 = k;
     Object.defineProperty(o, k2, { enumerable: true, get: function() { return m[k]; } });
 }) : (function(o, m, k, k2) {
     if (k2 === undefined) k2 = k;
     o[k2] = m[k];
 }));
-var __setModuleDefault = (commonjsGlobal && commonjsGlobal.__setModuleDefault) || (Object.create ? (function(o, v) {
+var __setModuleDefault$1 = (commonjsGlobal && commonjsGlobal.__setModuleDefault) || (Object.create ? (function(o, v) {
     Object.defineProperty(o, "default", { enumerable: true, value: v });
 }) : function(o, v) {
     o["default"] = v;
 });
-var __importStar = (commonjsGlobal && commonjsGlobal.__importStar) || function (mod) {
+var __importStar$1 = (commonjsGlobal && commonjsGlobal.__importStar) || function (mod) {
     if (mod && mod.__esModule) return mod;
     var result = {};
-    if (mod != null) for (var k in mod) if (Object.hasOwnProperty.call(mod, k)) __createBinding(result, mod, k);
-    __setModuleDefault(result, mod);
+    if (mod != null) for (var k in mod) if (k !== "default" && Object.hasOwnProperty.call(mod, k)) __createBinding$1(result, mod, k);
+    __setModuleDefault$1(result, mod);
     return result;
 };
-Object.defineProperty(exports, "__esModule", { value: true });
-exports.getOctokitOptions = exports.GitHub = exports.context = void 0;
-const Context = __importStar(context);
-const Utils = __importStar(utils$2);
+Object.defineProperty(utils$2, "__esModule", { value: true });
+var getOctokitOptions_1 = utils$2.getOctokitOptions = GitHub = utils$2.GitHub = utils$2.context = void 0;
+const Context$1 = __importStar$1(context$1);
+const Utils = __importStar$1(utils$1);
 // octokit + plugins
-
-
-
-exports.context = new Context.Context();
+const core_1 = require$$2;
+const plugin_rest_endpoint_methods_1 = require$$3;
+const plugin_paginate_rest_1 = require$$4;
+utils$2.context = new Context$1.Context();
 const baseUrl = Utils.getApiBaseUrl();
 const defaults = {
     baseUrl,
@@ -5633,7 +5971,7 @@ const defaults = {
         agent: Utils.getProxyAgent(baseUrl)
     }
 };
-exports.GitHub = core_1.Octokit.plugin(plugin_rest_endpoint_methods_1.restEndpointMethods, plugin_paginate_rest_1.paginateRest).defaults(defaults);
+var GitHub = utils$2.GitHub = core_1.Octokit.plugin(plugin_rest_endpoint_methods_1.restEndpointMethods, plugin_paginate_rest_1.paginateRest).defaults(defaults);
 /**
  * Convience function to correctly format Octokit Options to pass into the constructor.
  *
@@ -5649,11 +5987,8 @@ function getOctokitOptions(token, options) {
     }
     return opts;
 }
-exports.getOctokitOptions = getOctokitOptions;
+getOctokitOptions_1 = utils$2.getOctokitOptions = getOctokitOptions;
 
-});
-
-var github = createCommonjsModule(function (module, exports) {
 var __createBinding = (commonjsGlobal && commonjsGlobal.__createBinding) || (Object.create ? (function(o, m, k, k2) {
     if (k2 === undefined) k2 = k;
     Object.defineProperty(o, k2, { enumerable: true, get: function() { return m[k]; } });
@@ -5669,15 +6004,15 @@ var __setModuleDefault = (commonjsGlobal && commonjsGlobal.__setModuleDefault) |
 var __importStar = (commonjsGlobal && commonjsGlobal.__importStar) || function (mod) {
     if (mod && mod.__esModule) return mod;
     var result = {};
-    if (mod != null) for (var k in mod) if (Object.hasOwnProperty.call(mod, k)) __createBinding(result, mod, k);
+    if (mod != null) for (var k in mod) if (k !== "default" && Object.hasOwnProperty.call(mod, k)) __createBinding(result, mod, k);
     __setModuleDefault(result, mod);
     return result;
 };
-Object.defineProperty(exports, "__esModule", { value: true });
-exports.getOctokit = exports.context = void 0;
-const Context = __importStar(context);
-
-exports.context = new Context.Context();
+Object.defineProperty(github, "__esModule", { value: true });
+github.getOctokit = context = github.context = void 0;
+const Context = __importStar(context$1);
+const utils_1 = utils$2;
+var context = github.context = new Context.Context();
 /**
  * Returns a hydrated octokit ready to use for GitHub Actions
  *
@@ -5685,18 +6020,18 @@ exports.context = new Context.Context();
  * @param     options  other options to set
  */
 function getOctokit(token, options) {
-    return new utils$1.GitHub(utils$1.getOctokitOptions(token, options));
+    return new utils_1.GitHub(utils_1.getOctokitOptions(token, options));
 }
-exports.getOctokit = getOctokit;
+github.getOctokit = getOctokit;
 
-});
+var light = {exports: {}};
 
 /**
   * This file contains the Bottleneck library (MIT), compiled to ES2017, and without Clustering support.
   * https://github.com/SGrondin/bottleneck
   */
 
-var light = createCommonjsModule(function (module, exports) {
+(function (module, exports) {
 (function (global, factory) {
 	module.exports = factory() ;
 }(commonjsGlobal, (function () {
@@ -7213,7 +7548,9 @@ var light = createCommonjsModule(function (module, exports) {
 	return lib;
 
 })));
-});
+}(light));
+
+var BottleneckLight = light.exports;
 
 const VERSION = "3.4.1";
 
@@ -7350,7 +7687,7 @@ const createGroups = function (Bottleneck, common) {
     });
 };
 function throttling(octokit, octokitOptions = {}) {
-    const { enabled = true, Bottleneck = light, id = "no-id", timeout = 1000 * 60 * 2, // Redis TTL: 2 minutes
+    const { enabled = true, Bottleneck = BottleneckLight, id = "no-id", timeout = 1000 * 60 * 2, // Redis TTL: 2 minutes
     connection, } = octokitOptions.throttle || {};
     if (!enabled) {
         return;
@@ -7435,7 +7772,13 @@ function throttling(octokit, octokitOptions = {}) {
 throttling.VERSION = VERSION;
 throttling.triggersNotification = triggersNotification;
 
-var utils = createCommonjsModule(function (module, exports) {
+var dist = {};
+
+var diff$1 = {exports: {}};
+
+var utils = {};
+
+(function (exports) {
 (function (global, factory) {
   {
     factory(exports);
@@ -7479,9 +7822,9 @@ var utils = createCommonjsModule(function (module, exports) {
     return isObject(o) && !o.hasOwnProperty ? _extends({}, o) : o;
   };
 });
-});
+}(utils));
 
-var diff$1 = createCommonjsModule(function (module, exports) {
+(function (module, exports) {
 (function (global, factory) {
   {
     factory(module, exports, utils);
@@ -7552,9 +7895,11 @@ var diff$1 = createCommonjsModule(function (module, exports) {
   exports.default = diff;
   module.exports = exports['default'];
 });
-});
+}(diff$1, diff$1.exports));
 
-var added = createCommonjsModule(function (module, exports) {
+var added = {exports: {}};
+
+(function (module, exports) {
 (function (global, factory) {
   {
     factory(module, exports, utils);
@@ -7617,9 +7962,11 @@ var added = createCommonjsModule(function (module, exports) {
   exports.default = addedDiff;
   module.exports = exports['default'];
 });
-});
+}(added, added.exports));
 
-var deleted = createCommonjsModule(function (module, exports) {
+var deleted = {exports: {}};
+
+(function (module, exports) {
 (function (global, factory) {
   {
     factory(module, exports, utils);
@@ -7681,9 +8028,11 @@ var deleted = createCommonjsModule(function (module, exports) {
   exports.default = deletedDiff;
   module.exports = exports['default'];
 });
-});
+}(deleted, deleted.exports));
 
-var updated = createCommonjsModule(function (module, exports) {
+var updated = {exports: {}};
+
+(function (module, exports) {
 (function (global, factory) {
   {
     factory(module, exports, utils);
@@ -7754,12 +8103,14 @@ var updated = createCommonjsModule(function (module, exports) {
   exports.default = updatedDiff;
   module.exports = exports['default'];
 });
-});
+}(updated, updated.exports));
 
-var detailed = createCommonjsModule(function (module, exports) {
+var detailed = {exports: {}};
+
+(function (module, exports) {
 (function (global, factory) {
   {
-    factory(module, exports, added, deleted, updated);
+    factory(module, exports, added.exports, deleted.exports, updated.exports);
   }
 })(commonjsGlobal, function (module, exports, _added, _deleted, _updated) {
 
@@ -7790,12 +8141,12 @@ var detailed = createCommonjsModule(function (module, exports) {
   exports.default = detailedDiff;
   module.exports = exports['default'];
 });
-});
+}(detailed, detailed.exports));
 
-var dist = createCommonjsModule(function (module, exports) {
+(function (exports) {
 (function (global, factory) {
   {
-    factory(exports, diff$1, added, deleted, updated, detailed);
+    factory(exports, diff$1.exports, added.exports, deleted.exports, updated.exports, detailed.exports);
   }
 })(commonjsGlobal, function (exports, _diff, _added, _deleted, _updated, _detailed) {
 
@@ -7826,7 +8177,9 @@ var dist = createCommonjsModule(function (module, exports) {
   exports.updatedDiff = _updated2.default;
   exports.detailedDiff = _detailed2.default;
 });
-});
+}(dist));
+
+var re$5 = {exports: {}};
 
 // Note: this is the semver.org version of the spec that it implements
 // Not necessarily the package version of this code.
@@ -7846,7 +8199,7 @@ var constants = {
   MAX_SAFE_COMPONENT_LENGTH
 };
 
-const debug = (
+const debug$3 = (
   typeof process === 'object' &&
   process.env &&
   process.env.NODE_DEBUG &&
@@ -7854,11 +8207,11 @@ const debug = (
 ) ? (...args) => console.error('SEMVER', ...args)
   : () => {};
 
-var debug_1 = debug;
+var debug_1 = debug$3;
 
-var re_1 = createCommonjsModule(function (module, exports) {
+(function (module, exports) {
 const { MAX_SAFE_COMPONENT_LENGTH } = constants;
-
+const debug = debug_1;
 exports = module.exports = {};
 
 // The actual regexps go on exports.re
@@ -7869,7 +8222,7 @@ let R = 0;
 
 const createToken = (name, value, isGlobal) => {
   const index = R++;
-  debug_1(index, value);
+  debug(index, value);
   t[name] = index;
   src[index] = value;
   re[index] = new RegExp(value, isGlobal ? 'g' : undefined);
@@ -8039,19 +8392,19 @@ createToken('STAR', '(<|>)?=?\\s*\\*');
 // >=0.0.0 is like a star
 createToken('GTE0', '^\\s*>=\\s*0\.0\.0\\s*$');
 createToken('GTE0PRE', '^\\s*>=\\s*0\.0\.0-0\\s*$');
-});
+}(re$5, re$5.exports));
 
 // parse out just the options we care about so we always get a consistent
 // obj with keys in a consistent order.
 const opts = ['includePrerelease', 'loose', 'rtl'];
-const parseOptions = options =>
+const parseOptions$4 = options =>
   !options ? {}
   : typeof options !== 'object' ? { loose: true }
   : opts.filter(k => options[k]).reduce((options, k) => {
     options[k] = true;
     return options
   }, {});
-var parseOptions_1 = parseOptions;
+var parseOptions_1 = parseOptions$4;
 
 const numeric = /^[0-9]+$/;
 const compareIdentifiers$1 = (a, b) => {
@@ -8077,16 +8430,17 @@ var identifiers = {
   rcompareIdentifiers
 };
 
+const debug$2 = debug_1;
 const { MAX_LENGTH: MAX_LENGTH$1, MAX_SAFE_INTEGER } = constants;
-const { re: re$4, t: t$4 } = re_1;
+const { re: re$4, t: t$4 } = re$5.exports;
 
-
+const parseOptions$3 = parseOptions_1;
 const { compareIdentifiers } = identifiers;
-class SemVer {
+class SemVer$e {
   constructor (version, options) {
-    options = parseOptions_1(options);
+    options = parseOptions$3(options);
 
-    if (version instanceof SemVer) {
+    if (version instanceof SemVer$e) {
       if (version.loose === !!options.loose &&
           version.includePrerelease === !!options.includePrerelease) {
         return version
@@ -8103,7 +8457,7 @@ class SemVer {
       )
     }
 
-    debug_1('SemVer', version, options);
+    debug$2('SemVer', version, options);
     this.options = options;
     this.loose = !!options.loose;
     // this isn't actually relevant for versions, but keep it so that we
@@ -8167,12 +8521,12 @@ class SemVer {
   }
 
   compare (other) {
-    debug_1('SemVer.compare', this.version, this.options, other);
-    if (!(other instanceof SemVer)) {
+    debug$2('SemVer.compare', this.version, this.options, other);
+    if (!(other instanceof SemVer$e)) {
       if (typeof other === 'string' && other === this.version) {
         return 0
       }
-      other = new SemVer(other, this.options);
+      other = new SemVer$e(other, this.options);
     }
 
     if (other.version === this.version) {
@@ -8183,8 +8537,8 @@ class SemVer {
   }
 
   compareMain (other) {
-    if (!(other instanceof SemVer)) {
-      other = new SemVer(other, this.options);
+    if (!(other instanceof SemVer$e)) {
+      other = new SemVer$e(other, this.options);
     }
 
     return (
@@ -8195,8 +8549,8 @@ class SemVer {
   }
 
   comparePre (other) {
-    if (!(other instanceof SemVer)) {
-      other = new SemVer(other, this.options);
+    if (!(other instanceof SemVer$e)) {
+      other = new SemVer$e(other, this.options);
     }
 
     // NOT having a prerelease is > having one
@@ -8212,7 +8566,7 @@ class SemVer {
     do {
       const a = this.prerelease[i];
       const b = other.prerelease[i];
-      debug_1('prerelease compare', i, a, b);
+      debug$2('prerelease compare', i, a, b);
       if (a === undefined && b === undefined) {
         return 0
       } else if (b === undefined) {
@@ -8228,15 +8582,15 @@ class SemVer {
   }
 
   compareBuild (other) {
-    if (!(other instanceof SemVer)) {
-      other = new SemVer(other, this.options);
+    if (!(other instanceof SemVer$e)) {
+      other = new SemVer$e(other, this.options);
     }
 
     let i = 0;
     do {
       const a = this.build[i];
       const b = other.build[i];
-      debug_1('prerelease compare', i, a, b);
+      debug$2('prerelease compare', i, a, b);
       if (a === undefined && b === undefined) {
         return 0
       } else if (b === undefined) {
@@ -8362,17 +8716,17 @@ class SemVer {
   }
 }
 
-var semver$1 = SemVer;
+var semver$1 = SemVer$e;
 
 const {MAX_LENGTH} = constants;
-const { re: re$3, t: t$3 } = re_1;
+const { re: re$3, t: t$3 } = re$5.exports;
+const SemVer$d = semver$1;
 
+const parseOptions$2 = parseOptions_1;
+const parse$5 = (version, options) => {
+  options = parseOptions$2(options);
 
-
-const parse = (version, options) => {
-  options = parseOptions_1(options);
-
-  if (version instanceof semver$1) {
+  if (version instanceof SemVer$d) {
     return version
   }
 
@@ -8390,25 +8744,29 @@ const parse = (version, options) => {
   }
 
   try {
-    return new semver$1(version, options)
+    return new SemVer$d(version, options)
   } catch (er) {
     return null
   }
 };
 
-var parse_1 = parse;
+var parse_1 = parse$5;
 
+const parse$4 = parse_1;
 const valid$1 = (version, options) => {
-  const v = parse_1(version, options);
+  const v = parse$4(version, options);
   return v ? v.version : null
 };
 var valid_1 = valid$1;
 
+const parse$3 = parse_1;
 const clean = (version, options) => {
-  const s = parse_1(version.trim().replace(/^[=v]+/, ''), options);
+  const s = parse$3(version.trim().replace(/^[=v]+/, ''), options);
   return s ? s.version : null
 };
 var clean_1 = clean;
+
+const SemVer$c = semver$1;
 
 const inc = (version, release, options, identifier) => {
   if (typeof (options) === 'string') {
@@ -8417,27 +8775,32 @@ const inc = (version, release, options, identifier) => {
   }
 
   try {
-    return new semver$1(version, options).inc(release, identifier).version
+    return new SemVer$c(version, options).inc(release, identifier).version
   } catch (er) {
     return null
   }
 };
 var inc_1 = inc;
 
-const compare = (a, b, loose) =>
-  new semver$1(a, loose).compare(new semver$1(b, loose));
+const SemVer$b = semver$1;
+const compare$a = (a, b, loose) =>
+  new SemVer$b(a, loose).compare(new SemVer$b(b, loose));
 
-var compare_1 = compare;
+var compare_1 = compare$a;
 
-const eq = (a, b, loose) => compare_1(a, b, loose) === 0;
-var eq_1 = eq;
+const compare$9 = compare_1;
+const eq$2 = (a, b, loose) => compare$9(a, b, loose) === 0;
+var eq_1 = eq$2;
+
+const parse$2 = parse_1;
+const eq$1 = eq_1;
 
 const diff = (version1, version2) => {
-  if (eq_1(version1, version2)) {
+  if (eq$1(version1, version2)) {
     return null
   } else {
-    const v1 = parse_1(version1);
-    const v2 = parse_1(version2);
+    const v1 = parse$2(version1);
+    const v2 = parse$2(version2);
     const hasPre = v1.prerelease.length || v2.prerelease.length;
     const prefix = hasPre ? 'pre' : '';
     const defaultResult = hasPre ? 'prerelease' : '';
@@ -8453,56 +8816,77 @@ const diff = (version1, version2) => {
 };
 var diff_1 = diff;
 
-const major = (a, loose) => new semver$1(a, loose).major;
+const SemVer$a = semver$1;
+const major = (a, loose) => new SemVer$a(a, loose).major;
 var major_1 = major;
 
-const minor = (a, loose) => new semver$1(a, loose).minor;
+const SemVer$9 = semver$1;
+const minor = (a, loose) => new SemVer$9(a, loose).minor;
 var minor_1 = minor;
 
-const patch = (a, loose) => new semver$1(a, loose).patch;
+const SemVer$8 = semver$1;
+const patch = (a, loose) => new SemVer$8(a, loose).patch;
 var patch_1 = patch;
 
+const parse$1 = parse_1;
 const prerelease = (version, options) => {
-  const parsed = parse_1(version, options);
+  const parsed = parse$1(version, options);
   return (parsed && parsed.prerelease.length) ? parsed.prerelease : null
 };
 var prerelease_1 = prerelease;
 
-const rcompare = (a, b, loose) => compare_1(b, a, loose);
+const compare$8 = compare_1;
+const rcompare = (a, b, loose) => compare$8(b, a, loose);
 var rcompare_1 = rcompare;
 
-const compareLoose = (a, b) => compare_1(a, b, true);
+const compare$7 = compare_1;
+const compareLoose = (a, b) => compare$7(a, b, true);
 var compareLoose_1 = compareLoose;
 
-const compareBuild = (a, b, loose) => {
-  const versionA = new semver$1(a, loose);
-  const versionB = new semver$1(b, loose);
+const SemVer$7 = semver$1;
+const compareBuild$2 = (a, b, loose) => {
+  const versionA = new SemVer$7(a, loose);
+  const versionB = new SemVer$7(b, loose);
   return versionA.compare(versionB) || versionA.compareBuild(versionB)
 };
-var compareBuild_1 = compareBuild;
+var compareBuild_1 = compareBuild$2;
 
-const sort = (list, loose) => list.sort((a, b) => compareBuild_1(a, b, loose));
+const compareBuild$1 = compareBuild_1;
+const sort = (list, loose) => list.sort((a, b) => compareBuild$1(a, b, loose));
 var sort_1 = sort;
 
-const rsort = (list, loose) => list.sort((a, b) => compareBuild_1(b, a, loose));
+const compareBuild = compareBuild_1;
+const rsort = (list, loose) => list.sort((a, b) => compareBuild(b, a, loose));
 var rsort_1 = rsort;
 
-const gt = (a, b, loose) => compare_1(a, b, loose) > 0;
-var gt_1 = gt;
+const compare$6 = compare_1;
+const gt$3 = (a, b, loose) => compare$6(a, b, loose) > 0;
+var gt_1 = gt$3;
 
-const lt = (a, b, loose) => compare_1(a, b, loose) < 0;
-var lt_1 = lt;
+const compare$5 = compare_1;
+const lt$2 = (a, b, loose) => compare$5(a, b, loose) < 0;
+var lt_1 = lt$2;
 
-const neq = (a, b, loose) => compare_1(a, b, loose) !== 0;
-var neq_1 = neq;
+const compare$4 = compare_1;
+const neq$1 = (a, b, loose) => compare$4(a, b, loose) !== 0;
+var neq_1 = neq$1;
 
-const gte = (a, b, loose) => compare_1(a, b, loose) >= 0;
-var gte_1 = gte;
+const compare$3 = compare_1;
+const gte$2 = (a, b, loose) => compare$3(a, b, loose) >= 0;
+var gte_1 = gte$2;
 
-const lte = (a, b, loose) => compare_1(a, b, loose) <= 0;
-var lte_1 = lte;
+const compare$2 = compare_1;
+const lte$2 = (a, b, loose) => compare$2(a, b, loose) <= 0;
+var lte_1 = lte$2;
 
-const cmp = (a, op, b, loose) => {
+const eq = eq_1;
+const neq = neq_1;
+const gt$2 = gt_1;
+const gte$1 = gte_1;
+const lt$1 = lt_1;
+const lte$1 = lte_1;
+
+const cmp$1 = (a, op, b, loose) => {
   switch (op) {
     case '===':
       if (typeof a === 'object')
@@ -8521,33 +8905,35 @@ const cmp = (a, op, b, loose) => {
     case '':
     case '=':
     case '==':
-      return eq_1(a, b, loose)
+      return eq(a, b, loose)
 
     case '!=':
-      return neq_1(a, b, loose)
+      return neq(a, b, loose)
 
     case '>':
-      return gt_1(a, b, loose)
+      return gt$2(a, b, loose)
 
     case '>=':
-      return gte_1(a, b, loose)
+      return gte$1(a, b, loose)
 
     case '<':
-      return lt_1(a, b, loose)
+      return lt$1(a, b, loose)
 
     case '<=':
-      return lte_1(a, b, loose)
+      return lte$1(a, b, loose)
 
     default:
       throw new TypeError(`Invalid operator: ${op}`)
   }
 };
-var cmp_1 = cmp;
+var cmp_1 = cmp$1;
 
-const {re: re$2, t: t$2} = re_1;
+const SemVer$6 = semver$1;
+const parse = parse_1;
+const {re: re$2, t: t$2} = re$5.exports;
 
 const coerce = (version, options) => {
-  if (version instanceof semver$1) {
+  if (version instanceof SemVer$6) {
     return version
   }
 
@@ -8590,7 +8976,7 @@ const coerce = (version, options) => {
   if (match === null)
     return null
 
-  return parse_1(`${match[2]}.${match[3] || '0'}.${match[4] || '0'}`, options)
+  return parse(`${match[2]}.${match[3] || '0'}.${match[4] || '0'}`, options)
 };
 var coerce_1 = coerce;
 
@@ -8602,15 +8988,15 @@ var iterator = function (Yallist) {
   };
 };
 
-var yallist = Yallist;
+var yallist = Yallist$1;
 
-Yallist.Node = Node;
-Yallist.create = Yallist;
+Yallist$1.Node = Node;
+Yallist$1.create = Yallist$1;
 
-function Yallist (list) {
+function Yallist$1 (list) {
   var self = this;
-  if (!(self instanceof Yallist)) {
-    self = new Yallist();
+  if (!(self instanceof Yallist$1)) {
+    self = new Yallist$1();
   }
 
   self.tail = null;
@@ -8630,7 +9016,7 @@ function Yallist (list) {
   return self
 }
 
-Yallist.prototype.removeNode = function (node) {
+Yallist$1.prototype.removeNode = function (node) {
   if (node.list !== this) {
     throw new Error('removing node which does not belong to this list')
   }
@@ -8661,7 +9047,7 @@ Yallist.prototype.removeNode = function (node) {
   return next
 };
 
-Yallist.prototype.unshiftNode = function (node) {
+Yallist$1.prototype.unshiftNode = function (node) {
   if (node === this.head) {
     return
   }
@@ -8684,7 +9070,7 @@ Yallist.prototype.unshiftNode = function (node) {
   this.length++;
 };
 
-Yallist.prototype.pushNode = function (node) {
+Yallist$1.prototype.pushNode = function (node) {
   if (node === this.tail) {
     return
   }
@@ -8707,21 +9093,21 @@ Yallist.prototype.pushNode = function (node) {
   this.length++;
 };
 
-Yallist.prototype.push = function () {
+Yallist$1.prototype.push = function () {
   for (var i = 0, l = arguments.length; i < l; i++) {
     push(this, arguments[i]);
   }
   return this.length
 };
 
-Yallist.prototype.unshift = function () {
+Yallist$1.prototype.unshift = function () {
   for (var i = 0, l = arguments.length; i < l; i++) {
     unshift(this, arguments[i]);
   }
   return this.length
 };
 
-Yallist.prototype.pop = function () {
+Yallist$1.prototype.pop = function () {
   if (!this.tail) {
     return undefined
   }
@@ -8737,7 +9123,7 @@ Yallist.prototype.pop = function () {
   return res
 };
 
-Yallist.prototype.shift = function () {
+Yallist$1.prototype.shift = function () {
   if (!this.head) {
     return undefined
   }
@@ -8753,7 +9139,7 @@ Yallist.prototype.shift = function () {
   return res
 };
 
-Yallist.prototype.forEach = function (fn, thisp) {
+Yallist$1.prototype.forEach = function (fn, thisp) {
   thisp = thisp || this;
   for (var walker = this.head, i = 0; walker !== null; i++) {
     fn.call(thisp, walker.value, i, this);
@@ -8761,7 +9147,7 @@ Yallist.prototype.forEach = function (fn, thisp) {
   }
 };
 
-Yallist.prototype.forEachReverse = function (fn, thisp) {
+Yallist$1.prototype.forEachReverse = function (fn, thisp) {
   thisp = thisp || this;
   for (var walker = this.tail, i = this.length - 1; walker !== null; i--) {
     fn.call(thisp, walker.value, i, this);
@@ -8769,7 +9155,7 @@ Yallist.prototype.forEachReverse = function (fn, thisp) {
   }
 };
 
-Yallist.prototype.get = function (n) {
+Yallist$1.prototype.get = function (n) {
   for (var i = 0, walker = this.head; walker !== null && i < n; i++) {
     // abort out of the list early if we hit a cycle
     walker = walker.next;
@@ -8779,7 +9165,7 @@ Yallist.prototype.get = function (n) {
   }
 };
 
-Yallist.prototype.getReverse = function (n) {
+Yallist$1.prototype.getReverse = function (n) {
   for (var i = 0, walker = this.tail; walker !== null && i < n; i++) {
     // abort out of the list early if we hit a cycle
     walker = walker.prev;
@@ -8789,9 +9175,9 @@ Yallist.prototype.getReverse = function (n) {
   }
 };
 
-Yallist.prototype.map = function (fn, thisp) {
+Yallist$1.prototype.map = function (fn, thisp) {
   thisp = thisp || this;
-  var res = new Yallist();
+  var res = new Yallist$1();
   for (var walker = this.head; walker !== null;) {
     res.push(fn.call(thisp, walker.value, this));
     walker = walker.next;
@@ -8799,9 +9185,9 @@ Yallist.prototype.map = function (fn, thisp) {
   return res
 };
 
-Yallist.prototype.mapReverse = function (fn, thisp) {
+Yallist$1.prototype.mapReverse = function (fn, thisp) {
   thisp = thisp || this;
-  var res = new Yallist();
+  var res = new Yallist$1();
   for (var walker = this.tail; walker !== null;) {
     res.push(fn.call(thisp, walker.value, this));
     walker = walker.prev;
@@ -8809,7 +9195,7 @@ Yallist.prototype.mapReverse = function (fn, thisp) {
   return res
 };
 
-Yallist.prototype.reduce = function (fn, initial) {
+Yallist$1.prototype.reduce = function (fn, initial) {
   var acc;
   var walker = this.head;
   if (arguments.length > 1) {
@@ -8829,7 +9215,7 @@ Yallist.prototype.reduce = function (fn, initial) {
   return acc
 };
 
-Yallist.prototype.reduceReverse = function (fn, initial) {
+Yallist$1.prototype.reduceReverse = function (fn, initial) {
   var acc;
   var walker = this.tail;
   if (arguments.length > 1) {
@@ -8849,7 +9235,7 @@ Yallist.prototype.reduceReverse = function (fn, initial) {
   return acc
 };
 
-Yallist.prototype.toArray = function () {
+Yallist$1.prototype.toArray = function () {
   var arr = new Array(this.length);
   for (var i = 0, walker = this.head; walker !== null; i++) {
     arr[i] = walker.value;
@@ -8858,7 +9244,7 @@ Yallist.prototype.toArray = function () {
   return arr
 };
 
-Yallist.prototype.toArrayReverse = function () {
+Yallist$1.prototype.toArrayReverse = function () {
   var arr = new Array(this.length);
   for (var i = 0, walker = this.tail; walker !== null; i++) {
     arr[i] = walker.value;
@@ -8867,7 +9253,7 @@ Yallist.prototype.toArrayReverse = function () {
   return arr
 };
 
-Yallist.prototype.slice = function (from, to) {
+Yallist$1.prototype.slice = function (from, to) {
   to = to || this.length;
   if (to < 0) {
     to += this.length;
@@ -8876,7 +9262,7 @@ Yallist.prototype.slice = function (from, to) {
   if (from < 0) {
     from += this.length;
   }
-  var ret = new Yallist();
+  var ret = new Yallist$1();
   if (to < from || to < 0) {
     return ret
   }
@@ -8895,7 +9281,7 @@ Yallist.prototype.slice = function (from, to) {
   return ret
 };
 
-Yallist.prototype.sliceReverse = function (from, to) {
+Yallist$1.prototype.sliceReverse = function (from, to) {
   to = to || this.length;
   if (to < 0) {
     to += this.length;
@@ -8904,7 +9290,7 @@ Yallist.prototype.sliceReverse = function (from, to) {
   if (from < 0) {
     from += this.length;
   }
-  var ret = new Yallist();
+  var ret = new Yallist$1();
   if (to < from || to < 0) {
     return ret
   }
@@ -8923,7 +9309,7 @@ Yallist.prototype.sliceReverse = function (from, to) {
   return ret
 };
 
-Yallist.prototype.splice = function (start, deleteCount, ...nodes) {
+Yallist$1.prototype.splice = function (start, deleteCount, ...nodes) {
   if (start > this.length) {
     start = this.length - 1;
   }
@@ -8954,7 +9340,7 @@ Yallist.prototype.splice = function (start, deleteCount, ...nodes) {
   return ret;
 };
 
-Yallist.prototype.reverse = function () {
+Yallist$1.prototype.reverse = function () {
   var head = this.head;
   var tail = this.tail;
   for (var walker = head; walker !== null; walker = walker.prev) {
@@ -9025,11 +9411,11 @@ function Node (value, prev, next, list) {
 
 try {
   // add if support for Symbol.iterator is present
-  iterator(Yallist);
+  iterator(Yallist$1);
 } catch (er) {}
 
 // A linked list to keep track of recently-used-ness
-
+const Yallist = yallist;
 
 const MAX = Symbol('max');
 const LENGTH = Symbol('length');
@@ -9161,7 +9547,7 @@ class LRUCache {
     }
 
     this[CACHE] = new Map(); // hash of items by key
-    this[LRU_LIST] = new yallist(); // list of items in order of use recency
+    this[LRU_LIST] = new Yallist(); // list of items in order of use recency
     this[LENGTH] = 0; // length of items in the list
   }
 
@@ -9362,22 +9748,22 @@ const forEachStep = (self, fn, node, thisp) => {
 var lruCache = LRUCache;
 
 // hoisted class for cyclic dependency
-class Range {
+class Range$a {
   constructor (range, options) {
-    options = parseOptions_1(options);
+    options = parseOptions$1(options);
 
-    if (range instanceof Range) {
+    if (range instanceof Range$a) {
       if (
         range.loose === !!options.loose &&
         range.includePrerelease === !!options.includePrerelease
       ) {
         return range
       } else {
-        return new Range(range.raw, options)
+        return new Range$a(range.raw, options)
       }
     }
 
-    if (range instanceof comparator) {
+    if (range instanceof Comparator$3) {
       // just put it in the set and return
       this.raw = range.value;
       this.set = [[range]];
@@ -9454,10 +9840,10 @@ class Range {
     // `1.2.3 - 1.2.4` => `>=1.2.3 <=1.2.4`
     const hr = loose ? re$1[t$1.HYPHENRANGELOOSE] : re$1[t$1.HYPHENRANGE];
     range = range.replace(hr, hyphenReplace(this.options.includePrerelease));
-    debug_1('hyphen replace', range);
+    debug$1('hyphen replace', range);
     // `> 1.2.3 < 1.2.5` => `>1.2.3 <1.2.5`
     range = range.replace(re$1[t$1.COMPARATORTRIM], comparatorTrimReplace);
-    debug_1('comparator trim', range, re$1[t$1.COMPARATORTRIM]);
+    debug$1('comparator trim', range, re$1[t$1.COMPARATORTRIM]);
 
     // `~ 1.2.3` => `~1.2.3`
     range = range.replace(re$1[t$1.TILDETRIM], tildeTrimReplace);
@@ -9481,7 +9867,7 @@ class Range {
       .map(comp => replaceGTE0(comp, this.options))
       // in loose mode, throw out any that are not valid comparators
       .filter(this.options.loose ? comp => !!comp.match(compRe) : () => true)
-      .map(comp => new comparator(comp, this.options));
+      .map(comp => new Comparator$3(comp, this.options));
 
     // if any comparators are the null set, then replace with JUST null set
     // if more than one comparator, remove any * comparators
@@ -9502,7 +9888,7 @@ class Range {
   }
 
   intersects (range, options) {
-    if (!(range instanceof Range)) {
+    if (!(range instanceof Range$a)) {
       throw new TypeError('a Range is required')
     }
 
@@ -9531,7 +9917,7 @@ class Range {
 
     if (typeof version === 'string') {
       try {
-        version = new semver$1(version, this.options);
+        version = new SemVer$5(version, this.options);
       } catch (er) {
         return false
       }
@@ -9545,22 +9931,22 @@ class Range {
     return false
   }
 }
-var range = Range;
+var range = Range$a;
 
+const LRU = lruCache;
+const cache = new LRU({ max: 1000 });
 
-const cache = new lruCache({ max: 1000 });
-
-
-
-
-
+const parseOptions$1 = parseOptions_1;
+const Comparator$3 = comparator;
+const debug$1 = debug_1;
+const SemVer$5 = semver$1;
 const {
   re: re$1,
   t: t$1,
   comparatorTrimReplace,
   tildeTrimReplace,
   caretTrimReplace
-} = re_1;
+} = re$5.exports;
 
 const isNullSet = c => c.value === '<0.0.0-0';
 const isAny = c => c.value === '';
@@ -9587,15 +9973,15 @@ const isSatisfiable = (comparators, options) => {
 // already replaced the hyphen ranges
 // turn into a set of JUST comparators.
 const parseComparator = (comp, options) => {
-  debug_1('comp', comp, options);
+  debug$1('comp', comp, options);
   comp = replaceCarets(comp, options);
-  debug_1('caret', comp);
+  debug$1('caret', comp);
   comp = replaceTildes(comp, options);
-  debug_1('tildes', comp);
+  debug$1('tildes', comp);
   comp = replaceXRanges(comp, options);
-  debug_1('xrange', comp);
+  debug$1('xrange', comp);
   comp = replaceStars(comp, options);
-  debug_1('stars', comp);
+  debug$1('stars', comp);
   return comp
 };
 
@@ -9615,7 +10001,7 @@ const replaceTildes = (comp, options) =>
 const replaceTilde = (comp, options) => {
   const r = options.loose ? re$1[t$1.TILDELOOSE] : re$1[t$1.TILDE];
   return comp.replace(r, (_, M, m, p, pr) => {
-    debug_1('tilde', comp, _, M, m, p, pr);
+    debug$1('tilde', comp, _, M, m, p, pr);
     let ret;
 
     if (isX(M)) {
@@ -9626,7 +10012,7 @@ const replaceTilde = (comp, options) => {
       // ~1.2 == >=1.2.0 <1.3.0-0
       ret = `>=${M}.${m}.0 <${M}.${+m + 1}.0-0`;
     } else if (pr) {
-      debug_1('replaceTilde pr', pr);
+      debug$1('replaceTilde pr', pr);
       ret = `>=${M}.${m}.${p}-${pr
       } <${M}.${+m + 1}.0-0`;
     } else {
@@ -9635,7 +10021,7 @@ const replaceTilde = (comp, options) => {
       } <${M}.${+m + 1}.0-0`;
     }
 
-    debug_1('tilde return', ret);
+    debug$1('tilde return', ret);
     return ret
   })
 };
@@ -9652,11 +10038,11 @@ const replaceCarets = (comp, options) =>
   }).join(' ');
 
 const replaceCaret = (comp, options) => {
-  debug_1('caret', comp, options);
+  debug$1('caret', comp, options);
   const r = options.loose ? re$1[t$1.CARETLOOSE] : re$1[t$1.CARET];
   const z = options.includePrerelease ? '-0' : '';
   return comp.replace(r, (_, M, m, p, pr) => {
-    debug_1('caret', comp, _, M, m, p, pr);
+    debug$1('caret', comp, _, M, m, p, pr);
     let ret;
 
     if (isX(M)) {
@@ -9670,7 +10056,7 @@ const replaceCaret = (comp, options) => {
         ret = `>=${M}.${m}.0${z} <${+M + 1}.0.0-0`;
       }
     } else if (pr) {
-      debug_1('replaceCaret pr', pr);
+      debug$1('replaceCaret pr', pr);
       if (M === '0') {
         if (m === '0') {
           ret = `>=${M}.${m}.${p}-${pr
@@ -9684,7 +10070,7 @@ const replaceCaret = (comp, options) => {
         } <${+M + 1}.0.0-0`;
       }
     } else {
-      debug_1('no pr');
+      debug$1('no pr');
       if (M === '0') {
         if (m === '0') {
           ret = `>=${M}.${m}.${p
@@ -9699,13 +10085,13 @@ const replaceCaret = (comp, options) => {
       }
     }
 
-    debug_1('caret return', ret);
+    debug$1('caret return', ret);
     return ret
   })
 };
 
 const replaceXRanges = (comp, options) => {
-  debug_1('replaceXRanges', comp, options);
+  debug$1('replaceXRanges', comp, options);
   return comp.split(/\s+/).map((comp) => {
     return replaceXRange(comp, options)
   }).join(' ')
@@ -9715,7 +10101,7 @@ const replaceXRange = (comp, options) => {
   comp = comp.trim();
   const r = options.loose ? re$1[t$1.XRANGELOOSE] : re$1[t$1.XRANGE];
   return comp.replace(r, (ret, gtlt, M, m, p, pr) => {
-    debug_1('xRange', comp, ret, gtlt, M, m, p, pr);
+    debug$1('xRange', comp, ret, gtlt, M, m, p, pr);
     const xM = isX(M);
     const xm = xM || isX(m);
     const xp = xm || isX(p);
@@ -9779,7 +10165,7 @@ const replaceXRange = (comp, options) => {
       } <${M}.${+m + 1}.0-0`;
     }
 
-    debug_1('xRange return', ret);
+    debug$1('xRange return', ret);
 
     return ret
   })
@@ -9788,13 +10174,13 @@ const replaceXRange = (comp, options) => {
 // Because * is AND-ed with everything else in the comparator,
 // and '' means "any version", just remove the *s entirely.
 const replaceStars = (comp, options) => {
-  debug_1('replaceStars', comp, options);
+  debug$1('replaceStars', comp, options);
   // Looseness is ignored here.  star is always as loose as it gets!
   return comp.trim().replace(re$1[t$1.STAR], '')
 };
 
 const replaceGTE0 = (comp, options) => {
-  debug_1('replaceGTE0', comp, options);
+  debug$1('replaceGTE0', comp, options);
   return comp.trim()
     .replace(re$1[options.includePrerelease ? t$1.GTE0PRE : t$1.GTE0], '')
 };
@@ -9850,8 +10236,8 @@ const testSet = (set, version, options) => {
     // However, `1.2.4-alpha.notready` should NOT be allowed,
     // even though it's within the range set by the comparators.
     for (let i = 0; i < set.length; i++) {
-      debug_1(set[i].semver);
-      if (set[i].semver === comparator.ANY) {
+      debug$1(set[i].semver);
+      if (set[i].semver === Comparator$3.ANY) {
         continue
       }
 
@@ -9874,14 +10260,14 @@ const testSet = (set, version, options) => {
 
 const ANY$2 = Symbol('SemVer ANY');
 // hoisted class for cyclic dependency
-class Comparator {
+class Comparator$2 {
   static get ANY () {
     return ANY$2
   }
   constructor (comp, options) {
-    options = parseOptions_1(options);
+    options = parseOptions(options);
 
-    if (comp instanceof Comparator) {
+    if (comp instanceof Comparator$2) {
       if (comp.loose === !!options.loose) {
         return comp
       } else {
@@ -9889,7 +10275,7 @@ class Comparator {
       }
     }
 
-    debug_1('comparator', comp, options);
+    debug('comparator', comp, options);
     this.options = options;
     this.loose = !!options.loose;
     this.parse(comp);
@@ -9900,7 +10286,7 @@ class Comparator {
       this.value = this.operator + this.semver.version;
     }
 
-    debug_1('comp', this);
+    debug('comp', this);
   }
 
   parse (comp) {
@@ -9920,7 +10306,7 @@ class Comparator {
     if (!m[2]) {
       this.semver = ANY$2;
     } else {
-      this.semver = new semver$1(m[2], this.options.loose);
+      this.semver = new SemVer$4(m[2], this.options.loose);
     }
   }
 
@@ -9929,7 +10315,7 @@ class Comparator {
   }
 
   test (version) {
-    debug_1('Comparator.test', version, this.options.loose);
+    debug('Comparator.test', version, this.options.loose);
 
     if (this.semver === ANY$2 || version === ANY$2) {
       return true
@@ -9937,17 +10323,17 @@ class Comparator {
 
     if (typeof version === 'string') {
       try {
-        version = new semver$1(version, this.options);
+        version = new SemVer$4(version, this.options);
       } catch (er) {
         return false
       }
     }
 
-    return cmp_1(version, this.operator, this.semver, this.options)
+    return cmp(version, this.operator, this.semver, this.options)
   }
 
   intersects (comp, options) {
-    if (!(comp instanceof Comparator)) {
+    if (!(comp instanceof Comparator$2)) {
       throw new TypeError('a Comparator is required')
     }
 
@@ -9962,12 +10348,12 @@ class Comparator {
       if (this.value === '') {
         return true
       }
-      return new range(comp.value, options).test(this.value)
+      return new Range$9(comp.value, options).test(this.value)
     } else if (comp.operator === '') {
       if (comp.value === '') {
         return true
       }
-      return new range(this.value, options).test(comp.semver)
+      return new Range$9(this.value, options).test(comp.semver)
     }
 
     const sameDirectionIncreasing =
@@ -9981,11 +10367,11 @@ class Comparator {
       (this.operator === '>=' || this.operator === '<=') &&
       (comp.operator === '>=' || comp.operator === '<=');
     const oppositeDirectionsLessThan =
-      cmp_1(this.semver, '<', comp.semver, options) &&
+      cmp(this.semver, '<', comp.semver, options) &&
       (this.operator === '>=' || this.operator === '>') &&
         (comp.operator === '<=' || comp.operator === '<');
     const oppositeDirectionsGreaterThan =
-      cmp_1(this.semver, '>', comp.semver, options) &&
+      cmp(this.semver, '>', comp.semver, options) &&
       (this.operator === '<=' || this.operator === '<') &&
         (comp.operator === '>=' || comp.operator === '>');
 
@@ -9999,34 +10385,44 @@ class Comparator {
   }
 }
 
-var comparator = Comparator;
+var comparator = Comparator$2;
 
+const parseOptions = parseOptions_1;
+const {re, t} = re$5.exports;
+const cmp = cmp_1;
+const debug = debug_1;
+const SemVer$4 = semver$1;
+const Range$9 = range;
 
-const {re, t} = re_1;
-
-const satisfies = (version, range$1, options) => {
+const Range$8 = range;
+const satisfies$3 = (version, range, options) => {
   try {
-    range$1 = new range(range$1, options);
+    range = new Range$8(range, options);
   } catch (er) {
     return false
   }
-  return range$1.test(version)
+  return range.test(version)
 };
-var satisfies_1 = satisfies;
+var satisfies_1 = satisfies$3;
+
+const Range$7 = range;
 
 // Mostly just for testing and legacy API reasons
-const toComparators = (range$1, options) =>
-  new range(range$1, options).set
+const toComparators = (range, options) =>
+  new Range$7(range, options).set
     .map(comp => comp.map(c => c.value).join(' ').trim().split(' '));
 
 var toComparators_1 = toComparators;
 
-const maxSatisfying = (versions, range$1, options) => {
+const SemVer$3 = semver$1;
+const Range$6 = range;
+
+const maxSatisfying = (versions, range, options) => {
   let max = null;
   let maxSV = null;
   let rangeObj = null;
   try {
-    rangeObj = new range(range$1, options);
+    rangeObj = new Range$6(range, options);
   } catch (er) {
     return null
   }
@@ -10036,7 +10432,7 @@ const maxSatisfying = (versions, range$1, options) => {
       if (!max || maxSV.compare(v) === -1) {
         // compare(max, v, true)
         max = v;
-        maxSV = new semver$1(max, options);
+        maxSV = new SemVer$3(max, options);
       }
     }
   });
@@ -10044,12 +10440,14 @@ const maxSatisfying = (versions, range$1, options) => {
 };
 var maxSatisfying_1 = maxSatisfying;
 
-const minSatisfying = (versions, range$1, options) => {
+const SemVer$2 = semver$1;
+const Range$5 = range;
+const minSatisfying = (versions, range, options) => {
   let min = null;
   let minSV = null;
   let rangeObj = null;
   try {
-    rangeObj = new range(range$1, options);
+    rangeObj = new Range$5(range, options);
   } catch (er) {
     return null
   }
@@ -10059,7 +10457,7 @@ const minSatisfying = (versions, range$1, options) => {
       if (!min || minSV.compare(v) === 1) {
         // compare(min, v, true)
         min = v;
-        minSV = new semver$1(min, options);
+        minSV = new SemVer$2(min, options);
       }
     }
   });
@@ -10067,27 +10465,31 @@ const minSatisfying = (versions, range$1, options) => {
 };
 var minSatisfying_1 = minSatisfying;
 
-const minVersion = (range$1, loose) => {
-  range$1 = new range(range$1, loose);
+const SemVer$1 = semver$1;
+const Range$4 = range;
+const gt$1 = gt_1;
 
-  let minver = new semver$1('0.0.0');
-  if (range$1.test(minver)) {
+const minVersion = (range, loose) => {
+  range = new Range$4(range, loose);
+
+  let minver = new SemVer$1('0.0.0');
+  if (range.test(minver)) {
     return minver
   }
 
-  minver = new semver$1('0.0.0-0');
-  if (range$1.test(minver)) {
+  minver = new SemVer$1('0.0.0-0');
+  if (range.test(minver)) {
     return minver
   }
 
   minver = null;
-  for (let i = 0; i < range$1.set.length; ++i) {
-    const comparators = range$1.set[i];
+  for (let i = 0; i < range.set.length; ++i) {
+    const comparators = range.set[i];
 
     let setMin = null;
     comparators.forEach((comparator) => {
       // Clone to avoid manipulating the comparator's semver object.
-      const compver = new semver$1(comparator.semver.version);
+      const compver = new SemVer$1(comparator.semver.version);
       switch (comparator.operator) {
         case '>':
           if (compver.prerelease.length === 0) {
@@ -10099,7 +10501,7 @@ const minVersion = (range$1, loose) => {
           /* fallthrough */
         case '':
         case '>=':
-          if (!setMin || gt_1(compver, setMin)) {
+          if (!setMin || gt$1(compver, setMin)) {
             setMin = compver;
           }
           break
@@ -10112,11 +10514,11 @@ const minVersion = (range$1, loose) => {
           throw new Error(`Unexpected operation: ${comparator.operator}`)
       }
     });
-    if (setMin && (!minver || gt_1(minver, setMin)))
+    if (setMin && (!minver || gt$1(minver, setMin)))
       minver = setMin;
   }
 
-  if (minver && range$1.test(minver)) {
+  if (minver && range.test(minver)) {
     return minver
   }
 
@@ -10124,42 +10526,45 @@ const minVersion = (range$1, loose) => {
 };
 var minVersion_1 = minVersion;
 
-const validRange = (range$1, options) => {
+const Range$3 = range;
+const validRange = (range, options) => {
   try {
     // Return '*' instead of '' so that truthiness works.
     // This will throw if it's invalid anyway
-    return new range(range$1, options).range || '*'
+    return new Range$3(range, options).range || '*'
   } catch (er) {
     return null
   }
 };
 var valid = validRange;
 
-const {ANY: ANY$1} = comparator;
+const SemVer = semver$1;
+const Comparator$1 = comparator;
+const {ANY: ANY$1} = Comparator$1;
+const Range$2 = range;
+const satisfies$2 = satisfies_1;
+const gt = gt_1;
+const lt = lt_1;
+const lte = lte_1;
+const gte = gte_1;
 
-
-
-
-
-
-
-const outside = (version, range$1, hilo, options) => {
-  version = new semver$1(version, options);
-  range$1 = new range(range$1, options);
+const outside$2 = (version, range, hilo, options) => {
+  version = new SemVer(version, options);
+  range = new Range$2(range, options);
 
   let gtfn, ltefn, ltfn, comp, ecomp;
   switch (hilo) {
     case '>':
-      gtfn = gt_1;
-      ltefn = lte_1;
-      ltfn = lt_1;
+      gtfn = gt;
+      ltefn = lte;
+      ltfn = lt;
       comp = '>';
       ecomp = '>=';
       break
     case '<':
-      gtfn = lt_1;
-      ltefn = gte_1;
-      ltfn = gt_1;
+      gtfn = lt;
+      ltefn = gte;
+      ltfn = gt;
       comp = '<';
       ecomp = '<=';
       break
@@ -10168,29 +10573,29 @@ const outside = (version, range$1, hilo, options) => {
   }
 
   // If it satisfies the range it is not outside
-  if (satisfies_1(version, range$1, options)) {
+  if (satisfies$2(version, range, options)) {
     return false
   }
 
   // From now on, variable terms are as if we're in "gtr" mode.
   // but note that everything is flipped for the "ltr" function.
 
-  for (let i = 0; i < range$1.set.length; ++i) {
-    const comparators = range$1.set[i];
+  for (let i = 0; i < range.set.length; ++i) {
+    const comparators = range.set[i];
 
     let high = null;
     let low = null;
 
-    comparators.forEach((comparator$1) => {
-      if (comparator$1.semver === ANY$1) {
-        comparator$1 = new comparator('>=0.0.0');
+    comparators.forEach((comparator) => {
+      if (comparator.semver === ANY$1) {
+        comparator = new Comparator$1('>=0.0.0');
       }
-      high = high || comparator$1;
-      low = low || comparator$1;
-      if (gtfn(comparator$1.semver, high.semver, options)) {
-        high = comparator$1;
-      } else if (ltfn(comparator$1.semver, low.semver, options)) {
-        low = comparator$1;
+      high = high || comparator;
+      low = low || comparator;
+      if (gtfn(comparator.semver, high.semver, options)) {
+        high = comparator;
+      } else if (ltfn(comparator.semver, low.semver, options)) {
+        low = comparator;
       }
     });
 
@@ -10212,20 +10617,22 @@ const outside = (version, range$1, hilo, options) => {
   return true
 };
 
-var outside_1 = outside;
+var outside_1 = outside$2;
 
 // Determine if version is greater than all the versions possible in the range.
-
-const gtr = (version, range, options) => outside_1(version, range, '>', options);
+const outside$1 = outside_1;
+const gtr = (version, range, options) => outside$1(version, range, '>', options);
 var gtr_1 = gtr;
 
+const outside = outside_1;
 // Determine if version is less than all the versions possible in the range
-const ltr = (version, range, options) => outside_1(version, range, '<', options);
+const ltr = (version, range, options) => outside(version, range, '<', options);
 var ltr_1 = ltr;
 
+const Range$1 = range;
 const intersects = (r1, r2, options) => {
-  r1 = new range(r1, options);
-  r2 = new range(r2, options);
+  r1 = new Range$1(r1, options);
+  r2 = new Range$1(r2, options);
   return r1.intersects(r2)
 };
 var intersects_1 = intersects;
@@ -10233,15 +10640,15 @@ var intersects_1 = intersects;
 // given a set of versions and a range, create a "simplified" range
 // that includes the same versions that the original range does
 // If the original range is shorter than the simplified one, return that.
-
-
+const satisfies$1 = satisfies_1;
+const compare$1 = compare_1;
 var simplify = (versions, range, options) => {
   const set = [];
   let min = null;
   let prev = null;
-  const v = versions.sort((a, b) => compare_1(a, b, options));
+  const v = versions.sort((a, b) => compare$1(a, b, options));
   for (const version of v) {
-    const included = satisfies_1(version, range, options);
+    const included = satisfies$1(version, range, options);
     if (included) {
       prev = version;
       if (!min)
@@ -10275,22 +10682,31 @@ var simplify = (versions, range, options) => {
   return simplified.length < original.length ? simplified : range
 };
 
-const { ANY } = comparator;
-
-
+const Range = range;
+const Comparator = comparator;
+const { ANY } = Comparator;
+const satisfies = satisfies_1;
+const compare = compare_1;
 
 // Complex range `r1 || r2 || ...` is a subset of `R1 || R2 || ...` iff:
-// - Every simple range `r1, r2, ...` is a subset of some `R1, R2, ...`
+// - Every simple range `r1, r2, ...` is a null set, OR
+// - Every simple range `r1, r2, ...` which is not a null set is a subset of
+//   some `R1, R2, ...`
 //
 // Simple range `c1 c2 ...` is a subset of simple range `C1 C2 ...` iff:
 // - If c is only the ANY comparator
 //   - If C is only the ANY comparator, return true
-//   - Else return false
+//   - Else if in prerelease mode, return false
+//   - else replace c with `[>=0.0.0]`
+// - If C is only the ANY comparator
+//   - if in prerelease mode, return true
+//   - else replace C with `[>=0.0.0]`
 // - Let EQ be the set of = comparators in c
 // - If EQ is more than one, return true (null set)
 // - Let GT be the highest > or >= comparator in c
 // - Let LT be the lowest < or <= comparator in c
 // - If GT and LT, and GT.semver > LT.semver, return true (null set)
+// - If any C is a = range, and GT or LT are set, return false
 // - If EQ
 //   - If GT, and EQ does not satisfy GT, return true (null set)
 //   - If LT, and EQ does not satisfy LT, return true (null set)
@@ -10299,18 +10715,21 @@ const { ANY } = comparator;
 // - If GT
 //   - If GT.semver is lower than any > or >= comp in C, return false
 //   - If GT is >=, and GT.semver does not satisfy every C, return false
+//   - If GT.semver has a prerelease, and not in prerelease mode
+//     - If no C has a prerelease and the GT.semver tuple, return false
 // - If LT
 //   - If LT.semver is greater than any < or <= comp in C, return false
 //   - If LT is <=, and LT.semver does not satisfy every C, return false
-// - If any C is a = range, and GT or LT are set, return false
+//   - If GT.semver has a prerelease, and not in prerelease mode
+//     - If no C has a prerelease and the LT.semver tuple, return false
 // - Else return true
 
-const subset = (sub, dom, options) => {
+const subset = (sub, dom, options = {}) => {
   if (sub === dom)
     return true
 
-  sub = new range(sub, options);
-  dom = new range(dom, options);
+  sub = new Range(sub, options);
+  dom = new Range(dom, options);
   let sawNonNull = false;
 
   OUTER: for (const simpleSub of sub.set) {
@@ -10334,8 +10753,21 @@ const simpleSubset = (sub, dom, options) => {
   if (sub === dom)
     return true
 
-  if (sub.length === 1 && sub[0].semver === ANY)
-    return dom.length === 1 && dom[0].semver === ANY
+  if (sub.length === 1 && sub[0].semver === ANY) {
+    if (dom.length === 1 && dom[0].semver === ANY)
+      return true
+    else if (options.includePrerelease)
+      sub = [ new Comparator('>=0.0.0-0') ];
+    else
+      sub = [ new Comparator('>=0.0.0') ];
+  }
+
+  if (dom.length === 1 && dom[0].semver === ANY) {
+    if (options.includePrerelease)
+      return true
+    else
+      dom = [ new Comparator('>=0.0.0') ];
+  }
 
   const eqSet = new Set();
   let gt, lt;
@@ -10353,7 +10785,7 @@ const simpleSubset = (sub, dom, options) => {
 
   let gtltComp;
   if (gt && lt) {
-    gtltComp = compare_1(gt.semver, lt.semver, options);
+    gtltComp = compare(gt.semver, lt.semver, options);
     if (gtltComp > 0)
       return null
     else if (gtltComp === 0 && (gt.operator !== '>=' || lt.operator !== '<='))
@@ -10362,14 +10794,14 @@ const simpleSubset = (sub, dom, options) => {
 
   // will iterate one or zero times
   for (const eq of eqSet) {
-    if (gt && !satisfies_1(eq, String(gt), options))
+    if (gt && !satisfies(eq, String(gt), options))
       return null
 
-    if (lt && !satisfies_1(eq, String(lt), options))
+    if (lt && !satisfies(eq, String(lt), options))
       return null
 
     for (const c of dom) {
-      if (!satisfies_1(eq, String(c), options))
+      if (!satisfies(eq, String(c), options))
         return false
     }
 
@@ -10378,23 +10810,53 @@ const simpleSubset = (sub, dom, options) => {
 
   let higher, lower;
   let hasDomLT, hasDomGT;
+  // if the subset has a prerelease, we need a comparator in the superset
+  // with the same tuple and a prerelease, or it's not a subset
+  let needDomLTPre = lt &&
+    !options.includePrerelease &&
+    lt.semver.prerelease.length ? lt.semver : false;
+  let needDomGTPre = gt &&
+    !options.includePrerelease &&
+    gt.semver.prerelease.length ? gt.semver : false;
+  // exception: <1.2.3-0 is the same as <1.2.3
+  if (needDomLTPre && needDomLTPre.prerelease.length === 1 &&
+      lt.operator === '<' && needDomLTPre.prerelease[0] === 0) {
+    needDomLTPre = false;
+  }
+
   for (const c of dom) {
     hasDomGT = hasDomGT || c.operator === '>' || c.operator === '>=';
     hasDomLT = hasDomLT || c.operator === '<' || c.operator === '<=';
     if (gt) {
+      if (needDomGTPre) {
+        if (c.semver.prerelease && c.semver.prerelease.length &&
+            c.semver.major === needDomGTPre.major &&
+            c.semver.minor === needDomGTPre.minor &&
+            c.semver.patch === needDomGTPre.patch) {
+          needDomGTPre = false;
+        }
+      }
       if (c.operator === '>' || c.operator === '>=') {
         higher = higherGT(gt, c, options);
         if (higher === c && higher !== gt)
           return false
-      } else if (gt.operator === '>=' && !satisfies_1(gt.semver, String(c), options))
+      } else if (gt.operator === '>=' && !satisfies(gt.semver, String(c), options))
         return false
     }
     if (lt) {
+      if (needDomLTPre) {
+        if (c.semver.prerelease && c.semver.prerelease.length &&
+            c.semver.major === needDomLTPre.major &&
+            c.semver.minor === needDomLTPre.minor &&
+            c.semver.patch === needDomLTPre.patch) {
+          needDomLTPre = false;
+        }
+      }
       if (c.operator === '<' || c.operator === '<=') {
         lower = lowerLT(lt, c, options);
         if (lower === c && lower !== lt)
           return false
-      } else if (lt.operator === '<=' && !satisfies_1(lt.semver, String(c), options))
+      } else if (lt.operator === '<=' && !satisfies(lt.semver, String(c), options))
         return false
     }
     if (!c.operator && (lt || gt) && gtltComp !== 0)
@@ -10410,6 +10872,12 @@ const simpleSubset = (sub, dom, options) => {
   if (lt && hasDomGT && !gt && gtltComp !== 0)
     return false
 
+  // we needed a prerelease range in a specific tuple, but didn't get one
+  // then this isn't a subset.  eg >=1.2.3-pre is not a subset of >=1.0.0,
+  // because it includes prereleases in the 1.2.3 tuple
+  if (needDomGTPre || needDomLTPre)
+    return false
+
   return true
 };
 
@@ -10417,7 +10885,7 @@ const simpleSubset = (sub, dom, options) => {
 const higherGT = (a, b, options) => {
   if (!a)
     return b
-  const comp = compare_1(a.semver, b.semver, options);
+  const comp = compare(a.semver, b.semver, options);
   return comp > 0 ? a
     : comp < 0 ? b
     : b.operator === '>' && a.operator === '>=' ? b
@@ -10428,7 +10896,7 @@ const higherGT = (a, b, options) => {
 const lowerLT = (a, b, options) => {
   if (!a)
     return b
-  const comp = compare_1(a.semver, b.semver, options);
+  const comp = compare(a.semver, b.semver, options);
   return comp < 0 ? a
     : comp > 0 ? b
     : b.operator === '<' && a.operator === '<=' ? b
@@ -10438,11 +10906,11 @@ const lowerLT = (a, b, options) => {
 var subset_1 = subset;
 
 // just pre-load all the stuff that index.js lazily exports
-
+const internalRe = re$5.exports;
 var semver = {
-  re: re_1.re,
-  src: re_1.src,
-  tokens: re_1.t,
+  re: internalRe.re,
+  src: internalRe.src,
+  tokens: internalRe.t,
   SEMVER_SPEC_VERSION: constants.SEMVER_SPEC_VERSION,
   SemVer: semver$1,
   compareIdentifiers: identifiers.compareIdentifiers,
@@ -10491,244 +10959,220 @@ var Result;
     Result[Result["UnknownEvent"] = 0] = "UnknownEvent";
     Result[Result["UnknownMergeMethod"] = 1] = "UnknownMergeMethod";
     Result[Result["ActorNotAllowed"] = 2] = "ActorNotAllowed";
-    Result[Result["FileNotAllowed"] = 3] = "FileNotAllowed";
-    Result[Result["UnexpectedChanges"] = 4] = "UnexpectedChanges";
-    Result[Result["UnexpectedPropertyChange"] = 5] = "UnexpectedPropertyChange";
-    Result[Result["VersionChangeNotAllowed"] = 6] = "VersionChangeNotAllowed";
-    Result[Result["PRNotOpen"] = 7] = "PRNotOpen";
-    Result[Result["Success"] = 8] = "Success";
+    Result[Result["NoChanges"] = 3] = "NoChanges";
+    Result[Result["FileNotAllowed"] = 4] = "FileNotAllowed";
+    Result[Result["UnexpectedChanges"] = 5] = "UnexpectedChanges";
+    Result[Result["UnexpectedPropertyChange"] = 6] = "UnexpectedPropertyChange";
+    Result[Result["VersionChangeNotAllowed"] = 7] = "VersionChangeNotAllowed";
+    Result[Result["PRNotOpen"] = 8] = "PRNotOpen";
+    Result[Result["Success"] = 9] = "Success";
 })(Result || (Result = {}));
 
-var semverRegex = /^([~^]?)[0-9]+\.[0-9]+\.[0-9]+(-.+)?$/;
-function run() {
-    return __awaiter(this, void 0, void 0, function () {
-        var context, token, mergeMethod, mergeAuthorEmail, allowedActors, allowedUpdateTypes, packageBlockList, payload, pr, Octokit, octokit, readPackageJson, enableAutoMerge, getCommit, getPR, validVersionChange, commit, onlyPackageJsonChanged, packageJsonBase, packageJsonPr, diff, allowedPropsChanges, allowedChange, result;
-        var _this = this;
-        return __generator(this, function (_a) {
-            switch (_a.label) {
-                case 0:
-                    core.info('Starting');
-                    context = github.context;
-                    core.debug(JSON.stringify(context, null, 2));
-                    if (!['pull_request', 'pull_request_target'].includes(github.context.eventName)) {
-                        core.error("Unsupported event name: " + github.context.eventName);
-                        return [2 /*return*/, Result.UnknownEvent];
-                    }
-                    token = core.getInput('github-token', { required: true });
-                    mergeMethod = core.getInput('merge-method').toUpperCase();
-                    if (!['SQUASH', 'MERGE', 'REBASE'].includes(mergeMethod)) {
-                        core.error("Merge method not allowed: " + mergeMethod);
-                        return [2 /*return*/, Result.UnknownMergeMethod];
-                    }
-                    mergeAuthorEmail = core.getInput('merge-author-email') || null;
-                    allowedActors = core.getInput('allowed-actors', { required: true })
-                        .split(',')
-                        .map(function (a) { return a.trim(); })
-                        .filter(Boolean);
-                    allowedUpdateTypes = {};
-                    core.getInput('allowed-update-types', { required: true })
-                        .split(',')
-                        .map(function (a) { return a.trim(); })
-                        .filter(Boolean)
-                        .forEach(function (group) {
-                        var parts = group
-                            .trim()
-                            .split(':', 2)
-                            .map(function (a) { return a.trim(); });
-                        if (parts.length !== 2 || !parts.every(function (a) { return typeof a === 'string'; })) {
-                            throw new Error('allowed-update-types invalid');
-                        }
-                        var dependencyType = parts[0], bumpType = parts[1];
-                        if (!allowedUpdateTypes[dependencyType]) {
-                            allowedUpdateTypes[dependencyType] = [];
-                        }
-                        allowedUpdateTypes[dependencyType].push(bumpType);
-                    });
-                    packageBlockList = (core.getInput('package-block-list') || '')
-                        .split(',')
-                        .map(function (a) { return a.trim(); });
-                    if (!allowedActors.includes(context.actor)) {
-                        core.error("Actor not allowed: " + context.actor);
-                        return [2 /*return*/, Result.ActorNotAllowed];
-                    }
-                    payload = github.context.payload;
-                    pr = payload.pull_request;
-                    Octokit = utils$1.GitHub.plugin(throttling);
-                    octokit = new Octokit(utils$1.getOctokitOptions(token, {
-                        throttle: {
-                            onRateLimit: /* istanbul ignore next */ function (retryAfter) {
-                                core.warning("Hit rate limit. Retrying in " + retryAfter + " seconds");
-                                return true;
-                            },
-                            onAbuseLimit: /* istanbul ignore next */ function (retryAfter) {
-                                core.warning("Hit abuse limit. Retrying in " + retryAfter + " seconds");
-                                return true;
-                            },
-                        },
-                    }));
-                    readPackageJson = function (ref) { return __awaiter(_this, void 0, void 0, function () {
-                        var content;
-                        return __generator(this, function (_a) {
-                            switch (_a.label) {
-                                case 0: return [4 /*yield*/, octokit.repos.getContent({
-                                        owner: context.repo.owner,
-                                        repo: context.repo.repo,
-                                        path: 'package.json',
-                                        ref: ref,
-                                    })];
-                                case 1:
-                                    content = _a.sent();
-                                    if (content.data.type !== 'file' || content.data.encoding !== 'base64') {
-                                        throw new Error('Unexpected repo content response');
-                                    }
-                                    return [2 /*return*/, JSON.parse(Buffer.from(content.data.content, 'base64').toString('utf-8'))];
-                            }
-                        });
-                    }); };
-                    enableAutoMerge = function () { return __awaiter(_this, void 0, void 0, function () {
-                        var prData, mutation, variables, result;
-                        var _a, _b, _c;
-                        return __generator(this, function (_d) {
-                            switch (_d.label) {
-                                case 0: return [4 /*yield*/, getPR()];
-                                case 1:
-                                    prData = _d.sent();
-                                    if (prData.data.state !== 'open') {
-                                        core.error('PR is not open');
-                                        return [2 /*return*/, Result.PRNotOpen];
-                                    }
-                                    mutation = "mutation($pullRequestId: ID!, $mergeMethod: PullRequestMergeMethod, $authorEmail: String) {\n\tenablePullRequestAutoMerge(input: {pullRequestId: $pullRequestId, mergeMethod: $mergeMethod, authorEmail: $authorEmail}) {\n\t\tpullRequest {\n\t\t\tautoMergeRequest {\n\t\t\t\tenabledAt\n\t\t\t}\n\t\t}\n\t}\n}";
-                                    variables = {
-                                        pullRequestId: pr.node_id,
-                                        mergeMethod: mergeMethod,
-                                        authorEmail: mergeAuthorEmail,
-                                    };
-                                    return [4 /*yield*/, octokit.graphql(mutation, variables)];
-                                case 2:
-                                    result = _d.sent();
-                                    if (!((_c = (_b = (_a = result === null || result === void 0 ? void 0 : result.enablePullRequestAutoMerge) === null || _a === void 0 ? void 0 : _a.pullRequest) === null || _b === void 0 ? void 0 : _b.autoMergeRequest) === null || _c === void 0 ? void 0 : _c.enabledAt)) {
-                                        core.debug(JSON.stringify(result, null, 2));
-                                        throw new Error('Failed to enable auto-merge');
-                                    }
-                                    core.info('Auto-merge enabled');
-                                    return [2 /*return*/, Result.Success];
-                            }
-                        });
-                    }); };
-                    getCommit = function () {
-                        return octokit.repos.getCommit({
-                            owner: context.repo.owner,
-                            repo: context.repo.repo,
-                            ref: pr.head.sha,
-                        });
-                    };
-                    getPR = function () {
-                        return octokit.pulls.get({
-                            owner: context.repo.owner,
-                            repo: context.repo.repo,
-                            pull_number: pr.number,
-                        });
-                    };
-                    validVersionChange = function (oldVersion, newVersion, allowedBumpTypes) {
-                        var oldVersionMatches = semverRegex.exec(oldVersion);
-                        if (!oldVersionMatches) {
-                            return false;
-                        }
-                        var newVersionMatches = semverRegex.exec(newVersion);
-                        if (!newVersionMatches) {
-                            return false;
-                        }
-                        var oldVersionPrefix = oldVersionMatches[1];
-                        var newVersionPrefix = newVersionMatches[1];
-                        if (oldVersionPrefix !== newVersionPrefix) {
-                            return false;
-                        }
-                        var oldVersionExact = oldVersion.slice(oldVersionPrefix.length);
-                        var newVersionExact = newVersion.slice(newVersionPrefix.length);
-                        if (semver.gte(oldVersionExact, newVersionExact)) {
-                            return false;
-                        }
-                        var allowed = [];
-                        if (allowedBumpTypes.includes('major')) {
-                            allowed.push('major');
-                        }
-                        if (allowedBumpTypes.includes('minor')) {
-                            allowed.push('minor');
-                        }
-                        if (allowedBumpTypes.includes('patch')) {
-                            allowed.push('patch');
-                        }
-                        return allowed.includes(semver.diff(oldVersionExact, newVersionExact));
-                    };
-                    core.info('Getting commit info');
-                    return [4 /*yield*/, getCommit()];
-                case 1:
-                    commit = _a.sent();
-                    onlyPackageJsonChanged = commit.data.files.every(function (_a) {
-                        var filename = _a.filename, status = _a.status;
-                        return ['package.json', 'package-lock.json', 'yarn.lock'].includes(filename) &&
-                            status === 'modified';
-                    });
-                    if (!onlyPackageJsonChanged) {
-                        core.error('More changed than the package.json and lockfile');
-                        return [2 /*return*/, Result.FileNotAllowed];
-                    }
-                    core.info('Retrieving package.json');
-                    return [4 /*yield*/, readPackageJson(pr.base.sha)];
-                case 2:
-                    packageJsonBase = _a.sent();
-                    return [4 /*yield*/, readPackageJson(pr.head.sha)];
-                case 3:
-                    packageJsonPr = _a.sent();
-                    core.info('Calculating diff');
-                    diff = dist.detailedDiff(packageJsonBase, packageJsonPr);
-                    core.debug(JSON.stringify(diff, null, 2));
-                    if (Object.keys(diff.added).length || Object.keys(diff.deleted).length) {
-                        core.error('Unexpected changes');
-                        return [2 /*return*/, Result.UnexpectedChanges];
-                    }
-                    core.info('Checking diff');
-                    allowedPropsChanges = Object.keys(diff.updated).every(function (prop) {
-                        return (['dependencies', 'devDependencies'].includes(prop) &&
-                            typeof diff.updated[prop] === 'object');
-                    });
-                    if (!allowedPropsChanges) {
-                        core.error('Unexpected property change');
-                        return [2 /*return*/, Result.UnexpectedPropertyChange];
-                    }
-                    allowedChange = Object.keys(diff.updated).every(function (prop) {
-                        var allowedBumpTypes = allowedUpdateTypes[prop] || [];
-                        var changedDependencies = diff.updated[prop];
-                        return Object.keys(changedDependencies).every(function (dependency) {
-                            if (typeof changedDependencies[dependency] !== 'string') {
-                                return false;
-                            }
-                            if (packageBlockList.includes(dependency)) {
-                                return false;
-                            }
-                            var oldVersion = packageJsonBase[prop][dependency];
-                            var newVersion = packageJsonPr[prop][dependency];
-                            if (typeof oldVersion !== 'string' || typeof newVersion !== 'string') {
-                                return false;
-                            }
-                            return validVersionChange(oldVersion, newVersion, allowedBumpTypes);
-                        });
-                    });
-                    if (!allowedChange) {
-                        core.error('One or more version changes are not allowed');
-                        return [2 /*return*/, Result.VersionChangeNotAllowed];
-                    }
-                    core.info('Enabling auto-merge');
-                    return [4 /*yield*/, enableAutoMerge()];
-                case 4:
-                    result = _a.sent();
-                    core.info('Finished!');
-                    return [2 /*return*/, result];
+const semverRegex = /^([~^]?)[0-9]+\.[0-9]+\.[0-9]+(-.+)?$/;
+async function run() {
+    core.info('Starting');
+    const context$1 = context;
+    core.debug(JSON.stringify(context$1, null, 2));
+    if (!['pull_request', 'pull_request_target'].includes(context.eventName)) {
+        core.error(`Unsupported event name: ${context.eventName}`);
+        return Result.UnknownEvent;
+    }
+    const token = core.getInput('github-token', { required: true });
+    const mergeMethod = core.getInput('merge-method').toUpperCase();
+    if (!['SQUASH', 'MERGE', 'REBASE'].includes(mergeMethod)) {
+        core.error(`Merge method not allowed: ${mergeMethod}`);
+        return Result.UnknownMergeMethod;
+    }
+    const mergeAuthorEmail = core.getInput('merge-author-email') || null;
+    const allowedActors = core.getInput('allowed-actors', { required: true })
+        .split(',')
+        .map((a) => a.trim())
+        .filter(Boolean);
+    const allowedUpdateTypes = {};
+    core.getInput('allowed-update-types', { required: true })
+        .split(',')
+        .map((a) => a.trim())
+        .filter(Boolean)
+        .forEach((group) => {
+        const parts = group
+            .trim()
+            .split(':', 2)
+            .map((a) => a.trim());
+        if (parts.length !== 2 || !parts.every((a) => typeof a === 'string')) {
+            throw new Error('allowed-update-types invalid');
+        }
+        const [dependencyType, bumpType] = parts;
+        if (!allowedUpdateTypes[dependencyType]) {
+            allowedUpdateTypes[dependencyType] = [];
+        }
+        allowedUpdateTypes[dependencyType].push(bumpType);
+    });
+    const packageBlockList = (core.getInput('package-block-list') || '')
+        .split(',')
+        .map((a) => a.trim());
+    if (!allowedActors.includes(context$1.actor)) {
+        core.error(`Actor not allowed: ${context$1.actor}`);
+        return Result.ActorNotAllowed;
+    }
+    const payload = context.payload;
+    const pr = payload.pull_request;
+    const Octokit = GitHub.plugin(throttling);
+    const octokit = new Octokit(getOctokitOptions_1(token, {
+        throttle: {
+            onRateLimit: /* istanbul ignore next */ (retryAfter) => {
+                core.warning(`Hit rate limit. Retrying in ${retryAfter} seconds`);
+                return true;
+            },
+            onAbuseLimit: /* istanbul ignore next */ (retryAfter) => {
+                core.warning(`Hit abuse limit. Retrying in ${retryAfter} seconds`);
+                return true;
+            },
+        },
+    }));
+    const readPackageJson = async (ref) => {
+        const { data } = await octokit.rest.repos.getContent({
+            owner: context$1.repo.owner,
+            repo: context$1.repo.repo,
+            path: 'package.json',
+            ref,
+        });
+        if (Array.isArray(data) ||
+            data.type !== 'file' ||
+            data.encoding !== 'base64') {
+            throw new Error('Unexpected repo content response');
+        }
+        return JSON.parse(Buffer.from(data.content, 'base64').toString('utf-8'));
+    };
+    const enableAutoMerge = async () => {
+        var _a, _b, _c;
+        const prData = await getPR();
+        if (prData.data.state !== 'open') {
+            core.error('PR is not open');
+            return Result.PRNotOpen;
+        }
+        const mutation = `mutation($pullRequestId: ID!, $mergeMethod: PullRequestMergeMethod, $authorEmail: String) {
+	enablePullRequestAutoMerge(input: {pullRequestId: $pullRequestId, mergeMethod: $mergeMethod, authorEmail: $authorEmail}) {
+		pullRequest {
+			autoMergeRequest {
+				enabledAt
+			}
+		}
+	}
+}`;
+        const variables = {
+            pullRequestId: pr.node_id,
+            mergeMethod: mergeMethod,
+            authorEmail: mergeAuthorEmail,
+        };
+        const result = await octokit.graphql(mutation, variables);
+        if (!((_c = (_b = (_a = result === null || result === void 0 ? void 0 : result.enablePullRequestAutoMerge) === null || _a === void 0 ? void 0 : _a.pullRequest) === null || _b === void 0 ? void 0 : _b.autoMergeRequest) === null || _c === void 0 ? void 0 : _c.enabledAt)) {
+            core.debug(JSON.stringify(result, null, 2));
+            throw new Error('Failed to enable auto-merge');
+        }
+        core.info('Auto-merge enabled');
+        return Result.Success;
+    };
+    const getCommit = () => octokit.rest.repos.getCommit({
+        owner: context$1.repo.owner,
+        repo: context$1.repo.repo,
+        ref: pr.head.sha,
+    });
+    const getPR = () => octokit.rest.pulls.get({
+        owner: context$1.repo.owner,
+        repo: context$1.repo.repo,
+        pull_number: pr.number,
+    });
+    const validVersionChange = (oldVersion, newVersion, allowedBumpTypes) => {
+        const oldVersionMatches = semverRegex.exec(oldVersion);
+        if (!oldVersionMatches) {
+            return false;
+        }
+        const newVersionMatches = semverRegex.exec(newVersion);
+        if (!newVersionMatches) {
+            return false;
+        }
+        const oldVersionPrefix = oldVersionMatches[1];
+        const newVersionPrefix = newVersionMatches[1];
+        if (oldVersionPrefix !== newVersionPrefix) {
+            return false;
+        }
+        const oldVersionExact = oldVersion.slice(oldVersionPrefix.length);
+        const newVersionExact = newVersion.slice(newVersionPrefix.length);
+        if (semver.gte(oldVersionExact, newVersionExact)) {
+            return false;
+        }
+        const allowed = [];
+        if (allowedBumpTypes.includes('major')) {
+            allowed.push('major');
+        }
+        if (allowedBumpTypes.includes('minor')) {
+            allowed.push('minor');
+        }
+        if (allowedBumpTypes.includes('patch')) {
+            allowed.push('patch');
+        }
+        return allowed.includes(semver.diff(oldVersionExact, newVersionExact));
+    };
+    core.info('Getting commit info');
+    const commit = await getCommit();
+    if (!commit.data.files) {
+        core.error('Could not find any changed files');
+        return Result.NoChanges;
+    }
+    const onlyPackageJsonChanged = commit.data.files.every(({ filename, status }) => filename &&
+        ['package.json', 'package-lock.json', 'yarn.lock'].includes(filename) &&
+        status === 'modified');
+    if (!onlyPackageJsonChanged) {
+        core.error('More changed than the package.json and lockfile');
+        return Result.FileNotAllowed;
+    }
+    core.info('Retrieving package.json');
+    const packageJsonBase = await readPackageJson(pr.base.sha);
+    const packageJsonPr = await readPackageJson(pr.head.sha);
+    core.info('Calculating diff');
+    const diff = dist.detailedDiff(packageJsonBase, packageJsonPr);
+    core.debug(JSON.stringify(diff, null, 2));
+    if (Object.keys(diff.added).length || Object.keys(diff.deleted).length) {
+        core.error('Unexpected changes');
+        return Result.UnexpectedChanges;
+    }
+    core.info('Checking diff');
+    const allowedPropsChanges = Object.keys(diff.updated).every((prop) => {
+        return (['dependencies', 'devDependencies'].includes(prop) &&
+            typeof diff.updated[prop] === 'object');
+    });
+    if (!allowedPropsChanges) {
+        core.error('Unexpected property change');
+        return Result.UnexpectedPropertyChange;
+    }
+    const allowedChange = Object.keys(diff.updated).every((prop) => {
+        const allowedBumpTypes = allowedUpdateTypes[prop] || [];
+        const changedDependencies = diff.updated[prop];
+        return Object.keys(changedDependencies).every((dependency) => {
+            if (typeof changedDependencies[dependency] !== 'string') {
+                return false;
             }
+            if (packageBlockList.includes(dependency)) {
+                return false;
+            }
+            const oldVersion = packageJsonBase[prop][dependency];
+            const newVersion = packageJsonPr[prop][dependency];
+            if (typeof oldVersion !== 'string' || typeof newVersion !== 'string') {
+                return false;
+            }
+            return validVersionChange(oldVersion, newVersion, allowedBumpTypes);
         });
     });
+    if (!allowedChange) {
+        core.error('One or more version changes are not allowed');
+        return Result.VersionChangeNotAllowed;
+    }
+    core.info('Enabling auto-merge');
+    const result = await enableAutoMerge();
+    core.info('Finished!');
+    return result;
 }
 
-run().catch(function (e) {
+run().catch((e) => {
     core.setFailed(e.message);
 });

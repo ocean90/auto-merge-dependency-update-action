@@ -23,6 +23,7 @@
   "devDependencies": {
     "@actions/core": "1.2.7",
     "@actions/github": "5.0.0",
+    "@octokit/openapi-types": "^7.0.0",
     "@octokit/plugin-throttling": "^3.4.1",
     "@octokit/webhooks-definitions": "^3.62.5",
     "@rollup/plugin-commonjs": "^19.0.0",

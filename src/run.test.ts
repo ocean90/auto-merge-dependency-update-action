@@ -331,12 +331,14 @@ describe('run', () => {
 						);
 
 					const octokitMock = {
-						repos: {
-							getContent: reposGetContentMock,
-							getCommit: reposGetCommitMock,
-						},
-						pulls: {
-							get: pullsGetMock,
+						rest: {
+							repos: {
+								getContent: reposGetContentMock,
+								getCommit: reposGetCommitMock,
+							},
+							pulls: {
+								get: pullsGetMock,
+							},
 						},
 						graphql: graphqlMock,
 					};
@@ -387,6 +389,11 @@ describe('run', () => {
 						'message',
 						'Unexpected repo content response'
 					);
+				});
+
+				it('stops if no files are changed', async () => {
+					mockCommit.data.files = undefined;
+					expect(await run()).toBe(Result.NoChanges);
 				});
 
 				it('stops if more than the allowed files change', async () => {
