@@ -1,9 +1,9 @@
 {
   "compilerOptions": {
-    "module": "ESNext",
-    "target": "ES5",
-    "lib": ["dom", "es2015"],
-    "types": ["jest"],
+    "lib": ["ES2019"],
+    "module": "ES2015",
+    "target": "ES2019",
+    "types": ["jest", "node"],
     "strict": true,
     "noFallthroughCasesInSwitch": true,
     "strictNullChecks": true,
