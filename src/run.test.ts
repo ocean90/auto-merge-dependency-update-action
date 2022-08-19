@@ -140,7 +140,7 @@ possibleBumpTypes.forEach((prodBumpType) => {
 
 describe('run', () => {
 	beforeEach(() => {
-		jest.useFakeTimers('modern').setSystemTime(0);
+		jest.useFakeTimers().setSystemTime(0);
 		(github as any).context = {};
 	});
 
